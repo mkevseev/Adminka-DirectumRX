@@ -1,0 +1,1692 @@
+<NewDataSet>
+  <IAccompanyingDocumentDto>
+    <Type>IAccompanyingDocuments</Type>
+  </IAccompanyingDocumentDto>
+  <IAccompanyingDocumentTrackingDto>
+    <Type>IAccompanyingDocumentTrackings</Type>
+  </IAccompanyingDocumentTrackingDto>
+  <IAccompanyingDocumentVersionsDto>
+    <Type>IAccompanyingDocumentVersionss</Type>
+  </IAccompanyingDocumentVersionsDto>
+  <IAccountingDocumentBaseDto>
+    <Type>IAccountingDocumentBases</Type>
+    <NameGuid>96c4f4f3-dc74-497a-b347-e8faf4afe320</NameGuid>
+    <Property_Number>Номер счета</Property_Number>
+    <Property_Date>Дата счета</Property_Date>
+    <Property_TotalAmount>Общая сумма</Property_TotalAmount>
+    <Property_Currency>Валюта</Property_Currency>
+    <Property_Counterparty>Контрагент</Property_Counterparty>
+    <Property_ResponsibleEmployee>Ответственный</Property_ResponsibleEmployee>
+    <Property_Contact>Контакт</Property_Contact>
+    <Property_Assignee>Исполнитель</Property_Assignee>
+    <Property_LeadingDocument>Договор</Property_LeadingDocument>
+    <Property_IsFormalized>Формализованный</Property_IsFormalized>
+    <Property_RegistrationNumber>Номер документа</Property_RegistrationNumber>
+    <Property_SellerTitleId>ИД версии титула продавца</Property_SellerTitleId>
+    <Property_BuyerTitleId>ИД версии титула покупателя</Property_BuyerTitleId>
+    <Property_CounterpartySignatory>Подписал</Property_CounterpartySignatory>
+    <Property_DocumentGroup>Группа документов</Property_DocumentGroup>
+    <Property_SellerSignatureId>ИД подписи титула продавца</Property_SellerSignatureId>
+    <Property_BuyerSignatureId>ИД подписи титула покупателя</Property_BuyerSignatureId>
+    <Property_BusinessUnitBox>Абонентский ящик нашей организации</Property_BusinessUnitBox>
+    <Property_IsAdjustment>Корректировочный</Property_IsAdjustment>
+    <Property_Corrected>Корректирует</Property_Corrected>
+    <Property_ExchangeState>Электронный обмен</Property_ExchangeState>
+    <Enum_LifeCycleState_Draft>В разработке</Enum_LifeCycleState_Draft>
+    <Enum_LifeCycleState_Obsolete>Устаревший</Enum_LifeCycleState_Obsolete>
+    <Property_FormalizedServiceType>Type документа в сервисе</Property_FormalizedServiceType>
+    <Enum_FormalizedServiceType_Invoice>Счет-фактура</Enum_FormalizedServiceType_Invoice>
+    <Enum_FormalizedServiceType_Act>Акт</Enum_FormalizedServiceType_Act>
+    <Enum_FormalizedServiceType_Waybill>Накладная</Enum_FormalizedServiceType_Waybill>
+    <Enum_FormalizedServiceType_GoodsTransfer>ДПТ</Enum_FormalizedServiceType_GoodsTransfer>
+    <Enum_FormalizedServiceType_WorksTransfer>ДПРР</Enum_FormalizedServiceType_WorksTransfer>
+    <Enum_FormalizedServiceType_GeneralTransfer>УПД</Enum_FormalizedServiceType_GeneralTransfer>
+    <Enum_ExchangeState_Rejected>Отказано в подписании</Enum_ExchangeState_Rejected>
+    <Property_FormalizedFunction>Функция</Property_FormalizedFunction>
+    <Enum_FormalizedFunction_Schf>СЧФ</Enum_FormalizedFunction_Schf>
+    <Enum_FormalizedFunction_SchfDop>СЧФДОП</Enum_FormalizedFunction_SchfDop>
+    <Enum_FormalizedFunction_Dop>ДОП</Enum_FormalizedFunction_Dop>
+    <Property_IsRevision>Исправление</Property_IsRevision>
+    <Property_IsFormalizedSignatoryEmpty>Не заполнен подписывающий</Property_IsFormalizedSignatoryEmpty>
+    <Property_CounterpartySigningReason>Основание</Property_CounterpartySigningReason>
+    <Property_VatRate>Ставка НДС</Property_VatRate>
+    <Property_VatAmount>Сумма НДС</Property_VatAmount>
+    <Property_NetAmount>Сумма без НДС</Property_NetAmount>
+    <Property_PurchaseOrderNumber>Номер заказа</Property_PurchaseOrderNumber>
+  </IAccountingDocumentBaseDto>
+  <IAccountingDocumentBaseTrackingDto>
+    <Type>IAccountingDocumentBaseTrackings</Type>
+    <NameGuid>dd454376-144f-461f-a2a5-4b1684ff5c4a</NameGuid>
+  </IAccountingDocumentBaseTrackingDto>
+  <IAccountingDocumentBaseVersionsDto>
+    <Type>IAccountingDocumentBaseVersionss</Type>
+    <NameGuid>fd8ac5de-440e-451f-9d12-0213f4fd59ba</NameGuid>
+  </IAccountingDocumentBaseVersionsDto>
+  <IAddendumDto>
+    <Type>IAddendums</Type>
+    <NameGuid>58b9ed35-9c84-46cd-aa79-9b5ef5a82f5d</NameGuid>
+    <Property_LeadingDocument>Ведущий док.</Property_LeadingDocument>
+    <Property_RegistrationNumber>Номер документа</Property_RegistrationNumber>
+  </IAddendumDto>
+  <IAddendumTrackingDto>
+    <Type>IAddendumTrackings</Type>
+    <NameGuid>70e550a3-63c2-4166-bd4b-256718e014ec</NameGuid>
+  </IAddendumTrackingDto>
+  <IAddendumVersionsDto>
+    <Type>IAddendumVersionss</Type>
+    <NameGuid>c8333ee7-aa39-4ccf-9fac-0ef0429db167</NameGuid>
+  </IAddendumVersionsDto>
+  <IAgendaDto>
+    <Type>IAgendas</Type>
+    <NameGuid>5261da93-7879-4210-b3db-c92fa894ab4d</NameGuid>
+  </IAgendaDto>
+  <IAgendaTrackingDto>
+    <Type>IAgendaTrackings</Type>
+    <NameGuid>231c12b0-800c-457a-a920-6f1a9f51f252</NameGuid>
+  </IAgendaTrackingDto>
+  <IAgendaVersionsDto>
+    <Type>IAgendaVersionss</Type>
+    <NameGuid>82b0455e-566e-4573-8651-c9c5b52a4dd1</NameGuid>
+  </IAgendaVersionsDto>
+  <IApprovalConvertPdfStageDto>
+    <Type>IApprovalConvertPdfStages</Type>
+    <NameGuid>77fe4545-9220-4cde-9cf7-a254d28b3ba5</NameGuid>
+    <Property_ConvertWithAddenda>Преобразовать документы из группы "Приложения"</Property_ConvertWithAddenda>
+    <Property_AddRegistrationDetails>Преобразовать документы со сведениями о регистрации</Property_AddRegistrationDetails>
+  </IApprovalConvertPdfStageDto>
+  <IApprovalFunctionQueueItemDto>
+    <Type>IApprovalFunctionQueueItems</Type>
+    <NameGuid>e511f4f9-72a3-484c-a5f2-d5fcdd113dde</NameGuid>
+  </IApprovalFunctionQueueItemDto>
+  <IApprovalFunctionStageBaseDto>
+    <Type>IApprovalFunctionStageBases</Type>
+    <NameGuid>6831f842-3ea6-412e-9637-c6315a4e6686</NameGuid>
+    <Property_TimeoutInDays>Срок ожидания, дней</Property_TimeoutInDays>
+    <Property_TimeoutInHours>часов</Property_TimeoutInHours>
+    <Property_TimeoutAction>Действие по истечении срока</Property_TimeoutAction>
+    <Enum_TimeoutAction_Skip>Перейти на следующий этап</Enum_TimeoutAction_Skip>
+    <Enum_TimeoutAction_Repeat>Повторять текущий этап</Enum_TimeoutAction_Repeat>
+  </IApprovalFunctionStageBaseDto>
+  <IApprovalIncInvoicePaidStageDto>
+    <Type>IApprovalIncInvoicePaidStages</Type>
+    <NameGuid>16aa8863-3f80-486b-be94-069e6f7b4d94</NameGuid>
+  </IApprovalIncInvoicePaidStageDto>
+  <IApprovalRegistrationFtsStageDto>
+    <Type>IApprovalRegistrationFtsStages</Type>
+    <NameGuid>c01d7e8b-5580-4129-b28e-98b0222b8944</NameGuid>
+  </IApprovalRegistrationFtsStageDto>
+  <IApprovalReviewTaskStageDto>
+    <Type>IApprovalReviewTaskStages</Type>
+    <NameGuid>9bc1a190-7ede-40e0-9895-397f2433d587</NameGuid>
+    <Property_WaitReviewTaskCompletion>Ожидать завершения рассмотрения.
+Согласование по регламенту продолжится после рассмотрения документа всеми адресатами</Property_WaitReviewTaskCompletion>
+    <Property_DeadlineInDays>Срок рассмотрения, дней</Property_DeadlineInDays>
+  </IApprovalReviewTaskStageDto>
+  <IApprovalRoleDto>
+    <Type>IApprovalRoles</Type>
+    <NameGuid>9f5b8596-f73a-498f-b1b1-219ed77bb031</NameGuid>
+  </IApprovalRoleDto>
+  <IApprovalRuleBusinessUnitsDto>
+    <Type>IApprovalRuleBusinessUnitss</Type>
+    <NameGuid>07e78391-6f52-4e18-b8b8-799c5cfd9977</NameGuid>
+  </IApprovalRuleBusinessUnitsDto>
+  <IApprovalRuleConditionsDto>
+    <Type>IApprovalRuleConditionss</Type>
+    <NameGuid>a5711709-ae60-4738-a7b1-0878f756a6d1</NameGuid>
+  </IApprovalRuleConditionsDto>
+  <IApprovalRuleDepartmentsDto>
+    <Type>IApprovalRuleDepartmentss</Type>
+    <NameGuid>dfe3129b-e1ad-42a1-b5f3-8505dd6392bf</NameGuid>
+  </IApprovalRuleDepartmentsDto>
+  <IApprovalRuleDocumentGroupsDto>
+    <Type>IApprovalRuleDocumentGroupss</Type>
+    <NameGuid>5812c54a-95f4-4579-84d4-9be9ae8a7e58</NameGuid>
+  </IApprovalRuleDocumentGroupsDto>
+  <IApprovalRuleDocumentKindsDto>
+    <Type>IApprovalRuleDocumentKindss</Type>
+    <NameGuid>b4dd47f2-c49f-45bf-8a29-8a462c66050d</NameGuid>
+  </IApprovalRuleDocumentKindsDto>
+  <IApprovalRuleDto>
+    <Type>IApprovalRules</Type>
+    <NameGuid>a8dc61a5-862e-4c8a-a0e0-a5735ec3c3b3</NameGuid>
+  </IApprovalRuleDto>
+  <IApprovalRuleStagesDto>
+    <Type>IApprovalRuleStagess</Type>
+    <NameGuid>a097b1e2-ee8d-41cc-ac0d-68524c2e374a</NameGuid>
+  </IApprovalRuleStagesDto>
+  <IApprovalRuleTransitionsDto>
+    <Type>IApprovalRuleTransitionss</Type>
+    <NameGuid>dc4449c7-5a08-4b4d-a95e-677db85e6d5d</NameGuid>
+  </IApprovalRuleTransitionsDto>
+  <IApprovalStageDto>
+    <Type>IApprovalStages</Type>
+    <NameGuid>bbb34726-4316-4d87-a64d-9dcf74b654f4</NameGuid>
+    <Property_Name>Имя</Property_Name>
+    <Property_StageType>Type этапа</Property_StageType>
+    <Enum_StageType_Manager>Согласование с руководителем</Enum_StageType_Manager>
+    <Enum_StageType_Approvers>Согласование</Enum_StageType_Approvers>
+    <Enum_StageType_Sign>Подписание</Enum_StageType_Sign>
+    <Enum_StageType_Register>Регистрация</Enum_StageType_Register>
+    <Property_Sequence>Старт</Property_Sequence>
+    <Enum_Sequence_Parallel>Одновременно</Enum_Sequence_Parallel>
+    <Enum_Sequence_Serially>Друг за другом</Enum_Sequence_Serially>
+    <Property_ReworkType>Порядок доработки</Property_ReworkType>
+    <Enum_ReworkType_AfterAll>После всех</Enum_ReworkType_AfterAll>
+    <Enum_ReworkType_AfterEach>После каждого с прерыванием</Enum_ReworkType_AfterEach>
+    <Property_Assignee1>Исполнитель</Property_Assignee1>
+    <Property_NeedStrongSign>Требовать усиленную подпись</Property_NeedStrongSign>
+    <Enum_StageType_Sending>Отправка контрагенту</Enum_StageType_Sending>
+    <Enum_StageType_SimpleAgr>Задание</Enum_StageType_SimpleAgr>
+    <Property_StartDelayDays>Отсрочка старта дней</Property_StartDelayDays>
+    <Enum_StageType_Print>Печать</Enum_StageType_Print>
+    <Property_Subject>Тема</Property_Subject>
+    <Property_AllowSendToRework>Разрешить отправку на доработку</Property_AllowSendToRework>
+    <Enum_StageType_Notice>Уведомление</Enum_StageType_Notice>
+    <Property_IsConfirmSigning>Документ подписывается только в бумажном виде. 
+Результаты подписания вносит помощник (секретарь, делопроизводитель)</Property_IsConfirmSigning>
+    <Enum_StageType_Review>Рассмотрение адресатом</Enum_StageType_Review>
+    <Enum_StageType_Execution>Создание поручений по документу</Enum_StageType_Execution>
+    <Property_IsResultSubmission>Документ рассматривается только в бумажном виде. 
+Результаты рассмотрения вносит помощник (секретарь, делопроизводитель)</Property_IsResultSubmission>
+    <Property_Note>Примечание</Property_Note>
+    <Property_Assignee>Сотрудник/роль</Property_Assignee>
+    <Property_ApprovalRole>Роль согласования</Property_ApprovalRole>
+    <Property_ApprovalRoles>Роли согласования</Property_ApprovalRoles>
+    <Property_AssigneeType>Type</Property_AssigneeType>
+    <Enum_AssigneeType_Role>Роль согласования</Enum_AssigneeType_Role>
+    <Enum_AssigneeType_Employee>Выделенный сотрудник</Enum_AssigneeType_Employee>
+    <Property_Recipients>Сотрудники/группы</Property_Recipients>
+    <Enum_StageType_CheckReturn>Контроль возврата</Enum_StageType_CheckReturn>
+    <Property_AllowAdditionalApprovers>Инициатор согласования может указывать дополнительных согласующих</Property_AllowAdditionalApprovers>
+    <Property_AllowChangeReworkPerformer>Разрешить выбор ответственного за доработку</Property_AllowChangeReworkPerformer>
+    <Property_ReworkPerformerType>Ответственный</Property_ReworkPerformerType>
+    <Enum_ReworkPerformerType_FromRule>Из правила</Enum_ReworkPerformerType_FromRule>
+    <Enum_ReworkPerformerType_EmployeeRole>Сотрудник/роль</Enum_ReworkPerformerType_EmployeeRole>
+    <Enum_ReworkPerformerType_Author>Инициатор согласования</Enum_ReworkPerformerType_Author>
+    <Property_ReworkPerformer>Сотрудник/роль</Property_ReworkPerformer>
+    <Enum_ReworkType_AfterComplete>После выполнения задания</Enum_ReworkType_AfterComplete>
+    <Enum_ReworkPerformerType_ApprovalRole>Роль согласования</Enum_ReworkPerformerType_ApprovalRole>
+    <Property_ReworkApprovalRole>Роль согласования</Property_ReworkApprovalRole>
+    <Property_RightType>Type прав</Property_RightType>
+    <Enum_RightType_Read>Просмотр</Enum_RightType_Read>
+    <Enum_RightType_Edit>Изменение</Enum_RightType_Edit>
+    <Property_NeedRestrictPerformerRights>Понизить права исполнителей этапа до "Просмотр" после выполнения задания</Property_NeedRestrictPerformerRights>
+    <Enum_RightType_FullAccess>Полный доступ</Enum_RightType_FullAccess>
+    <Property_AllowApproveWithSuggestions>Разрешить согласование с замечаниями</Property_AllowApproveWithSuggestions>
+    <Property_AssignmentInstruction>Инструкция к заданию</Property_AssignmentInstruction>
+  </IApprovalStageDto>
+  <IMemoAttestationDto>
+    <Type>IAttestationModuleMemoAttestations</Type>
+  </IMemoAttestationDto>
+  <IMemoAttestationTrackingDto>
+    <Type>IAttestationModuleMemoAttestationTrackings</Type>
+  </IMemoAttestationTrackingDto>
+  <IMemoAttestationVersionsDto>
+    <Type>IAttestationModuleMemoAttestationVersionss</Type>
+  </IMemoAttestationVersionsDto>
+  <IQualificationMatrixDto>
+    <Type>IAttestationModuleQualificationMatrixs</Type>
+  </IQualificationMatrixDto>
+  <IQualificationMatrixTrackingDto>
+    <Type>IAttestationModuleQualificationMatrixTrackings</Type>
+  </IQualificationMatrixTrackingDto>
+  <IQualificationMatrixVersionsDto>
+    <Type>IAttestationModuleQualificationMatrixVersionss</Type>
+  </IQualificationMatrixVersionsDto>
+  <IBankExchangeBoxesDto>
+    <Type>IBankExchangeBoxess</Type>
+    <NameGuid>b28d2948-f8b6-47e1-bdf0-a6f6be05e64c</NameGuid>
+  </IBankExchangeBoxesDto>
+  <IBankDto>
+    <Type>IBanks</Type>
+    <NameGuid>80c4e311-e95f-449b-984d-1fd540b8f0af</NameGuid>
+    <Property_BIC>БИК</Property_BIC>
+    <Property_CorrespondentAccount>Корр. счет</Property_CorrespondentAccount>
+    <Property_IsSystem>Системный</Property_IsSystem>
+    <Property_TRRC>КПП</Property_TRRC>
+    <Property_SWIFT>SWIFT</Property_SWIFT>
+  </IBankDto>
+  <IBodyConverterQueueItemDto>
+    <Type>IBodyConverterQueueItems</Type>
+    <NameGuid>2d30e2aa-1d0b-45f0-8e4d-00318b3a5cfd</NameGuid>
+    <Property_Document>Документ</Property_Document>
+    <Property_VersionId>ИД версии</Property_VersionId>
+    <Enum_ProcessingStatus_Processed>Обработано</Enum_ProcessingStatus_Processed>
+    <Property_ExchangeState>Электронный обмен</Property_ExchangeState>
+    <Enum_ExchangeState_Received>Получен</Enum_ExchangeState_Received>
+    <Enum_ExchangeState_Sent>Отправлен контрагенту</Enum_ExchangeState_Sent>
+    <Enum_ExchangeState_Signed>Подписан обеими сторонами</Enum_ExchangeState_Signed>
+    <Enum_ExchangeState_Rejected>Отказано в подписании</Enum_ExchangeState_Rejected>
+    <Enum_ExchangeState_SignRequired>Требуется подписание</Enum_ExchangeState_SignRequired>
+    <Enum_ExchangeState_Terminated>Аннулирован</Enum_ExchangeState_Terminated>
+    <Enum_ExchangeState_Obsolete>Аннулирован</Enum_ExchangeState_Obsolete>
+    <Enum_ExchangeState_SignAwaited>Ожидается подпись контрагента</Enum_ExchangeState_SignAwaited>
+  </IBodyConverterQueueItemDto>
+  <IBusinessUnitBoxDto>
+    <Type>IBusinessUnitBoxs</Type>
+    <NameGuid>2dd7a803-8db7-40e1-9da6-b41c62d367c8</NameGuid>
+    <Property_BusinessUnit>Наша организация</Property_BusinessUnit>
+    <Property_ExchangeService>Сервис обмена</Property_ExchangeService>
+    <Property_Login>Логин для соединения</Property_Login>
+    <Property_Password>Пароль</Property_Password>
+    <Property_ConnectionStatus>Соединение</Property_ConnectionStatus>
+    <Enum_ConnectionStatus_Connected>Установлено</Enum_ConnectionStatus_Connected>
+    <Enum_ConnectionStatus_Waiting>Необходимо задать пароль</Enum_ConnectionStatus_Waiting>
+    <Enum_ConnectionStatus_Error>Произошла ошибка</Enum_ConnectionStatus_Error>
+    <Property_ExchangeServiceCertificates>Сертификаты сервиса обмена</Property_ExchangeServiceCertificates>
+    <Property_HasExchangeServiceCertificates>Загружены сертификаты сервиса обмена</Property_HasExchangeServiceCertificates>
+    <Property_FtsId>ИД участника эл. обмена</Property_FtsId>
+    <Property_CertificateReceiptNotifications>Сертификат для служебных док.</Property_CertificateReceiptNotifications>
+    <Property_FormalizedPoAInfos>Сведения об эл. доверенностях из сервиса обмена</Property_FormalizedPoAInfos>
+  </IBusinessUnitBoxDto>
+  <IBusinessUnitDto>
+    <Type>IBusinessUnits</Type>
+    <NameGuid>eff95720-181f-4f7d-892d-dec034c7b2ab</NameGuid>
+    <Property_CEO>Руководитель</Property_CEO>
+    <Property_Note>Примечание</Property_Note>
+    <Property_Company>Организация</Property_Company>
+    <Property_Email>Эл. почта</Property_Email>
+    <Property_HeadCompany>Головная орг.</Property_HeadCompany>
+    <Property_LegalAddress>Юридический адрес</Property_LegalAddress>
+    <Property_LegalName>Юрид. наименование</Property_LegalName>
+    <Property_Name>Наименование</Property_Name>
+    <Property_Phones>Телефоны</Property_Phones>
+    <Property_PostalAddress>Почтовый адрес</Property_PostalAddress>
+    <Property_Region>Регион</Property_Region>
+    <Property_City>Населенный пункт</Property_City>
+    <Property_TIN>ИНН</Property_TIN>
+    <Property_TRRC>КПП</Property_TRRC>
+    <Property_Homepage>Сайт</Property_Homepage>
+    <Property_PSRN>ОГРН</Property_PSRN>
+    <Property_NCEO>ОКПО</Property_NCEO>
+    <Property_NCEA>ОКВЭД</Property_NCEA>
+    <Property_Account>Номер счета</Property_Account>
+    <Property_Bank>Банк</Property_Bank>
+    <Property_Code>Код</Property_Code>
+    <Property_Nonresident>Нерезидент</Property_Nonresident>
+    <Property_CAO>Главный бухгалтер</Property_CAO>
+    <Property_ExternalId>ИД во внешней системе</Property_ExternalId>
+  </IBusinessUnitDto>
+  <IBypassSheetDto>
+    <Type>IBypassSheetsBypassSheets</Type>
+  </IBypassSheetDto>
+  <IBypassSheetTrackingDto>
+    <Type>IBypassSheetsBypassSheetTrackings</Type>
+  </IBypassSheetTrackingDto>
+  <IBypassSheetVersionsDto>
+    <Type>IBypassSheetsBypassSheetVersionss</Type>
+  </IBypassSheetVersionsDto>
+  <ICancellationAgreementDto>
+    <Type>ICancellationAgreements</Type>
+    <NameGuid>4c57f798-1547-4de0-b240-d9d97901df5f</NameGuid>
+    <Property_Reason>Причина аннулирования</Property_Reason>
+    <Property_ServiceDocumentId>ИД документа в СО</Property_ServiceDocumentId>
+    <Enum_LifeCycleState_Obsolete>Устаревший</Enum_LifeCycleState_Obsolete>
+  </ICancellationAgreementDto>
+  <ICancellationAgreementTrackingDto>
+    <Type>ICancellationAgreementTrackings</Type>
+    <NameGuid>a7cbaaf6-5be8-4cb9-9b07-4a2857669a6e</NameGuid>
+  </ICancellationAgreementTrackingDto>
+  <ICancellationAgreementVersionsDto>
+    <Type>ICancellationAgreementVersionss</Type>
+    <NameGuid>20738bb0-f250-4c98-997d-269b5f1f0fe3</NameGuid>
+  </ICancellationAgreementVersionsDto>
+  <ICompanyDto>
+    <Type>ICompanies</Type>
+    <NameGuid>593e143c-616c-4d95-9457-fd916c4aa7f8</NameGuid>
+  </ICompanyDto>
+  <ICompanyBaseExchangeBoxesDto>
+    <Type>ICompanyBaseExchangeBoxess</Type>
+    <NameGuid>1c002846-60f2-4216-853d-9aa101bdcf82</NameGuid>
+  </ICompanyBaseExchangeBoxesDto>
+  <ICompanyBaseDto>
+    <Type>ICompanyBases</Type>
+    <NameGuid>78278dd7-f0d2-4e35-b543-13d0bd462cd6</NameGuid>
+    <Property_HeadCompany>Головная орг.</Property_HeadCompany>
+    <Property_TRRC>КПП</Property_TRRC>
+    <Property_IsCardReadOnly>Нередактируемая</Property_IsCardReadOnly>
+    <Property_LegalName>Юрид. наименование</Property_LegalName>
+    <Property_PSRN>ОГРН</Property_PSRN>
+    <Property_Name>Наименование</Property_Name>
+    <Property_Note>Примечание</Property_Note>
+    <Property_Reliability>Надежность</Property_Reliability>
+    <Enum_Reliability_High>Высокая</Enum_Reliability_High>
+    <Enum_Reliability_Medium>Средняя</Enum_Reliability_Medium>
+    <Enum_Reliability_Low>Низкая</Enum_Reliability_Low>
+  </ICompanyBaseDto>
+  <ICompanyDirectiveDto>
+    <Type>ICompanyDirectives</Type>
+    <NameGuid>264ada4e-b272-4ecc-a115-1246c9556bfa</NameGuid>
+  </ICompanyDirectiveDto>
+  <ICompanyDirectiveTrackingDto>
+    <Type>ICompanyDirectiveTrackings</Type>
+    <NameGuid>96a79305-3ed5-4e36-9691-6bc1f8f463e5</NameGuid>
+  </ICompanyDirectiveTrackingDto>
+  <ICompanyDirectiveVersionsDto>
+    <Type>ICompanyDirectiveVersionss</Type>
+    <NameGuid>aa3b17b3-87de-42bd-8b11-cc9dba29f58c</NameGuid>
+  </ICompanyDirectiveVersionsDto>
+  <ICompanyExchangeBoxesDto>
+    <Type>ICompanyExchangeBoxess</Type>
+    <NameGuid>392f91ab-efc1-450c-8604-11bf6c38e0f0</NameGuid>
+  </ICompanyExchangeBoxesDto>
+  <IConditionConditionDocumentKindsDto>
+    <Type>IConditionConditionDocumentKindss</Type>
+    <NameGuid>1a4f42ad-c033-4c71-a3c0-9c41bc76d211</NameGuid>
+  </IConditionConditionDocumentKindsDto>
+  <IConditionCurrenciesDto>
+    <Type>IConditionCurrenciess</Type>
+    <NameGuid>ed2f9e00-ecbd-419a-9ac7-1bba610b5e4e</NameGuid>
+  </IConditionCurrenciesDto>
+  <IConditionDeliveryMethodsDto>
+    <Type>IConditionDeliveryMethodss</Type>
+    <NameGuid>64123db7-d49f-4da6-ae43-3a3310ca335c</NameGuid>
+  </IConditionDeliveryMethodsDto>
+  <IConditionDocumentKindsDto>
+    <Type>IConditionDocumentKindss</Type>
+    <NameGuid>994b6df7-cbf2-4dd0-bb16-d980007a2236</NameGuid>
+  </IConditionDocumentKindsDto>
+  <IConditionDto>
+    <Type>IConditions</Type>
+    <NameGuid>3f6f31c3-16e2-457e-9f88-48b254a500d2</NameGuid>
+  </IConditionDto>
+  <IContractApprovalRoleDto>
+    <Type>IContractApprovalRoles</Type>
+    <NameGuid>03a2d2f4-a15a-4b5b-a97b-71140a938cbe</NameGuid>
+  </IContractApprovalRoleDto>
+  <IContractBaseStagesDto>
+    <Type>IContractBaseMilestoness</Type>
+    <NameGuid>ed27ede9-3dd2-4d4a-b1fc-2ca9eae265b5</NameGuid>
+  </IContractBaseStagesDto>
+  <IContractBaseDto>
+    <Type>IContractBases</Type>
+    <NameGuid>306da7fa-dc27-437c-bb83-42c92436b7e2</NameGuid>
+    <Enum_LifeCycleState_Terminated>Расторгнут</Enum_LifeCycleState_Terminated>
+    <Enum_LifeCycleState_Closed>Исполнен</Enum_LifeCycleState_Closed>
+    <Property_DocumentGroup>Категория</Property_DocumentGroup>
+    <Property_TotalAmount>Общая сумма</Property_TotalAmount>
+    <Property_IsAutomaticRenewal>С автопролонгацией</Property_IsAutomaticRenewal>
+    <Property_DaysToFinishWorks>Дней для завершения</Property_DaysToFinishWorks>
+    <Property_CounterpartySignatory>Подписал</Property_CounterpartySignatory>
+    <Property_IsStandard>Typeовой</Property_IsStandard>
+    <Enum_LifeCycleState_Obsolete>Аннулирован</Enum_LifeCycleState_Obsolete>
+    <Property_ResponsibleForReturnEmployee>Ответственный за возврат</Property_ResponsibleForReturnEmployee>
+    <Property_IsFrameworkContract>Рамочный</Property_IsFrameworkContract>
+  </IContractBaseDto>
+  <IContractBaseTrackingDto>
+    <Type>IContractBaseTrackings</Type>
+    <NameGuid>af611b7d-7a97-4c85-bd0e-44335ba5a989</NameGuid>
+  </IContractBaseTrackingDto>
+  <IContractBaseVersionsDto>
+    <Type>IContractBaseVersionss</Type>
+    <NameGuid>c7a89d8e-e835-42f5-81af-6c741c43d259</NameGuid>
+  </IContractBaseVersionsDto>
+  <IContractCategoryDto>
+    <Type>IContractCategories</Type>
+    <NameGuid>eb34ad64-f23b-4c9f-9d48-74834fbbe33e</NameGuid>
+    <Property_Code>Код</Property_Code>
+  </IContractCategoryDto>
+  <IContractCategoryDocumentKindsDto>
+    <Type>IContractCategoryDocumentKindss</Type>
+    <NameGuid>a9ad8c06-3d46-4302-be22-43b3b909f718</NameGuid>
+  </IContractCategoryDocumentKindsDto>
+  <IContractConditionConditionDocumentKindsDto>
+    <Type>IContractConditionConditionDocumentKindss</Type>
+    <NameGuid>2e3a82a6-98cf-46f8-a9cc-17fa8a307a97</NameGuid>
+  </IContractConditionConditionDocumentKindsDto>
+  <IContractConditionCurrenciesDto>
+    <Type>IContractConditionCurrenciess</Type>
+    <NameGuid>540bb138-651c-45f8-a3ca-7c2ea6ff8e21</NameGuid>
+  </IContractConditionCurrenciesDto>
+  <IContractConditionDeliveryMethodsDto>
+    <Type>IContractConditionDeliveryMethodss</Type>
+    <NameGuid>d355936d-7ee2-4bd6-a9e8-889e3d036082</NameGuid>
+  </IContractConditionDeliveryMethodsDto>
+  <IContractConditionDocumentKindsDto>
+    <Type>IContractConditionDocumentKindss</Type>
+    <NameGuid>4034e012-3db7-424b-b4c0-de5c610a7664</NameGuid>
+  </IContractConditionDocumentKindsDto>
+  <IContractConditionDto>
+    <Type>IContractConditions</Type>
+    <NameGuid>0523387b-a689-41e5-bed3-95892df6922c</NameGuid>
+    <Enum_Expression_Standard>Typeовой</Enum_Expression_Standard>
+    <Property_ConditionTyp>Type условия</Property_ConditionTyp>
+    <Enum_ConditionTyp_Standard>Typeовой</Enum_ConditionTyp_Standard>
+    <Enum_ConditionType_Standard>Typeовой</Enum_ConditionType_Standard>
+    <Enum_ConditionType_IsFramework>Рамочный</Enum_ConditionType_IsFramework>
+    <Enum_ConditionType_IsFrameContract>Рамочный</Enum_ConditionType_IsFrameContract>
+    <Enum_ConditionType_IsFrameworkCont>Рамочный</Enum_ConditionType_IsFrameworkCont>
+  </IContractConditionDto>
+  <IContractMilestonesDto>
+    <Type>IContractMilestoness</Type>
+  </IContractMilestonesDto>
+  <IContractDto>
+    <Type>IContracts</Type>
+    <NameGuid>f37c7e63-b134-4446-9b5b-f8811f6c9666</NameGuid>
+  </IContractDto>
+  <IContractsApprovalRuleBusinessUnitsDto>
+    <Type>IContractsApprovalRuleBusinessUnitss</Type>
+    <NameGuid>31dab68e-7567-4c19-9586-ba447b36562c</NameGuid>
+  </IContractsApprovalRuleBusinessUnitsDto>
+  <IContractsApprovalRuleConditionsDto>
+    <Type>IContractsApprovalRuleConditionss</Type>
+    <NameGuid>421977df-8d98-4833-ad4e-a97214c8660b</NameGuid>
+  </IContractsApprovalRuleConditionsDto>
+  <IContractsApprovalRuleDepartmentsDto>
+    <Type>IContractsApprovalRuleDepartmentss</Type>
+    <NameGuid>6c966139-e0f7-4c62-8c83-ed8702ca54c5</NameGuid>
+  </IContractsApprovalRuleDepartmentsDto>
+  <IContractsApprovalRuleDocumentGroupsDto>
+    <Type>IContractsApprovalRuleDocumentGroupss</Type>
+    <NameGuid>9039aab1-4ce6-4769-ab73-2eb1f47f6cb7</NameGuid>
+  </IContractsApprovalRuleDocumentGroupsDto>
+  <IContractsApprovalRuleDocumentKindsDto>
+    <Type>IContractsApprovalRuleDocumentKindss</Type>
+    <NameGuid>f611b903-a654-4664-8147-ed891c0713d3</NameGuid>
+  </IContractsApprovalRuleDocumentKindsDto>
+  <IContractsApprovalRuleDto>
+    <Type>IContractsApprovalRules</Type>
+    <NameGuid>dcbf9c6f-9bb6-4b61-b501-db35df320207</NameGuid>
+  </IContractsApprovalRuleDto>
+  <IContractsApprovalRuleStagesDto>
+    <Type>IContractsApprovalRuleStagess</Type>
+    <NameGuid>ea6de446-e4d2-4ae0-97f1-2cba6e7b0424</NameGuid>
+  </IContractsApprovalRuleStagesDto>
+  <IContractsApprovalRuleTransitionsDto>
+    <Type>IContractsApprovalRuleTransitionss</Type>
+    <NameGuid>303c6866-a2ef-4864-8350-1cc9dcbcb6ee</NameGuid>
+  </IContractsApprovalRuleTransitionsDto>
+  <IContractStatementDto>
+    <Type>IContractStatements</Type>
+    <NameGuid>f2f5774d-5ca3-4725-b31d-ac618f6b8850</NameGuid>
+    <Property_Department>Подразделение</Property_Department>
+    <Property_BusinessUnit>Наша орг.</Property_BusinessUnit>
+    <Property_Subject>Содержание</Property_Subject>
+    <Property_CounterpartySigner>Подписал</Property_CounterpartySigner>
+    <Property_ResponsibleEmployee>Ответственный</Property_ResponsibleEmployee>
+  </IContractStatementDto>
+  <IContractStatementTrackingDto>
+    <Type>IContractStatementTrackings</Type>
+    <NameGuid>b3aa9cb5-17a0-4570-97f7-cc5635cd94df</NameGuid>
+  </IContractStatementTrackingDto>
+  <IContractStatementVersionsDto>
+    <Type>IContractStatementVersionss</Type>
+    <NameGuid>ae5566c8-cefa-412f-81ee-b1a84f153024</NameGuid>
+  </IContractStatementVersionsDto>
+  <IContractTrackingDto>
+    <Type>IContractTrackings</Type>
+    <NameGuid>c3c85262-6f62-400a-b238-27a76aa4e860</NameGuid>
+  </IContractTrackingDto>
+  <IContractualDocumentBaseDto>
+    <Type>IContractualDocumentBases</Type>
+    <NameGuid>454df3c6-b850-47cf-897f-a10d767baa77</NameGuid>
+    <Property_Counterparty>Контрагент</Property_Counterparty>
+    <Property_CounterpartySignatory>Подписал</Property_CounterpartySignatory>
+    <Enum_LifeCycleState_Obsolete>Аннулирован</Enum_LifeCycleState_Obsolete>
+    <Enum_Operation_SetToObsolete>Отметка об аннулировании</Enum_Operation_SetToObsolete>
+    <Property_TotalAmount>Общая сумма</Property_TotalAmount>
+    <Property_Currency>Валюта</Property_Currency>
+    <Property_DocumentGroup>Группа документов</Property_DocumentGroup>
+    <Property_CounterpartySigningReason>Основание</Property_CounterpartySigningReason>
+    <Property_VatRate>Ставка НДС</Property_VatRate>
+    <Property_VatAmount>Сумма НДС</Property_VatAmount>
+    <Property_NetAmount>Сумма без НДС</Property_NetAmount>
+    <Property_PurchaseOrderNumber>Номер заказа</Property_PurchaseOrderNumber>
+  </IContractualDocumentBaseDto>
+  <IContractualDocumentBaseTrackingDto>
+    <Type>IContractualDocumentBaseTrackings</Type>
+    <NameGuid>ed823dc9-aa71-4b3e-9fd2-3be45aaef872</NameGuid>
+  </IContractualDocumentBaseTrackingDto>
+  <IContractualDocumentBaseVersionsDto>
+    <Type>IContractualDocumentBaseVersionss</Type>
+    <NameGuid>fb051c49-0b94-48b0-8100-af72495c69d5</NameGuid>
+  </IContractualDocumentBaseVersionsDto>
+  <IContractualDocumentDto>
+    <Type>IContractualDocuments</Type>
+    <NameGuid>59079f7f-a326-4947-bbd6-0ae6dfb5f59b</NameGuid>
+    <Property_Contact>Контакт</Property_Contact>
+    <Property_ValidFrom>Действует с</Property_ValidFrom>
+    <Property_ValidTill>Действует по</Property_ValidTill>
+    <Property_ResponsibleEmployee>Ответственный</Property_ResponsibleEmployee>
+    <Property_CounterpartySignatory>Подписал</Property_CounterpartySignatory>
+    <Property_ResponsibleForReturnEmployee>Ответственный за возврат</Property_ResponsibleForReturnEmployee>
+    <Property_IsStandard>Typeовой</Property_IsStandard>
+    <Property_Milestones>Контрольные точки</Property_Milestones>
+    <Property_CounterpartyRegistrationNumber>№ контрагента</Property_CounterpartyRegistrationNumber>
+  </IContractualDocumentDto>
+  <IContractualDocumentTrackingDto>
+    <Type>IContractualDocumentTrackings</Type>
+    <NameGuid>19c5aee5-f67f-497e-ac1b-ab98bab0901b</NameGuid>
+  </IContractualDocumentTrackingDto>
+  <IContractualDocumentVersionsDto>
+    <Type>IContractualDocumentVersionss</Type>
+    <NameGuid>fff6fbcb-3478-43fb-b8d4-888d2c5038c2</NameGuid>
+  </IContractualDocumentVersionsDto>
+  <IContractVersionsDto>
+    <Type>IContractVersionss</Type>
+    <NameGuid>6fd4c4b8-1bf8-466d-b4a7-7958ec225672</NameGuid>
+  </IContractVersionsDto>
+  <ICounterpartyDocumentDto>
+    <Type>ICounterpartyDocuments</Type>
+    <NameGuid>49d0c5e7-7069-44d2-8eb6-6e3098fc8b10</NameGuid>
+  </ICounterpartyDocumentDto>
+  <ICounterpartyDocumentTrackingDto>
+    <Type>ICounterpartyDocumentTrackings</Type>
+    <NameGuid>e59c26b4-0386-461e-afc5-df4bf6146533</NameGuid>
+  </ICounterpartyDocumentTrackingDto>
+  <ICounterpartyDocumentVersionsDto>
+    <Type>ICounterpartyDocumentVersionss</Type>
+    <NameGuid>aac43fbf-beb1-4891-b709-04118b7caecf</NameGuid>
+  </ICounterpartyDocumentVersionsDto>
+  <ICounterpartyQueueItemDto>
+    <Type>ICounterpartyQueueItems</Type>
+    <NameGuid>50a0d7aa-1f04-4e4a-8f0c-044e0ba99949</NameGuid>
+    <Property_MatchingTask>Задача на обработку конфликтов</Property_MatchingTask>
+    <Property_SyncResult>Результат синхронизации</Property_SyncResult>
+    <Enum_SyncResult_ApprovingByUs>Получено приглашение</Enum_SyncResult_ApprovingByUs>
+    <Enum_SyncResult_ApprovingByCA>Отправлено приглашение</Enum_SyncResult_ApprovingByCA>
+    <Enum_SyncResult_Active>Обмен разрешен</Enum_SyncResult_Active>
+    <Enum_SyncResult_Closed>Обмен заблокирован</Enum_SyncResult_Closed>
+    <Property_Counterparty>Ссылка на контрагента</Property_Counterparty>
+    <Property_CounterpartyBranchId>ИД филиала в сервисе обмена</Property_CounterpartyBranchId>
+  </ICounterpartyQueueItemDto>
+  <IDepartmentBoxDto>
+    <Type>IDepartmentBoxs</Type>
+    <NameGuid>fd8945e2-e3b6-43f9-aac1-fb7ce4d984c6</NameGuid>
+    <Property_ParentBox>Ведущий аб. ящик</Property_ParentBox>
+    <Property_Department>Подразделение</Property_Department>
+    <Property_RootBox>Головной ящик</Property_RootBox>
+    <Property_ServiceId>ИД подразделения в сервисе</Property_ServiceId>
+    <Property_IsDeleted>Удален</Property_IsDeleted>
+    <Property_ServiceName>Имя в сервисе</Property_ServiceName>
+    <Property_ServiceCode>Код подразделения в сервисе</Property_ServiceCode>
+  </IDepartmentBoxDto>
+  <IDepartmentDto>
+    <Type>IDepartments</Type>
+    <NameGuid>61b1c19f-26e2-49a5-b3d3-0d3618151e12</NameGuid>
+    <Property_Manager>Руководитель</Property_Manager>
+    <Property_HeadOffice>Головное подразделение</Property_HeadOffice>
+    <Property_Phone>Телефон</Property_Phone>
+    <Property_Description>Описание</Property_Description>
+    <Property_Name>Наименование</Property_Name>
+    <Property_RecipientLinks>Сотрудник</Property_RecipientLinks>
+    <Property_ShortName>Краткое наименование</Property_ShortName>
+    <Property_Note>Примечание</Property_Note>
+    <Property_BusinessUnit>Наша организация</Property_BusinessUnit>
+    <Property_Code>Код</Property_Code>
+    <Property_Parent>Родительская группа</Property_Parent>
+    <Property_ExternalId>ИД во внешней системе</Property_ExternalId>
+  </IDepartmentDto>
+  <IDocumentFullTextSearchQueueItemDto>
+    <Type>IDocflowFullTextSearchQueueItems</Type>
+    <NameGuid>54351e62-2985-4abf-b17f-ac0289240557</NameGuid>
+    <Enum_ProcessingStatus_Scheduled>Запланировано</Enum_ProcessingStatus_Scheduled>
+    <Enum_ProcessingStatus_InProcess>В процессе</Enum_ProcessingStatus_InProcess>
+    <Property_DocumentId>ИД документа</Property_DocumentId>
+    <Property_Priority>Приоритет</Property_Priority>
+    <Property_ExtractTextTaskId>ИД задачи на извлечение текста</Property_ExtractTextTaskId>
+  </IDocumentFullTextSearchQueueItemDto>
+  <IPowerOfAttorneyQueueItemDto>
+    <Type>IDocflowPowerOfAttorneyQueueItems</Type>
+    <NameGuid>d8ac70d3-4dd2-49fb-8e32-cd79330e6243</NameGuid>
+    <Property_FormalizedPoAServiceStatus>Статус эл. доверенности</Property_FormalizedPoAServiceStatus>
+    <Enum_FormalizedPoAServiceStatus_Invalid>Недействующий</Enum_FormalizedPoAServiceStatus_Invalid>
+    <Enum_FormalizedPoAServiceStatus_Valid>Действующий</Enum_FormalizedPoAServiceStatus_Valid>
+    <Property_OperationId>ИД операции</Property_OperationId>
+    <Property_DocumentId>ИД документа</Property_DocumentId>
+    <Property_OperationType>Type операции</Property_OperationType>
+    <Enum_OperationType_StateCheck>Проверка статуса</Enum_OperationType_StateCheck>
+    <Enum_OperationType_Registration>Регистрация МЧД</Enum_OperationType_Registration>
+    <Enum_OperationType_Revocation>Регистрация отзыва</Enum_OperationType_Revocation>
+    <Property_RejectCode>Код ошибки</Property_RejectCode>
+    <Property_RevocationDate>Дата отзыва</Property_RevocationDate>
+    <Property_OperationState>Состояние операции</Property_OperationState>
+    <Property_TaskId>Идентификатор задачи</Property_TaskId>
+  </IPowerOfAttorneyQueueItemDto>
+  <IPowerOfAttorneyRevocationDto>
+    <Type>IDocflowPowerOfAttorneyRevocations</Type>
+    <NameGuid>298d33ab-490e-47ff-af80-d6147194e1f7</NameGuid>
+    <Property_FormalizedPowerOfAttorney>Эл. доверенность</Property_FormalizedPowerOfAttorney>
+    <Property_RevocationReason>Причина отзыва</Property_RevocationReason>
+    <Property_FtsListState>В реестре ФНС</Property_FtsListState>
+    <Enum_FtsListState_OnRegistration>На регистрации</Enum_FtsListState_OnRegistration>
+    <Enum_FtsListState_Rejected>Ошибка регистрации</Enum_FtsListState_Rejected>
+    <Enum_FtsListState_Registered>Зарегистрирован</Enum_FtsListState_Registered>
+    <Property_FtsRejectReason>Ошибка регистрации в ФНС</Property_FtsRejectReason>
+    <Property_RegisteredSignatureId>ИД подписи</Property_RegisteredSignatureId>
+  </IPowerOfAttorneyRevocationDto>
+  <IPowerOfAttorneyRevocationTrackingDto>
+    <Type>IDocflowPowerOfAttorneyRevocationTrackings</Type>
+    <NameGuid>e8ec9b10-bf60-4d4d-a0da-bf2c9cc70d27</NameGuid>
+  </IPowerOfAttorneyRevocationTrackingDto>
+  <IPowerOfAttorneyRevocationVersionsDto>
+    <Type>IDocflowPowerOfAttorneyRevocationVersionss</Type>
+    <NameGuid>3e2d6149-3948-4ccc-9984-19f7e352265d</NameGuid>
+  </IPowerOfAttorneyRevocationVersionsDto>
+  <IDocumentTemplateDto>
+    <Type>IDocumentTemplates</Type>
+    <NameGuid>5ab5b1d7-615f-4c32-a624-dd43baf6c8cd</NameGuid>
+    <Property_DocumentKinds>Виды документов</Property_DocumentKinds>
+    <Property_Status>Состояние</Property_Status>
+    <Enum_Status_Active>Действующий</Enum_Status_Active>
+    <Enum_Status_Closed>Закрытый</Enum_Status_Closed>
+    <Property_Departments>Подразделения</Property_Departments>
+    <Property_BusinessUnits>Наши организации</Property_BusinessUnits>
+  </IDocumentTemplateDto>
+  <IDocumentTemplateVersionsDto>
+    <Type>IDocumentTemplateVersionss</Type>
+    <NameGuid>de4029f1-bb10-43ed-836c-1b1badc2ecab</NameGuid>
+  </IDocumentTemplateVersionsDto>
+  <IElectronicDocumentTemplateDto>
+    <Type>IElectronicDocumentTemplates</Type>
+  </IElectronicDocumentTemplateDto>
+  <IElectronicDocumentTemplateVersionsDto>
+    <Type>IElectronicDocumentTemplateVersionss</Type>
+  </IElectronicDocumentTemplateVersionsDto>
+  <IEmployeeDto>
+    <Type>IEmployees</Type>
+    <NameGuid>b7905516-2be5-4931-961c-cb38d5677565</NameGuid>
+    <Property_Person>Персона</Property_Person>
+    <Property_Department>Подразделение</Property_Department>
+    <Property_JobTitle>Должность</Property_JobTitle>
+    <Property_Phone>Рабочий телефон</Property_Phone>
+    <Property_Note>Примечание</Property_Note>
+    <Property_Name>ФИО</Property_Name>
+    <Property_Description>Описание</Property_Description>
+    <Property_Email>Эл. почта</Property_Email>
+    <Property_NeedNotifyExpiredAssignments>О просроченных заданиях</Property_NeedNotifyExpiredAssignments>
+    <Property_NeedNotifyNewAssignments>О новых заданиях</Property_NeedNotifyNewAssignments>
+    <Property_PersonnelNumber>Табельный номер</Property_PersonnelNumber>
+    <Property_NeedNotifyAssignmentsSummary>О текущих заданиях и задачах в виде сводки</Property_NeedNotifyAssignmentsSummary>
+    <Property_ExternalId>ИД во внешней системе</Property_ExternalId>
+  </IEmployeeDto>
+  <INotificTerminationUrgentDto>
+    <Type>IEmploymentContractsNotificTerminationUrgents</Type>
+  </INotificTerminationUrgentDto>
+  <INotificTerminationUrgentTrackingDto>
+    <Type>IEmploymentContractsNotificTerminationUrgentTrackings</Type>
+  </INotificTerminationUrgentTrackingDto>
+  <INotificTerminationUrgentVersionsDto>
+    <Type>IEmploymentContractsNotificTerminationUrgentVersionss</Type>
+  </INotificTerminationUrgentVersionsDto>
+  <IExchangeDocumentDto>
+    <Type>IExchangeDocuments</Type>
+    <NameGuid>cf8357c3-8266-490d-b75e-0bd3e46b1ae8</NameGuid>
+    <Property_Counterparty>Контрагент</Property_Counterparty>
+    <Property_BusinessUnitBox>Абонентский ящик нашей организации</Property_BusinessUnitBox>
+    <Property_CounterpartySignatory>Подписал</Property_CounterpartySignatory>
+    <Property_CounterpartySigningReason>Основание</Property_CounterpartySigningReason>
+  </IExchangeDocumentDto>
+  <IExchangeDocumentTrackingDto>
+    <Type>IExchangeDocumentTrackings</Type>
+    <NameGuid>0e2940ab-8568-4d47-a112-6d4a5cdb2d6d</NameGuid>
+  </IExchangeDocumentTrackingDto>
+  <IExchangeDocumentVersionsDto>
+    <Type>IExchangeDocumentVersionss</Type>
+    <NameGuid>f233f366-247d-4435-aa33-6746020e4f0d</NameGuid>
+  </IExchangeDocumentVersionsDto>
+  <IFormalizedPowerOfAttorneyDto>
+    <Type>IFormalizedPowerOfAttorneies</Type>
+    <NameGuid>104472db-b71b-42a8-bca5-581a08d1ca7b</NameGuid>
+    <Property_UnifiedRegistrationNumber>Единый рег. №</Property_UnifiedRegistrationNumber>
+    <Property_FtsListState>В реестре ФНС</Property_FtsListState>
+    <Enum_FtsListState_OnRegistration>На регистрации</Enum_FtsListState_OnRegistration>
+    <Enum_FtsListState_Rejected>Ошибка регистрации</Enum_FtsListState_Rejected>
+    <Enum_FtsListState_Registered>Зарегистрирован</Enum_FtsListState_Registered>
+    <Enum_FtsListState_OnRevoke>Запрошен отзыв</Enum_FtsListState_OnRevoke>
+    <Enum_FtsListState_Revoked>Отозван</Enum_FtsListState_Revoked>
+    <Property_FtsRejectReason>Ошибка регистрации в ФНС</Property_FtsRejectReason>
+    <Property_RegisteredSignatureId>ИД подписи</Property_RegisteredSignatureId>
+    <Property_FormatVersion>Версия формата</Property_FormatVersion>
+    <Enum_FormatVersion_Version002>002</Enum_FormatVersion_Version002>
+    <Enum_FormatVersion_Version003>003</Enum_FormatVersion_Version003>
+    <Enum_PowersType_Classifier>Из списка</Enum_PowersType_Classifier>
+    <Enum_PowersType_FreeForm>В свободной форме</Enum_PowersType_FreeForm>
+    <Property_PowersType>Type полномочий</Property_PowersType>
+    <Property_StructuredPowers>Полномочия</Property_StructuredPowers>
+    <Property_DelegationType>Возможность передоверия</Property_DelegationType>
+    <Enum_DelegationType_NoDelegation>Без передоверия</Enum_DelegationType_NoDelegation>
+    <Enum_DelegationType_WithDelegation>С последующим передоверием</Enum_DelegationType_WithDelegation>
+    <Property_MainPoAPrincipal>Доверитель</Property_MainPoAPrincipal>
+    <Property_MainPoAUnifiedNumber>Единый рег. №</Property_MainPoAUnifiedNumber>
+    <Property_MainPoARegistrationNumber>Внутренний номер</Property_MainPoARegistrationNumber>
+    <Property_MainPoAValidFrom>Действует с</Property_MainPoAValidFrom>
+    <Property_MainPoAValidTill>Действует по</Property_MainPoAValidTill>
+    <Property_IsDelegated>По передоверию</Property_IsDelegated>
+    <Property_MainPoA>На основании</Property_MainPoA>
+    <Property_IsNotarized>Нотариальная</Property_IsNotarized>
+  </IFormalizedPowerOfAttorneyDto>
+  <IFormalizedPowerOfAttorneyTrackingDto>
+    <Type>IFormalizedPowerOfAttorneyTrackings</Type>
+    <NameGuid>14c63ddd-aa2e-43c3-9a3b-f5e6a73a1858</NameGuid>
+  </IFormalizedPowerOfAttorneyTrackingDto>
+  <IFormalizedPowerOfAttorneyVersionsDto>
+    <Type>IFormalizedPowerOfAttorneyVersionss</Type>
+    <NameGuid>5a205c9c-5cb1-431a-a6a5-420d474c74d5</NameGuid>
+  </IFormalizedPowerOfAttorneyVersionsDto>
+  <IGiftIssuedDocumentDto>
+    <Type>IGiftsGiftIssuedDocuments</Type>
+  </IGiftIssuedDocumentDto>
+  <IGiftIssuedDocumentTrackingDto>
+    <Type>IGiftsGiftIssuedDocumentTrackings</Type>
+  </IGiftIssuedDocumentTrackingDto>
+  <IGiftIssuedDocumentVersionsDto>
+    <Type>IGiftsGiftIssuedDocumentVersionss</Type>
+  </IGiftIssuedDocumentVersionsDto>
+  <IGroupDto>
+    <Type>IGroups</Type>
+  </IGroupDto>
+  <ITransferHRDocumentDto>
+    <Type>IHRTransferHRDocuments</Type>
+  </ITransferHRDocumentDto>
+  <ITransferHRDocumentTrackingDto>
+    <Type>IHRTransferHRDocumentTrackings</Type>
+  </ITransferHRDocumentTrackingDto>
+  <ITransferHRDocumentVersionsDto>
+    <Type>IHRTransferHRDocumentVersionss</Type>
+  </ITransferHRDocumentVersionsDto>
+  <IIncomingDocumentBaseDto>
+    <Type>IIncomingDocumentBases</Type>
+    <NameGuid>4e7bf176-40b2-4e5d-b10b-af81ad7c62c3</NameGuid>
+    <Property_Correspondent>Корреспондент</Property_Correspondent>
+    <Property_InResponseTo>В ответ на</Property_InResponseTo>
+    <Property_Dated>Дата от</Property_Dated>
+    <Property_Addressee>Адресат</Property_Addressee>
+    <Property_InNumber>№</Property_InNumber>
+    <Property_Assignee>Исполнитель</Property_Assignee>
+    <Enum_LifeCycleState_Obsolete>Недействующий</Enum_LifeCycleState_Obsolete>
+    <Property_Addressees>Список адресатов</Property_Addressees>
+    <Property_IsManyAddressees>Несколько адресатов</Property_IsManyAddressees>
+    <Property_ManyAddresseesPlaceholder>Адресат</Property_ManyAddresseesPlaceholder>
+    <Property_ManyAddresseesLabel>Список адресатов</Property_ManyAddresseesLabel>
+    <Property_IsManyResponses>На несколько исходящих</Property_IsManyResponses>
+    <Property_InResponseToDocuments>В ответ на</Property_InResponseToDocuments>
+  </IIncomingDocumentBaseDto>
+  <IIncomingDocumentBaseTrackingDto>
+    <Type>IIncomingDocumentBaseTrackings</Type>
+    <NameGuid>7c62bf15-4856-4feb-85e7-4b139a6d4771</NameGuid>
+  </IIncomingDocumentBaseTrackingDto>
+  <IIncomingDocumentBaseVersionsDto>
+    <Type>IIncomingDocumentBaseVersionss</Type>
+    <NameGuid>c6517906-ec88-4944-9b82-2dd280728c54</NameGuid>
+  </IIncomingDocumentBaseVersionsDto>
+  <IIncomingInvoiceDto>
+    <Type>IIncomingInvoices</Type>
+    <NameGuid>a523a263-bc00-40f9-810d-f582bae2205d</NameGuid>
+    <Property_Contract>Договор</Property_Contract>
+    <Property_TotalAmount>Общая сумма</Property_TotalAmount>
+    <Enum_LifeCycleState_Obsolete>Отказано в оплате</Enum_LifeCycleState_Obsolete>
+    <Enum_LifeCycleState_Active>Принят к оплате</Enum_LifeCycleState_Active>
+    <Property_DocumentKind>Вид документа</Property_DocumentKind>
+    <Enum_LifeCycleState_Draft>Новый</Enum_LifeCycleState_Draft>
+    <Property_Number>Номер счета</Property_Number>
+    <Property_Note>Примечание</Property_Note>
+    <Property_PaymentDueDate>Оплатить до</Property_PaymentDueDate>
+    <Enum_LifeCycleState_Paid>Оплачен</Enum_LifeCycleState_Paid>
+  </IIncomingInvoiceDto>
+  <IIncomingInvoiceTrackingDto>
+    <Type>IIncomingInvoiceTrackings</Type>
+    <NameGuid>b8a7adc0-8df8-4b1f-8623-c529b7ddb7cb</NameGuid>
+  </IIncomingInvoiceTrackingDto>
+  <IIncomingInvoiceVersionsDto>
+    <Type>IIncomingInvoiceVersionss</Type>
+    <NameGuid>4ca628f6-b2c8-4892-8629-8f77041f4392</NameGuid>
+  </IIncomingInvoiceVersionsDto>
+  <IIncomingLetterAddresseesDto>
+    <Type>IIncomingLetterAddresseess</Type>
+    <NameGuid>9ee5da19-7a73-4c27-a743-eb68981c6ec2</NameGuid>
+  </IIncomingLetterAddresseesDto>
+  <IIncomingLetterDto>
+    <Type>IIncomingLetters</Type>
+    <NameGuid>8dd00491-8fd0-4a7a-9cf3-8b6dc2e6455d</NameGuid>
+    <Property_SignedBy>Подписал</Property_SignedBy>
+    <Property_Contact>Контакт</Property_Contact>
+  </IIncomingLetterDto>
+  <IIncomingLetterTrackingDto>
+    <Type>IIncomingLetterTrackings</Type>
+    <NameGuid>a677ae45-b487-48f6-a9df-b486e2b720f7</NameGuid>
+  </IIncomingLetterTrackingDto>
+  <IIncomingLetterVersionsDto>
+    <Type>IIncomingLetterVersionss</Type>
+    <NameGuid>085982c0-327d-46a1-8451-d0c12b0f6877</NameGuid>
+  </IIncomingLetterVersionsDto>
+  <IIncomingTaxInvoiceDto>
+    <Type>IIncomingTaxInvoices</Type>
+    <NameGuid>74c9ddd4-4bc4-42b6-8bb0-c91d5e21fb8a</NameGuid>
+    <Property_IsAdjustment>Корректировочный</Property_IsAdjustment>
+    <Property_Assignee>Исполнитель</Property_Assignee>
+    <Property_LastVersionApproved>Утвержден</Property_LastVersionApproved>
+    <Enum_LifeCycleState_Draft>В разработке</Enum_LifeCycleState_Draft>
+  </IIncomingTaxInvoiceDto>
+  <IIncomingTaxInvoiceTrackingDto>
+    <Type>IIncomingTaxInvoiceTrackings</Type>
+    <NameGuid>422752c6-5348-46bc-bbfd-0d2520f09ca2</NameGuid>
+  </IIncomingTaxInvoiceTrackingDto>
+  <IIncomingTaxInvoiceVersionsDto>
+    <Type>IIncomingTaxInvoiceVersionss</Type>
+    <NameGuid>bb90f6e2-57e5-42ed-9c8a-9d37cbe6f593</NameGuid>
+  </IIncomingTaxInvoiceVersionsDto>
+  <IAIManagersAssistantDto>
+    <Type>IIntelligenceAIManagersAssistants</Type>
+    <NameGuid>fa9b109f-ec37-4d99-aec0-cf95fd7acdd4</NameGuid>
+    <Property_Classifiers>Классификаторы</Property_Classifiers>
+  </IAIManagersAssistantDto>
+  <IInternalDocumentBaseDto>
+    <Type>IInternalDocumentBases</Type>
+    <NameGuid>ce3e34ed-7be2-4426-a951-d5a70f966650</NameGuid>
+    <Enum_LifeCycleState_Outdated>Устаревший</Enum_LifeCycleState_Outdated>
+    <Property_Assignee>Исполнитель</Property_Assignee>
+  </IInternalDocumentBaseDto>
+  <IInternalDocumentBaseTrackingDto>
+    <Type>IInternalDocumentBaseTrackings</Type>
+    <NameGuid>8686b382-12c4-4dad-bd3e-d9067fce92d3</NameGuid>
+  </IInternalDocumentBaseTrackingDto>
+  <IInternalDocumentBaseVersionsDto>
+    <Type>IInternalDocumentBaseVersionss</Type>
+    <NameGuid>38660ede-96d3-4c57-87a5-8fe53a47615c</NameGuid>
+  </IInternalDocumentBaseVersionsDto>
+  <IInternalPolicyDto>
+    <Type>IInternalPoliciesInternalPolicies</Type>
+    <NameGuid>f421c353-d171-4422-8d81-ddb859d5a5f6</NameGuid>
+  </IInternalPolicyDto>
+  <IInternalPolicyBaseDto>
+    <Type>IInternalPoliciesInternalPolicyBases</Type>
+    <NameGuid>0ec48841-948a-438e-ab7a-ec0528337bb8</NameGuid>
+    <Property_Curator>Куратор</Property_Curator>
+    <Property_EnactingOrder>Введен в действие</Property_EnactingOrder>
+    <Property_ValidFrom>Действует с</Property_ValidFrom>
+    <Property_ValidTill>Действует по</Property_ValidTill>
+    <Property_IsInitialEdition>Начальная редакция</Property_IsInitialEdition>
+    <Property_EditionNumber>№ редакции</Property_EditionNumber>
+    <Property_PrevEdition>Пред. редакция</Property_PrevEdition>
+    <Property_CanceledBy>Отменен</Property_CanceledBy>
+    <Property_InitialEditionId>ИД начальной редакции</Property_InitialEditionId>
+    <Property_SerialNumberOfEdition>Порядковый номер редакции</Property_SerialNumberOfEdition>
+    <Property_DocumentGroup>Категория</Property_DocumentGroup>
+    <Property_Participants>Участники</Property_Participants>
+    <Property_Responsible>Ответственный</Property_Responsible>
+  </IInternalPolicyBaseDto>
+  <IInternalPolicyBaseTrackingDto>
+    <Type>IInternalPoliciesInternalPolicyBaseTrackings</Type>
+    <NameGuid>c344f829-875e-4446-81b4-108f242a5dd5</NameGuid>
+  </IInternalPolicyBaseTrackingDto>
+  <IInternalPolicyBaseVersionsDto>
+    <Type>IInternalPoliciesInternalPolicyBaseVersionss</Type>
+    <NameGuid>ebb45acb-0870-4d50-81ad-2bd428bbc2a0</NameGuid>
+  </IInternalPolicyBaseVersionsDto>
+  <IInternalPolicyCategoryDto>
+    <Type>IInternalPoliciesInternalPolicyCategories</Type>
+    <NameGuid>902fb038-b851-4ddd-8d8f-2c8891b10a2a</NameGuid>
+    <Property_Curator>Куратор</Property_Curator>
+    <Property_Code>Код</Property_Code>
+  </IInternalPolicyCategoryDto>
+  <IInternalPolicyCategoryDocumentKindsDto>
+    <Type>IInternalPoliciesInternalPolicyCategoryDocumentKindss</Type>
+    <NameGuid>0a434f5a-a23c-4271-aa77-1a0fd9dd3f3b</NameGuid>
+  </IInternalPolicyCategoryDocumentKindsDto>
+  <IInternalPolicyTrackingDto>
+    <Type>IInternalPoliciesInternalPolicyTrackings</Type>
+    <NameGuid>fda43014-212a-422b-9a37-60142ab3867e</NameGuid>
+  </IInternalPolicyTrackingDto>
+  <IInternalPolicyVersionsDto>
+    <Type>IInternalPoliciesInternalPolicyVersionss</Type>
+    <NameGuid>0c379e80-38c4-495f-9a7e-0e5778365952</NameGuid>
+  </IInternalPolicyVersionsDto>
+  <IIntroduceSheetLNADto>
+    <Type>IIntroduceSheetsIntroduceSheetLNAs</Type>
+  </IIntroduceSheetLNADto>
+  <IIntroduceSheetLNATrackingDto>
+    <Type>IIntroduceSheetsIntroduceSheetLNATrackings</Type>
+  </IIntroduceSheetLNATrackingDto>
+  <IIntroduceSheetLNAVersionsDto>
+    <Type>IIntroduceSheetsIntroduceSheetLNAVersionss</Type>
+  </IIntroduceSheetLNAVersionsDto>
+  <IMessageGroupParametersDto>
+    <Type>IMainMessageGroupParameterss</Type>
+  </IMessageGroupParametersDto>
+  <IMessageGroupDto>
+    <Type>IMainMessageGroups</Type>
+  </IMessageGroupDto>
+  <IMessageTypeParameterParametersDto>
+    <Type>IMainMessageTypeParameterParameterss</Type>
+  </IMessageTypeParameterParametersDto>
+  <IMessageTypeParameterDto>
+    <Type>IMainMessageTypeParameters</Type>
+  </IMessageTypeParameterDto>
+  <IMessageTypeParametersDto>
+    <Type>IMainMessageTypeParameterss</Type>
+  </IMessageTypeParametersDto>
+  <IMessageTypeDto>
+    <Type>IMainMessageTypes</Type>
+  </IMessageTypeDto>
+  <IManagersAssistantDto>
+    <Type>IManagersAssistants</Type>
+    <NameGuid>c2200a86-5d5d-47d6-930d-c3ce8b11f04b</NameGuid>
+    <Property_Assistant>Ассистент</Property_Assistant>
+    <Property_IsAssistant>Выполняет функции помощника руководителя</Property_IsAssistant>
+    <Property_PreparesAssignmentCompletion>Анализирует исполнительскую дисциплину</Property_PreparesAssignmentCompletion>
+    <Property_SendActionItems>Отправляет поручения от имени руководителя</Property_SendActionItems>
+  </IManagersAssistantDto>
+  <IMemoCloneDto>
+    <Type>IMemoClones</Type>
+  </IMemoCloneDto>
+  <IMemoCloneTrackingDto>
+    <Type>IMemoCloneTrackings</Type>
+  </IMemoCloneTrackingDto>
+  <IMemoCloneVersionsDto>
+    <Type>IMemoCloneVersionss</Type>
+  </IMemoCloneVersionsDto>
+  <IMemoForHiringDto>
+    <Type>IMemoForHiringNewEmployees</Type>
+  </IMemoForHiringDto>
+  <IMemoForHiringTrackingDto>
+    <Type>IMemoForHiringNewEmployeeTrackings</Type>
+  </IMemoForHiringTrackingDto>
+  <IMemoForHiringVersionsDto>
+    <Type>IMemoForHiringNewEmployeeVersionss</Type>
+  </IMemoForHiringVersionsDto>
+  <IMemoDto>
+    <Type>IMemos</Type>
+    <NameGuid>95af409b-83fe-4697-a805-5a86ceec33f5</NameGuid>
+    <Property_Addressee>Адресат</Property_Addressee>
+    <Enum_InternalApprovalState_PendingSign>На подписании</Enum_InternalApprovalState_PendingSign>
+    <Enum_InternalApprovalState_Signed>Подписан</Enum_InternalApprovalState_Signed>
+    <Enum_InternalApprovalState_PendingReview>На рассмотрении</Enum_InternalApprovalState_PendingReview>
+    <Enum_InternalApprovalState_Reviewed>Рассмотрен</Enum_InternalApprovalState_Reviewed>
+    <Property_Addressees>Список адресатов</Property_Addressees>
+    <Property_IsManyAddressees>Несколько адресатов</Property_IsManyAddressees>
+    <Property_ManyAddresseesPlaceholder>Адресат</Property_ManyAddresseesPlaceholder>
+    <Property_ManyAddresseesLabel>Список адресатов</Property_ManyAddresseesLabel>
+  </IMemoDto>
+  <IMemoITDto>
+    <Type>IMemosITMemoITs</Type>
+  </IMemoITDto>
+  <IMemoITTrackingDto>
+    <Type>IMemosITMemoITTrackings</Type>
+  </IMemoITTrackingDto>
+  <IMemoITVersionsDto>
+    <Type>IMemosITMemoITVersionss</Type>
+  </IMemoITVersionsDto>
+  <IMemoTrackingDto>
+    <Type>IMemoTrackings</Type>
+    <NameGuid>82a14802-ad45-4d52-a590-2031154ba6c7</NameGuid>
+  </IMemoTrackingDto>
+  <IMemoVersionsDto>
+    <Type>IMemoVersionss</Type>
+    <NameGuid>c63dffea-085c-42ff-80f9-e479a7db997b</NameGuid>
+  </IMemoVersionsDto>
+  <IMessageQueueItemDto>
+    <Type>IMessageQueueItems</Type>
+    <NameGuid>f9a3ec37-0fd4-4343-a295-9394ba830a0e</NameGuid>
+    <Enum_ProcessingStatus_Processed>Обработано</Enum_ProcessingStatus_Processed>
+    <Property_NoticeTask>Уведомление</Property_NoticeTask>
+    <Property_Documents>Документы</Property_Documents>
+    <Property_ExternalId>ИД сообщения в CO</Property_ExternalId>
+    <Property_Created>Дата загрузки</Property_Created>
+    <Property_CounterpartyExternalId>ИД контрагента в СО</Property_CounterpartyExternalId>
+    <Enum_ProcessingStatus_Suspended>Обработка остановлена</Enum_ProcessingStatus_Suspended>
+    <Property_RootBox>Ведущий аб. ящик</Property_RootBox>
+    <Property_RootMessageId>ИД основного сообщения в СО</Property_RootMessageId>
+    <Property_IsRootMessage>Основное сообщение</Property_IsRootMessage>
+    <Property_DownloadSession>Cессия загрузки сообщений</Property_DownloadSession>
+    <Property_IsManualRestart>Возобновлено вручную</Property_IsManualRestart>
+  </IMessageQueueItemDto>
+  <IMFUDResponsibleDto>
+    <Type>IMFUDResponsibles</Type>
+  </IMFUDResponsibleDto>
+  <IMinutesBaseDto>
+    <Type>IMinutesBases</Type>
+    <NameGuid>f9a837b7-289e-4f03-a920-0284a778bcbf</NameGuid>
+  </IMinutesBaseDto>
+  <IMinutesBaseTrackingDto>
+    <Type>IMinutesBaseTrackings</Type>
+    <NameGuid>36482dd6-708f-4d56-921b-ea1e01c74794</NameGuid>
+  </IMinutesBaseTrackingDto>
+  <IMinutesBaseVersionsDto>
+    <Type>IMinutesBaseVersionss</Type>
+    <NameGuid>2219ecca-7a8b-4678-bbe7-3dbc6e7ffa93</NameGuid>
+  </IMinutesBaseVersionsDto>
+  <IMinutesDto>
+    <Type>IMinutess</Type>
+    <NameGuid>bb4780ff-b2c3-4044-a390-e9e110791bf6</NameGuid>
+  </IMinutesDto>
+  <IMinutesTrackingDto>
+    <Type>IMinutesTrackings</Type>
+    <NameGuid>64a4c377-e821-4c44-8333-47c7fd0a6027</NameGuid>
+  </IMinutesTrackingDto>
+  <IMinutesVersionsDto>
+    <Type>IMinutesVersionss</Type>
+    <NameGuid>c48ebf2d-dca8-4efd-bf1b-8c21302666ba</NameGuid>
+  </IMinutesVersionsDto>
+  <IOfficialDocumentDto>
+    <Type>IOfficialDocuments</Type>
+    <Enum_Operation_Registration>Регистрация</Enum_Operation_Registration>
+    <Enum_Operation_Unregistration>Отмена регистрации</Enum_Operation_Unregistration>
+    <Enum_Operation_RegChange>Изменение регистрационных данных</Enum_Operation_RegChange>
+    <Enum_Operation_Reservation>Резервирование номера</Enum_Operation_Reservation>
+    <Enum_Operation_Numeration>Присвоение номера</Enum_Operation_Numeration>
+    <Enum_Operation_Unnumeration>Очистка номера</Enum_Operation_Unnumeration>
+    <Enum_Operation_NumChange>Изменение реквизитов</Enum_Operation_NumChange>
+    <Enum_Operation_Unreservation>Отмена резервирования номера</Enum_Operation_Unreservation>
+    <Enum_Operation_EnAborted>Отметка о прекращении согласования</Enum_Operation_EnAborted>
+    <Enum_Operation_EnOnApproval>Отметка о начале согласования</Enum_Operation_EnOnApproval>
+    <Enum_Operation_EnOnRework>Отметка как дорабатываемого</Enum_Operation_EnOnRework>
+    <Enum_Operation_EnPendingSign>Отметка о начале подписания</Enum_Operation_EnPendingSign>
+    <Enum_Operation_EnSigned>Отметка о подписании</Enum_Operation_EnSigned>
+    <Enum_Operation_EnCancelled>Отметка о прекращении согласования</Enum_Operation_EnCancelled>
+    <Enum_Operation_EnStateClear>Очистка статуса согласования</Enum_Operation_EnStateClear>
+    <Enum_Operation_CEOnApproval>Отметка о начале согласования с контрагентом</Enum_Operation_CEOnApproval>
+    <Enum_Operation_CESigned>Отметка о подписании контрагентом</Enum_Operation_CESigned>
+    <Enum_Operation_CEUnsigned>Отметка о неподписании контрагентом</Enum_Operation_CEUnsigned>
+    <Enum_Operation_CEStateClear>Очистка статуса согласования с контрагентом</Enum_Operation_CEStateClear>
+    <Enum_Operation_ExOnReview>Отметка о начале рассмотрения</Enum_Operation_ExOnReview>
+    <Enum_Operation_ExSending>Отметка об ожидании отправки на исполнение</Enum_Operation_ExSending>
+    <Enum_Operation_ExWithoutExecut>Отметка как не требующего исполнения</Enum_Operation_ExWithoutExecut>
+    <Enum_Operation_ExOnExecution>Отметка о начале исполнения</Enum_Operation_ExOnExecution>
+    <Enum_Operation_ExExecuted>Отметка об исполнении</Enum_Operation_ExExecuted>
+    <Enum_Operation_ExAborted>Отметка о прекращении исполнения</Enum_Operation_ExAborted>
+    <Enum_Operation_ExStateClear>Очистка статуса исполнения</Enum_Operation_ExStateClear>
+    <Enum_Operation_COnControl>Отметка как на контроле</Enum_Operation_COnControl>
+    <Enum_Operation_CSpecialControl>Отметка как на особом контроле</Enum_Operation_CSpecialControl>
+    <Enum_Operation_CWithoutControl>Отметка как не на контроле</Enum_Operation_CWithoutControl>
+    <Enum_Operation_CControlRemoved>Отметка о снятии с контроля</Enum_Operation_CControlRemoved>
+    <Enum_Operation_CStateClear>Очистка статуса контроля исполнения</Enum_Operation_CStateClear>
+    <Enum_Operation_SetToDraft>Отметка как разрабатываемого</Enum_Operation_SetToDraft>
+    <Enum_Operation_SetToActive>Отметка как действующего</Enum_Operation_SetToActive>
+    <Enum_Operation_SetToTerminated>Отметка о расторжении</Enum_Operation_SetToTerminated>
+    <Enum_Operation_SetToClosed>Отметка об исполнении</Enum_Operation_SetToClosed>
+    <Enum_Operation_SetToCancelled>Отметка об аннулировании</Enum_Operation_SetToCancelled>
+    <Enum_Operation_SetToObsolete>Отметка о прекращении действия</Enum_Operation_SetToObsolete>
+    <Enum_Operation_SetToPaid>Отметка об оплате</Enum_Operation_SetToPaid>
+    <Enum_Operation_SetToStateClear>Очистка состояния жизненного цикла</Enum_Operation_SetToStateClear>
+    <Enum_ControlExecutionState_ControlRemoved>Снято с контроля</Enum_ControlExecutionState_ControlRemoved>
+    <Enum_ControlExecutionState_OnControl>На контроле</Enum_ControlExecutionState_OnControl>
+    <Enum_ControlExecutionState_SpecialControl>На особом контроле</Enum_ControlExecutionState_SpecialControl>
+    <Enum_ControlExecutionState_WithoutControl>Не на контроле</Enum_ControlExecutionState_WithoutControl>
+    <Enum_ExternalApprovalState_Unsigned>Не подписан</Enum_ExternalApprovalState_Unsigned>
+    <Enum_ExternalApprovalState_OnApproval>На согласовании</Enum_ExternalApprovalState_OnApproval>
+    <Enum_ExternalApprovalState_Signed>Подписан</Enum_ExternalApprovalState_Signed>
+    <Enum_InternalApprovalState_Aborted>Прекращено</Enum_InternalApprovalState_Aborted>
+    <Enum_InternalApprovalState_OnApproval>На согласовании</Enum_InternalApprovalState_OnApproval>
+    <Enum_InternalApprovalState_OnRework>На доработке</Enum_InternalApprovalState_OnRework>
+    <Enum_InternalApprovalState_PendingSign>На подписании</Enum_InternalApprovalState_PendingSign>
+    <Enum_InternalApprovalState_Signed>Подписан</Enum_InternalApprovalState_Signed>
+    <Enum_ExecutionState_Aborted>Прекращено</Enum_ExecutionState_Aborted>
+    <Enum_ExecutionState_OnReview>На рассмотрении</Enum_ExecutionState_OnReview>
+    <Enum_ExecutionState_Executed>Исполнен</Enum_ExecutionState_Executed>
+    <Enum_ExecutionState_OnExecution>На исполнении</Enum_ExecutionState_OnExecution>
+    <Enum_ExecutionState_Sending>Отправка на исполнение</Enum_ExecutionState_Sending>
+    <Enum_ExecutionState_WithoutExecut>Не требует исполнения</Enum_ExecutionState_WithoutExecut>
+    <Enum_LifeCycleState_Active>Действующий</Enum_LifeCycleState_Active>
+    <Enum_LifeCycleState_Cancelled>Аннулирован</Enum_LifeCycleState_Cancelled>
+    <Enum_LifeCycleState_Draft>В разработке</Enum_LifeCycleState_Draft>
+    <Enum_LifeCycleState_Executed>Исполнен</Enum_LifeCycleState_Executed>
+    <Enum_LifeCycleState_Terminated>Расторгнут</Enum_LifeCycleState_Terminated>
+    <Property_Action>Действие</Property_Action>
+    <Property_PlacedToCaseFileDate>Дата помещения</Property_PlacedToCaseFileDate>
+    <Property_Comment>Примечание</Property_Comment>
+    <Property_ControlExecutionState>Контроль исполнения</Property_ControlExecutionState>
+    <Property_ExternalApprovalState>Согл. с контрагентом</Property_ExternalApprovalState>
+    <Property_DeliveryDate>Дата выдачи</Property_DeliveryDate>
+    <Property_DeliveryMethod>Способ доставки</Property_DeliveryMethod>
+    <Property_DeliveredTo>Кому передан</Property_DeliveredTo>
+    <Property_InternalApprovalState>Согласование</Property_InternalApprovalState>
+    <Property_ExecutionState>Исполнение</Property_ExecutionState>
+    <Property_CaseFile>Дело</Property_CaseFile>
+    <Property_Index>Порядковый номер</Property_Index>
+    <Property_IsHeldByCounterParty>Требуется возврат от контрагента</Property_IsHeldByCounterParty>
+    <Property_IsReturnRequired>Требуется возврат</Property_IsReturnRequired>
+    <Property_IsOriginal>Оригинал</Property_IsOriginal>
+    <Property_LifeCycleState>Состояние</Property_LifeCycleState>
+    <Property_Tracking>Выдача</Property_Tracking>
+    <Property_LocationState>Местонахождение</Property_LocationState>
+    <Property_DocumentRegister>Журнал регистрации</Property_DocumentRegister>
+    <Property_RegistrationDate>Дата документа</Property_RegistrationDate>
+    <Property_RegistrationNumber>Рег. №</Property_RegistrationNumber>
+    <Property_RegistrationState>Регистрация</Property_RegistrationState>
+    <Property_ReturnDate>Дата возврата</Property_ReturnDate>
+    <Property_ScheduledReturnDateFromCounterparty>Срок возврата от контрагента</Property_ScheduledReturnDateFromCounterparty>
+    <Property_ResponsibleForReturnEmployee>Ответственный за возврат</Property_ResponsibleForReturnEmployee>
+    <Property_ReturnResult>Результат возврата</Property_ReturnResult>
+    <Property_ReturnTask>Задача возврата</Property_ReturnTask>
+    <Property_ReturnDeadline>Срок возврата</Property_ReturnDeadline>
+    <Enum_RegistrationState_NotRegistered>Не зарегистрирован</Enum_RegistrationState_NotRegistered>
+    <Enum_RegistrationState_Registered>Зарегистрирован</Enum_RegistrationState_Registered>
+    <Enum_RegistrationState_Reserved>Зарезервирован</Enum_RegistrationState_Reserved>
+    <Property_DocumentKind>Вид документа</Property_DocumentKind>
+    <Property_BusinessUnit>Наша орг.</Property_BusinessUnit>
+    <Property_Subject>Содержание</Property_Subject>
+    <Property_Note>Примечание</Property_Note>
+    <Property_OurSignatory>Подписал</Property_OurSignatory>
+    <Enum_OperationDetailed_Numeration>Номер {0}, дата {1}, журнал "{2}".</Enum_OperationDetailed_Numeration>
+    <Enum_OperationDetailed_Registration>Номер {0}, дата {1}, журнал "{2}".</Enum_OperationDetailed_Registration>
+    <Enum_OperationDetailed_Reservation>Номер {0}, дата {1}, журнал "{2}".</Enum_OperationDetailed_Reservation>
+    <Enum_OperationDetailed_NumChange>Номер {0}, дата {1}, журнал "{2}".</Enum_OperationDetailed_NumChange>
+    <Enum_OperationDetailed_RegChange>Номер {0}, дата {1}, журнал "{2}".</Enum_OperationDetailed_RegChange>
+    <Property_DocumentGroup>Группа документов</Property_DocumentGroup>
+    <Property_Assignee>Исполнитель</Property_Assignee>
+    <Property_Department>Подразделение</Property_Department>
+    <Enum_LifeCycleState_Obsolete>Устаревший</Enum_LifeCycleState_Obsolete>
+    <Property_PreparedBy>Подготовил</Property_PreparedBy>
+    <Enum_Operation_EnReviewed>Отметка о рассмотрении</Enum_Operation_EnReviewed>
+    <Enum_Operation_EnPendingReview>Отметка о начале рассмотрения</Enum_Operation_EnPendingReview>
+    <Property_Project>Проект</Property_Project>
+    <Property_AssociatedApplication>Открывается в</Property_AssociatedApplication>
+    <Property_LastVersionApproved>Утвержден</Property_LastVersionApproved>
+    <Property_ExchangeState>Электронный обмен</Property_ExchangeState>
+    <Enum_ExchangeState_Received>Получен</Enum_ExchangeState_Received>
+    <Enum_ExchangeState_Sent>Отправлен контрагенту</Enum_ExchangeState_Sent>
+    <Enum_ExchangeState_SignAwaited>Ожидается подпись контрагента</Enum_ExchangeState_SignAwaited>
+    <Enum_ExchangeState_SignRequired>Требуется подписание</Enum_ExchangeState_SignRequired>
+    <Enum_ExchangeState_Signed>Подписан обеими сторонами</Enum_ExchangeState_Signed>
+    <Enum_ExchangeState_Rejected>Отказано в подписании</Enum_ExchangeState_Rejected>
+    <Enum_ExchangeState_Terminated>Аннулирован</Enum_ExchangeState_Terminated>
+    <Enum_ExchangeState_Obsolete>Аннулирован</Enum_ExchangeState_Obsolete>
+    <Property_LeadingDocument>Ведущий док.</Property_LeadingDocument>
+    <Property_VerificationState>Верификация</Property_VerificationState>
+    <Enum_VerificationState_InProcess>В процессе</Enum_VerificationState_InProcess>
+    <Enum_VerificationState_Completed>Завершена</Enum_VerificationState_Completed>
+    <Property_DocumentDate>Дата создания/регистрации</Property_DocumentDate>
+    <Property_Storage>Хранилище</Property_Storage>
+    <Property_OurSigningReason>Основание</Property_OurSigningReason>
+    <Property_ExternalId>ИД во внешней системе</Property_ExternalId>
+    <Property_PaperCount>Количество листов</Property_PaperCount>
+    <Property_LastVersionChanged>Дата изменения</Property_LastVersionChanged>
+    <Property_AddendaPaperCount>Количество листов приложений</Property_AddendaPaperCount>
+    <Property_StoredIn>Место хранения</Property_StoredIn>
+    <Property_Topic>Рубрика</Property_Topic>
+    <Property_Subtopic>Подрубрика</Property_Subtopic>
+    <Property_Medium>Вид носителя</Property_Medium>
+    <NameGuid>58cca102-1e97-4f07-b6ac-fd866a8b7cb1</NameGuid>
+  </IOfficialDocumentDto>
+  <IOfficialDocumentVersionsDto>
+    <Type>IOfficialDocumentVersionss</Type>
+    <NameGuid>6180769e-de94-43ff-8894-e32cb5260789</NameGuid>
+  </IOfficialDocumentVersionsDto>
+  <IOrderBaseDto>
+    <Type>IOrderBases</Type>
+    <NameGuid>8a57d8c1-a05a-405e-95e7-913565b3e29d</NameGuid>
+  </IOrderBaseDto>
+  <IOrderBaseTrackingDto>
+    <Type>IOrderBaseTrackings</Type>
+    <NameGuid>6364c3f8-891d-4cf4-9bf4-23f938805084</NameGuid>
+  </IOrderBaseTrackingDto>
+  <IOrderBaseVersionsDto>
+    <Type>IOrderBaseVersionss</Type>
+    <NameGuid>0c7ec286-3ea5-4727-a833-a92358db4115</NameGuid>
+  </IOrderBaseVersionsDto>
+  <IOrderDto>
+    <Type>IOrders</Type>
+    <NameGuid>9570e517-7ab7-4f23-a959-3652715efad3</NameGuid>
+  </IOrderDto>
+  <IOrderTrackingDto>
+    <Type>IOrderTrackings</Type>
+    <NameGuid>4f5d1390-f658-4569-81e1-005f518cc51a</NameGuid>
+  </IOrderTrackingDto>
+  <IOrderVersionsDto>
+    <Type>IOrderVersionss</Type>
+    <NameGuid>3f74cb9d-8ab1-4760-b236-23d413d4626c</NameGuid>
+  </IOrderVersionsDto>
+  <IAdvanceReportDocumentDto>
+    <Type>IOtherExpensesAdvanceReportDocuments</Type>
+  </IAdvanceReportDocumentDto>
+  <IAdvanceReportDocumentTrackingDto>
+    <Type>IOtherExpensesAdvanceReportDocumentTrackings</Type>
+  </IAdvanceReportDocumentTrackingDto>
+  <IAdvanceReportDocumentVersionsDto>
+    <Type>IOtherExpensesAdvanceReportDocumentVersionss</Type>
+  </IAdvanceReportDocumentVersionsDto>
+  <IOutgoingDocumentBaseDto>
+    <Type>IOutgoingDocumentBases</Type>
+    <NameGuid>f5f104fb-52e4-422b-9de1-a36937d85a2d</NameGuid>
+    <Property_Correspondent>Корреспондент</Property_Correspondent>
+    <Property_InResponseTo>В ответ на</Property_InResponseTo>
+    <Property_Addressee>Адресат</Property_Addressee>
+    <Property_Assignee>Исполнитель</Property_Assignee>
+    <Enum_LifeCycleState_Obsolete>Недействующий</Enum_LifeCycleState_Obsolete>
+    <Property_Author>Автор</Property_Author>
+    <Property_Subject>Содержание</Property_Subject>
+    <Property_IsManyAddressees>Несколько адресатов</Property_IsManyAddressees>
+    <Property_Addressees>Список рассылки письма</Property_Addressees>
+    <Property_DistributionCorrespondent>Корреспондент</Property_DistributionCorrespondent>
+    <Property_SentDate>Дата отправки</Property_SentDate>
+    <Property_TrackNumber>№ отправления</Property_TrackNumber>
+    <Property_IsManyResponses>На несколько входящих</Property_IsManyResponses>
+    <Property_InResponseToDocuments>В ответ на</Property_InResponseToDocuments>
+  </IOutgoingDocumentBaseDto>
+  <IOutgoingDocumentBaseTrackingDto>
+    <Type>IOutgoingDocumentBaseTrackings</Type>
+    <NameGuid>6c719f38-9de5-4e00-9ead-e963c03cae9b</NameGuid>
+  </IOutgoingDocumentBaseTrackingDto>
+  <IOutgoingDocumentBaseVersionsDto>
+    <Type>IOutgoingDocumentBaseVersionss</Type>
+    <NameGuid>c3ce5ceb-6563-4d57-bab9-64800301243c</NameGuid>
+  </IOutgoingDocumentBaseVersionsDto>
+  <IOutgoingInvoiceDto>
+    <Type>IOutgoingInvoices</Type>
+    <NameGuid>58ad01fb-6805-426b-9152-4de16d83b258</NameGuid>
+    <Enum_LifeCycleState_Paid>Оплачен</Enum_LifeCycleState_Paid>
+  </IOutgoingInvoiceDto>
+  <IOutgoingInvoiceTrackingDto>
+    <Type>IOutgoingInvoiceTrackings</Type>
+    <NameGuid>dc209078-76ad-4603-a249-91e4b377d276</NameGuid>
+  </IOutgoingInvoiceTrackingDto>
+  <IOutgoingInvoiceVersionsDto>
+    <Type>IOutgoingInvoiceVersionss</Type>
+    <NameGuid>5101183d-0a1a-4904-9361-96d9777244d3</NameGuid>
+  </IOutgoingInvoiceVersionsDto>
+  <IOutgoingLetterAddresseesDto>
+    <Type>IOutgoingLetterAddresseess</Type>
+    <NameGuid>cb1f24e1-84e2-47e0-b08e-59c651168b56</NameGuid>
+  </IOutgoingLetterAddresseesDto>
+  <IOutgoingLetterDto>
+    <Type>IOutgoingLetters</Type>
+    <NameGuid>d1d2a452-7732-4ba8-b199-0a4dc78898ac</NameGuid>
+  </IOutgoingLetterDto>
+  <IOutgoingLetterTrackingDto>
+    <Type>IOutgoingLetterTrackings</Type>
+    <NameGuid>0a340145-d37f-43bc-9376-8a3196327b25</NameGuid>
+  </IOutgoingLetterTrackingDto>
+  <IOutgoingLetterVersionsDto>
+    <Type>IOutgoingLetterVersionss</Type>
+    <NameGuid>f15b30f3-99b5-49d7-9452-770b3925ae41</NameGuid>
+  </IOutgoingLetterVersionsDto>
+  <IOutgoingTaxInvoiceDto>
+    <Type>IOutgoingTaxInvoices</Type>
+    <NameGuid>f50c4d8a-56bc-43ef-bac3-856f57ca70be</NameGuid>
+    <Property_Corrected>Корректирует</Property_Corrected>
+    <Property_IsAdjustment>Корректировочный</Property_IsAdjustment>
+  </IOutgoingTaxInvoiceDto>
+  <IOutgoingTaxInvoiceTrackingDto>
+    <Type>IOutgoingTaxInvoiceTrackings</Type>
+    <NameGuid>efde70aa-7f41-4673-aeab-0f996a1e8215</NameGuid>
+  </IOutgoingTaxInvoiceTrackingDto>
+  <IOutgoingTaxInvoiceVersionsDto>
+    <Type>IOutgoingTaxInvoiceVersionss</Type>
+    <NameGuid>9c4a7356-509e-4e63-bc4f-f2fae3350447</NameGuid>
+  </IOutgoingTaxInvoiceVersionsDto>
+  <IOZMTemplateDto>
+    <Type>IOZMOZMTemplates</Type>
+  </IOZMTemplateDto>
+  <IOZMTemplateTrackingDto>
+    <Type>IOZMOZMTemplateTrackings</Type>
+  </IOZMTemplateTrackingDto>
+  <IOZMTemplateVersionsDto>
+    <Type>IOZMOZMTemplateVersionss</Type>
+  </IOZMTemplateVersionsDto>
+  <IPersonExchangeBoxesDto>
+    <Type>IPersonExchangeBoxess</Type>
+    <NameGuid>1c0f1303-3d8f-4376-ae69-4ff22c457eb2</NameGuid>
+  </IPersonExchangeBoxesDto>
+  <IPersonDto>
+    <Type>IPersons</Type>
+    <NameGuid>f5509cdc-ac0c-4507-a4d3-61d7a0a9b6f6</NameGuid>
+    <Property_LastName>Фамилия</Property_LastName>
+    <Property_FirstName>Имя</Property_FirstName>
+    <Property_MiddleName>Отчество</Property_MiddleName>
+    <Property_DateOfBirth>Дата рождения</Property_DateOfBirth>
+    <Property_Sex>Пол</Property_Sex>
+    <Enum_Sex_Male>Мужской</Enum_Sex_Male>
+    <Enum_Sex_Female>Женский</Enum_Sex_Female>
+    <Property_LegalAddress>Адрес регистрации</Property_LegalAddress>
+    <Property_INILA>СНИЛС</Property_INILA>
+    <Property_Name>ФИО</Property_Name>
+    <Property_ShortName>Фамилия и инициалы</Property_ShortName>
+    <Property_Citizenship>Гражданство</Property_Citizenship>
+    <Property_IdentityKind>Вид документа</Property_IdentityKind>
+    <Property_IdentitySeries>Серия</Property_IdentitySeries>
+    <Property_IdentityNumber>Номер</Property_IdentityNumber>
+    <Property_IdentityDateOfIssue>Дата выдачи</Property_IdentityDateOfIssue>
+    <Property_IdentityExpirationDate>Срок действия</Property_IdentityExpirationDate>
+    <Property_IdentityAuthority>Кем выдан</Property_IdentityAuthority>
+    <Property_IdentityAuthorityCode>Код подразделения</Property_IdentityAuthorityCode>
+    <Property_BirthPlace>Место рождения</Property_BirthPlace>
+  </IPersonDto>
+  <IPlanOfTrainingDto>
+    <Type>IPlanTrainingss</Type>
+  </IPlanOfTrainingDto>
+  <IPlanOfTrainingTrackingDto>
+    <Type>IPlanTrainingsTrackings</Type>
+  </IPlanOfTrainingTrackingDto>
+  <IPlanOfTrainingVersionsDto>
+    <Type>IPlanTrainingsVersionss</Type>
+  </IPlanOfTrainingVersionsDto>
+  <IPowerAttorneyRequestDto>
+    <Type>IPowerAttorneyRequests</Type>
+  </IPowerAttorneyRequestDto>
+  <IPowerAttorneyRequestTrackingDto>
+    <Type>IPowerAttorneyRequestTrackings</Type>
+  </IPowerAttorneyRequestTrackingDto>
+  <IPowerAttorneyRequestVersionsDto>
+    <Type>IPowerAttorneyRequestVersionss</Type>
+  </IPowerAttorneyRequestVersionsDto>
+  <IPowerOfAttorneyDto>
+    <Type>IPowerOfAttorneies</Type>
+    <NameGuid>be859f9b-7a04-4f07-82bc-441352bce627</NameGuid>
+    <Property_Assignee>Исполнитель</Property_Assignee>
+    <Property_OurSignatory>Подписал</Property_OurSignatory>
+  </IPowerOfAttorneyDto>
+  <IPowerOfAttorneyBaseDto>
+    <Type>IPowerOfAttorneyBases</Type>
+    <NameGuid>a8d955b1-4b35-4013-b643-3ea9d80bd1ea</NameGuid>
+    <Property_IssuedTo>Кому выдана</Property_IssuedTo>
+    <Property_DaysToFinishWorks>Дней для завершения</Property_DaysToFinishWorks>
+    <Property_ValidTill>Действует по</Property_ValidTill>
+    <Property_ValidFrom>Действует с</Property_ValidFrom>
+    <Property_Powers>Полномочия</Property_Powers>
+    <Enum_AgentType_LegalEntity>Юридическое лицо</Enum_AgentType_LegalEntity>
+    <Enum_AgentType_Entrepreneur>Индивидуальный предприниматель</Enum_AgentType_Entrepreneur>
+    <Enum_AgentType_Employee>Сотрудник</Enum_AgentType_Employee>
+    <Enum_AgentType_Person>Физическое лицо</Enum_AgentType_Person>
+    <Property_AgentType>Type представителя</Property_AgentType>
+    <Property_IssuedToParty>Кому выдана</Property_IssuedToParty>
+    <Property_Representative>Представитель</Property_Representative>
+    <Property_IsManyRepresentatives>Несколько представителей</Property_IsManyRepresentatives>
+    <Property_Representatives>Представители</Property_Representatives>
+    <Property_ManyRepresentativesPlaceholder>Кому выдана</Property_ManyRepresentativesPlaceholder>
+  </IPowerOfAttorneyBaseDto>
+  <IPowerOfAttorneyBaseTrackingDto>
+    <Type>IPowerOfAttorneyBaseTrackings</Type>
+    <NameGuid>357f5402-4b15-4c09-99d0-dd3d22e33d66</NameGuid>
+  </IPowerOfAttorneyBaseTrackingDto>
+  <IPowerOfAttorneyBaseVersionsDto>
+    <Type>IPowerOfAttorneyBaseVersionss</Type>
+    <NameGuid>eb6892f9-4440-41af-abc2-91c33d53d0d8</NameGuid>
+  </IPowerOfAttorneyBaseVersionsDto>
+  <IPowerOfAttorneyTrackingDto>
+    <Type>IPowerOfAttorneyTrackings</Type>
+    <NameGuid>936845e0-cd12-426c-b53e-a5cfc13a69a8</NameGuid>
+  </IPowerOfAttorneyTrackingDto>
+  <IPowerOfAttorneyVersionsDto>
+    <Type>IPowerOfAttorneyVersionss</Type>
+    <NameGuid>c6798c1f-1d6d-4250-b2d3-88f5f04f745c</NameGuid>
+  </IPowerOfAttorneyVersionsDto>
+  <IPrivateWorkingTimeCalendarDayDto>
+    <Type>IPrivateWorkingTimeCalendarDaies</Type>
+  </IPrivateWorkingTimeCalendarDayDto>
+  <IPrivateWorkingTimeCalendarDto>
+    <Type>IPrivateWorkingTimeCalendars</Type>
+  </IPrivateWorkingTimeCalendarDto>
+  <IProductRequestDocumentDto>
+    <Type>IProductsProductRequestDocuments</Type>
+  </IProductRequestDocumentDto>
+  <IProductRequestDocumentTrackingDto>
+    <Type>IProductsProductRequestDocumentTrackings</Type>
+  </IProductRequestDocumentTrackingDto>
+  <IProductRequestDocumentVersionsDto>
+    <Type>IProductsProductRequestDocumentVersionss</Type>
+  </IProductRequestDocumentVersionsDto>
+  <IProjectApprovalRoleDto>
+    <Type>IProjectApprovalRoles</Type>
+    <NameGuid>b9d8afd2-0f9e-4d40-8d61-1a9feee5754a</NameGuid>
+  </IProjectApprovalRoleDto>
+  <IProjectClassifierDto>
+    <Type>IProjectClassifiers</Type>
+    <NameGuid>cc984d0c-66d2-4baa-8cce-f0232ecd3c08</NameGuid>
+  </IProjectClassifierDto>
+  <IProjectCoreDto>
+    <Type>IProjectCores</Type>
+    <NameGuid>561aa8c7-b281-494b-a0e4-0170c0b27f48</NameGuid>
+    <Property_ProjectKind>Вид проекта</Property_ProjectKind>
+    <Property_ShortName>Сокращенное имя</Property_ShortName>
+    <Property_InternalCustomer>Внутренний заказчик</Property_InternalCustomer>
+    <Property_ExternalCustomer>Внешний заказчик</Property_ExternalCustomer>
+    <Property_StartDate>Дата начала (план)</Property_StartDate>
+    <Property_EndDate>Дата окончания (план)</Property_EndDate>
+    <Property_Note>Примечание</Property_Note>
+    <Property_TeamMembers>Участники</Property_TeamMembers>
+    <Property_Manager>Руководитель проекта</Property_Manager>
+    <Property_Folder>Папка проекта</Property_Folder>
+    <Property_Classifier>Папки</Property_Classifier>
+    <Property_LeadingProject>Ведущий проект</Property_LeadingProject>
+    <Property_Administrator>Администратор проекта</Property_Administrator>
+    <Property_ActualStartDate>Дата начала (факт)</Property_ActualStartDate>
+    <Property_ActualFinishDate>Дата окончания (факт)</Property_ActualFinishDate>
+    <Property_ExecutionPercent>% выполнения</Property_ExecutionPercent>
+    <Property_Stage>Состояние</Property_Stage>
+    <Property_Status>Состояние</Property_Status>
+    <Enum_Stage_Initiation>Инициация</Enum_Stage_Initiation>
+    <Enum_Stage_Execution>Исполнение</Enum_Stage_Execution>
+    <Enum_Stage_Completion>Завершение</Enum_Stage_Completion>
+    <Enum_Stage_Completed>Завершен</Enum_Stage_Completed>
+    <Property_Modified>Изменено</Property_Modified>
+  </IProjectCoreDto>
+  <IProjectDocumentRightsQueueItemDto>
+    <Type>IProjectDocumentRightsQueueItems</Type>
+    <NameGuid>aa042ddf-a9fb-4dea-883c-d0024b9574da</NameGuid>
+    <Enum_ProcessingStatus_TaskSendWaiting>Ожидает отправки задачи</Enum_ProcessingStatus_TaskSendWaiting>
+    <Property_DocumentId>Документ</Property_DocumentId>
+    <Property_Priority>Приоритет</Property_Priority>
+    <Enum_ProcessingStatus_Scheduled>Запланировано</Enum_ProcessingStatus_Scheduled>
+    <Enum_ProcessingStatus_InProcess>В процессе</Enum_ProcessingStatus_InProcess>
+    <Property_DocumentsIds>ИД документов</Property_DocumentsIds>
+  </IProjectDocumentRightsQueueItemDto>
+  <IProjectDocumentDto>
+    <Type>IProjectDocuments</Type>
+    <NameGuid>56df80b3-a795-4378-ace5-c20a2b1fb6d9</NameGuid>
+  </IProjectDocumentDto>
+  <IProjectDocumentTrackingDto>
+    <Type>IProjectDocumentTrackings</Type>
+    <NameGuid>c74d6488-a6f5-488f-9f39-a441abd8819c</NameGuid>
+  </IProjectDocumentTrackingDto>
+  <IProjectDocumentVersionsDto>
+    <Type>IProjectDocumentVersionss</Type>
+    <NameGuid>a3fe4297-d857-445f-a10a-42f4d69ff6dd</NameGuid>
+  </IProjectDocumentVersionsDto>
+  <IProjectMemberRightsQueueItemDto>
+    <Type>IProjectMemberRightsQueueItems</Type>
+    <NameGuid>b7edf323-816d-4213-abca-6ee7da1c03bd</NameGuid>
+  </IProjectMemberRightsQueueItemDto>
+  <IProjectQueueItemBaseDto>
+    <Type>IProjectQueueItemBases</Type>
+    <NameGuid>a9f25053-faf8-4d59-8665-ace5a19bc8bd</NameGuid>
+  </IProjectQueueItemBaseDto>
+  <IProjectRightsQueueItemDto>
+    <Type>IProjectRightsQueueItems</Type>
+    <NameGuid>5ec13d1f-de94-43a3-a51a-1bef325d9dad</NameGuid>
+  </IProjectRightsQueueItemDto>
+  <IProjectDto>
+    <Type>IProjects</Type>
+    <NameGuid>4383f2ff-56e6-46f4-b4ef-cc17e6aeef40</NameGuid>
+  </IProjectDto>
+  <IProjectTeamMembersDto>
+    <Type>IProjectTeamMemberss</Type>
+    <NameGuid>80cbfc1b-3b72-4df6-b7c6-ceca9b15581b</NameGuid>
+  </IProjectTeamMembersDto>
+  <IProjectTeamDto>
+    <Type>IProjectTeams</Type>
+    <NameGuid>c5bd2267-3ce0-4f4b-a891-cce8638a24fa</NameGuid>
+  </IProjectTeamDto>
+  <IRegistrationGroupDto>
+    <Type>IRegistrationGroups</Type>
+    <NameGuid>6eddf9a4-bf7b-4cac-961b-a1f0f0bc7ab6</NameGuid>
+    <Property_Index>Индекс</Property_Index>
+    <Property_Name>Наименование</Property_Name>
+    <Property_ResponsibleEmployee>Ответственный</Property_ResponsibleEmployee>
+    <Property_Description>Примечание</Property_Description>
+    <Property_Departments>Подразделения</Property_Departments>
+    <Property_Parent>Родительская группа</Property_Parent>
+    <Property_RecipientLinks>Участники</Property_RecipientLinks>
+    <Property_CanRegisterIncoming>Регистрирует входящие документы</Property_CanRegisterIncoming>
+    <Property_CanRegisterOutgoing>Регистрирует исходящие документы</Property_CanRegisterOutgoing>
+    <Property_CanRegisterInternal>Регистрирует внутренние документы</Property_CanRegisterInternal>
+    <Property_CanRegisterContractual>Регистрирует договорные документы</Property_CanRegisterContractual>
+  </IRegistrationGroupDto>
+  <IRegulatoryDocumentDto>
+    <Type>IRegulatoryRegulatoryDocuments</Type>
+  </IRegulatoryDocumentDto>
+  <IRegulatoryDocumentTrackingDto>
+    <Type>IRegulatoryRegulatoryDocumentTrackings</Type>
+  </IRegulatoryDocumentTrackingDto>
+  <IRegulatoryDocumentVersionsDto>
+    <Type>IRegulatoryRegulatoryDocumentVersionss</Type>
+  </IRegulatoryDocumentVersionsDto>
+  <IRetentionPolicyDto>
+    <Type>IRetentionPolicies</Type>
+    <NameGuid>3af27f75-55f4-41be-802a-9424a8ba9c41</NameGuid>
+    <Property_DocumentDateType>Событие</Property_DocumentDateType>
+    <Property_DaysToMove>Дней с события</Property_DaysToMove>
+    <Enum_DocumentDateType_DocumentDate>Создание/регистрация документа</Enum_DocumentDateType_DocumentDate>
+    <Enum_DocumentDateType_Modified>Изменение документа</Enum_DocumentDateType_Modified>
+    <Property_NextRetention>Следующее перемещение</Property_NextRetention>
+    <Property_LastRetention>Последнее перемещение</Property_LastRetention>
+    <Property_Interval>Интервал повторения</Property_Interval>
+    <Property_RepeatType>Повторять</Property_RepeatType>
+    <Enum_RepeatType_EveryWeek>Еженедельно</Enum_RepeatType_EveryWeek>
+    <Enum_RepeatType_EveryDay>Ежедневно</Enum_RepeatType_EveryDay>
+    <Enum_RepeatType_EveryMonth>Ежемесячно</Enum_RepeatType_EveryMonth>
+    <Property_IntervalType>Type интервала</Property_IntervalType>
+    <Enum_IntervalType_Day>День</Enum_IntervalType_Day>
+    <Enum_IntervalType_Month>Месяц</Enum_IntervalType_Month>
+    <Enum_RepeatType_WhenJobStart>При запуске фонового процесса</Enum_RepeatType_WhenJobStart>
+    <Enum_RepeatType_CustomInterval>Настраиваемый интервал</Enum_RepeatType_CustomInterval>
+  </IRetentionPolicyDto>
+  <IRetentionPolicyDocumentKindsDto>
+    <Type>IRetentionPolicyDocumentKindss</Type>
+    <NameGuid>93dd73b5-427c-4cea-821e-6e265c8cfbb1</NameGuid>
+  </IRetentionPolicyDocumentKindsDto>
+  <IFreeFormDocumentDto>
+    <Type>IRMAkelonFreeFormDocuments</Type>
+  </IFreeFormDocumentDto>
+  <IFreeFormDocumentTrackingDto>
+    <Type>IRMAkelonFreeFormDocumentTrackings</Type>
+  </IFreeFormDocumentTrackingDto>
+  <IFreeFormDocumentVersionsDto>
+    <Type>IRMAkelonFreeFormDocumentVersionss</Type>
+  </IFreeFormDocumentVersionsDto>
+  <IRoleDto>
+    <Type>IRoles</Type>
+  </IRoleDto>
+  <ISimpleDocumentDto>
+    <Type>ISimpleDocuments</Type>
+    <NameGuid>09584896-81e2-4c83-8f6c-70eb8321e1d0</NameGuid>
+  </ISimpleDocumentDto>
+  <ISimpleDocumentTrackingDto>
+    <Type>ISimpleDocumentTrackings</Type>
+    <NameGuid>2eb04f01-414a-46db-81f8-c6c730520c0e</NameGuid>
+  </ISimpleDocumentTrackingDto>
+  <ISimpleDocumentVersionsDto>
+    <Type>ISimpleDocumentVersionss</Type>
+    <NameGuid>fd2c202d-eb66-400e-9cc8-9ade81d34c91</NameGuid>
+  </ISimpleDocumentVersionsDto>
+  <IStaffTrainingRequestDto>
+    <Type>IStaffTrainingRequests</Type>
+  </IStaffTrainingRequestDto>
+  <IStaffTrainingRequestTrackingDto>
+    <Type>IStaffTrainingRequestTrackings</Type>
+  </IStaffTrainingRequestTrackingDto>
+  <IStaffTrainingRequestVersionsDto>
+    <Type>IStaffTrainingRequestVersionss</Type>
+  </IStaffTrainingRequestVersionsDto>
+  <ITrainingDocumentDto>
+    <Type>IStaffTrainingsDocuments</Type>
+  </ITrainingDocumentDto>
+  <ITrainingDocumentTrackingDto>
+    <Type>IStaffTrainingsDocumentTrackings</Type>
+  </ITrainingDocumentTrackingDto>
+  <ITrainingDocumentVersionsDto>
+    <Type>IStaffTrainingsDocumentVersionss</Type>
+  </ITrainingDocumentVersionsDto>
+  <IStoragePolicyDto>
+    <Type>IStoragePolicies</Type>
+    <NameGuid>9fed5653-77e7-4543-b071-6586033907ef</NameGuid>
+  </IStoragePolicyDto>
+  <IStoragePolicyDocumentKindsDto>
+    <Type>IStoragePolicyDocumentKindss</Type>
+    <NameGuid>88b065de-b495-48e4-afe9-d7523abcd755</NameGuid>
+  </IStoragePolicyDocumentKindsDto>
+  <ISupAgreementMilestonesDto>
+    <Type>ISupAgreementMilestoness</Type>
+  </ISupAgreementMilestonesDto>
+  <ISupAgreementDto>
+    <Type>ISupAgreements</Type>
+    <NameGuid>265f2c57-6a8a-4a15-833b-ca00e8047fa5</NameGuid>
+  </ISupAgreementDto>
+  <ISupAgreementTrackingDto>
+    <Type>ISupAgreementTrackings</Type>
+    <NameGuid>3a1afee8-f45c-4c4e-aa45-6bd6cf2d38a2</NameGuid>
+  </ISupAgreementTrackingDto>
+  <ISupAgreementVersionsDto>
+    <Type>ISupAgreementVersionss</Type>
+    <NameGuid>cb6cb813-eb9a-4672-806d-29f32e24a29e</NameGuid>
+  </ISupAgreementVersionsDto>
+  <ITimesheetDocumentDto>
+    <Type>ITimesheetsTimesheetDocuments</Type>
+  </ITimesheetDocumentDto>
+  <ITimesheetDocumentTrackingDto>
+    <Type>ITimesheetsTimesheetDocumentTrackings</Type>
+  </ITimesheetDocumentTrackingDto>
+  <ITimesheetDocumentVersionsDto>
+    <Type>ITimesheetsTimesheetDocumentVersionss</Type>
+  </ITimesheetDocumentVersionsDto>
+  <IBusinessTripDocumentDto>
+    <Type>ITripsBusinessTripDocuments</Type>
+  </IBusinessTripDocumentDto>
+  <IBusinessTripDocumentTrackingDto>
+    <Type>ITripsBusinessTripDocumentTrackings</Type>
+  </IBusinessTripDocumentTrackingDto>
+  <IBusinessTripDocumentVersionsDto>
+    <Type>ITripsBusinessTripDocumentVersionss</Type>
+  </IBusinessTripDocumentVersionsDto>
+  <IRepresentationExpensesDocumentDto>
+    <Type>ITripsRepresentationExpensesDocuments</Type>
+  </IRepresentationExpensesDocumentDto>
+  <IRepresentationExpensesDocumentTrackingDto>
+    <Type>ITripsRepresentationExpensesDocumentTrackings</Type>
+  </IRepresentationExpensesDocumentTrackingDto>
+  <IRepresentationExpensesDocumentVersionsDto>
+    <Type>ITripsRepresentationExpensesDocumentVersionss</Type>
+  </IRepresentationExpensesDocumentVersionsDto>
+  <IServiceTripDocumentDto>
+    <Type>ITripsServiceTripDocuments</Type>
+  </IServiceTripDocumentDto>
+  <IServiceTripDocumentTrackingDto>
+    <Type>ITripsServiceTripDocumentTrackings</Type>
+  </IServiceTripDocumentTrackingDto>
+  <IServiceTripDocumentVersionsDto>
+    <Type>ITripsServiceTripDocumentVersionss</Type>
+  </IServiceTripDocumentVersionsDto>
+  <ITripDocumentBaseDto>
+    <Type>ITripsTripDocumentBases</Type>
+  </ITripDocumentBaseDto>
+  <ITripDocumentBaseTrackingDto>
+    <Type>ITripsTripDocumentBaseTrackings</Type>
+  </ITripDocumentBaseTrackingDto>
+  <ITripDocumentBaseVersionsDto>
+    <Type>ITripsTripDocumentBaseVersionss</Type>
+  </ITripDocumentBaseVersionsDto>
+  <ITwoVersionsDocDto>
+    <Type>ITwoVersionsDocs</Type>
+  </ITwoVersionsDocDto>
+  <ITwoVersionsDocVersionsDto>
+    <Type>ITwoVersionsDocVersionss</Type>
+  </ITwoVersionsDocVersionsDto>
+  <IUniversalTransferDocumentDto>
+    <Type>IUniversalTransferDocuments</Type>
+    <NameGuid>58986e23-2b0a-4082-af37-bd1991bc6f7e</NameGuid>
+  </IUniversalTransferDocumentDto>
+  <IUniversalTransferDocumentTrackingDto>
+    <Type>IUniversalTransferDocumentTrackings</Type>
+    <NameGuid>edffd4a9-b71c-43e1-aaf8-0d537258a027</NameGuid>
+  </IUniversalTransferDocumentTrackingDto>
+  <IUniversalTransferDocumentVersionsDto>
+    <Type>IUniversalTransferDocumentVersionss</Type>
+    <NameGuid>7f57a617-9c0e-412e-8dcf-920360cc8976</NameGuid>
+  </IUniversalTransferDocumentVersionsDto>
+  <IUserDto>
+    <Type>IUsers</Type>
+  </IUserDto>
+  <IWaybillDto>
+    <Type>IWaybills</Type>
+    <NameGuid>4e81f9ca-b95a-4fd4-bf76-ea7176c215a7</NameGuid>
+    <Property_CounterpartySigner>Подписал</Property_CounterpartySigner>
+  </IWaybillDto>
+  <IWaybillTrackingDto>
+    <Type>IWaybillTrackings</Type>
+    <NameGuid>831a7d69-593c-4f19-a953-9b8c43efe03c</NameGuid>
+  </IWaybillTrackingDto>
+  <IWaybillVersionsDto>
+    <Type>IWaybillVersionss</Type>
+    <NameGuid>1c506636-1d50-4c79-a0c7-09746718d016</NameGuid>
+  </IWaybillVersionsDto>
+</NewDataSet>

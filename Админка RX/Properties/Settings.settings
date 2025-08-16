@@ -1,0 +1,33 @@
+﻿<?xml version='1.0' encoding='utf-8'?>
+<SettingsFile xmlns="http://schemas.microsoft.com/VisualStudio/2004/01/settings" CurrentProfile="(Default)" GeneratedClassNamespace="Админка_RX.Properties" GeneratedClassName="Settings">
+  <Profiles />
+  <Settings>
+    <Setting Name="Ссылка" Type="System.String" Scope="User">
+      <Value Profile="(Default)" />
+    </Setting>
+    <Setting Name="Логин" Type="System.String" Scope="User">
+      <Value Profile="(Default)" />
+    </Setting>
+    <Setting Name="Пароль" Type="System.String" Scope="User">
+      <Value Profile="(Default)" />
+    </Setting>
+    <Setting Name="Администратор" Type="System.Boolean" Scope="User">
+      <Value Profile="(Default)">False</Value>
+    </Setting>
+    <Setting Name="EdmModel" Type="Microsoft.OData.Edm.EdmModel" Scope="User">
+      <Value Profile="(Default)" />
+    </Setting>
+    <Setting Name="Файлы" Type="System.Data.DataSet" Scope="User">
+      <Value Profile="(Default)" />
+    </Setting>
+    <Setting Name="ПерваяЗагрузка" Type="System.Boolean" Scope="User">
+      <Value Profile="(Default)">False</Value>
+    </Setting>
+    <Setting Name="МаксИД" Type="System.Data.DataSet" Scope="User">
+      <Value Profile="(Default)" />
+    </Setting>
+    <Setting Name="ЗагрузкаИд" Type="System.Boolean" Scope="User">
+      <Value Profile="(Default)">False</Value>
+    </Setting>
+  </Settings>
+</SettingsFile>
