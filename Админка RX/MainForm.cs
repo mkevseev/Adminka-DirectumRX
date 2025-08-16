@@ -133,7 +133,7 @@ namespace Админка_RX
 
                     if (МАКСИД == null)
                     МАКСИД = new DataSet();
-
+                     
                     // Для массового изменения
                     foreach (var item in ТипыБезНаследников)
                     {
