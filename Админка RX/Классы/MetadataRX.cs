@@ -14,7 +14,6 @@ using System.Xml.Linq;
 namespace Админка_RX.Классы
 {
 
-
     internal class MetadataRX
     {
         private static Properties.Settings Параметры = Properties.Settings.Default;
