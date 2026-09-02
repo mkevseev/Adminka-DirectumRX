@@ -8,6 +8,7 @@ using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using static System.Windows.Forms.VisualStyles.VisualStyleElement;
 
 
 namespace Админка_RX.Классы
@@ -996,17 +997,24 @@ namespace Админка_RX.Классы
 
         public static async Task<IEnumerable<IDictionary<string, object>>> ПолучитьПоследнееИД(ODataClient oDataClient, string Имя)
         {
+            try
+            {
+                string[] ids = { "Id" };
+                //Получить все сущности через basic API.
+                var associatedApplications = await oDataClient.For(Имя)
+                    .Select(ids)
+                    .OrderByDescending(ids)
+                    .Top(1)
+                    .FindEntriesAsync();
 
-            string[] ids = { "Id" };
-            //Получить все сущности через basic API.
-            var associatedApplications = await oDataClient.For(Имя)
-                .Select(ids)
-                .OrderByDescending(ids)
-                .Top(1)
-                .FindEntriesAsync();
+                return associatedApplications;
+            }
+            catch (Exception ex)
+            {
+                var f = ex.Message;
+            }
 
-            return associatedApplications;
-
+            return null;
         }
 
         public static string ПолучитьИмяТипаСущности(string типСущности)

@@ -19,27 +19,33 @@ namespace Мониторинг.Resources.Функции
         //СОЗДАНИЕ ДИАЛОГА (и пример)
         public static string Показать(List<string> именаКнопок)
         {
-
-            Form prompt = new Form
+            string Кнопка = string.Empty;
+            if (именаКнопок.Any())
             {
-                Width = 120,
-                Height = 80,
-                Text = "Выбор",
-                StartPosition = FormStartPosition.CenterScreen,
-                TopMost = true
-            };
-            Label textLabel = new Label() { Left = 10, Top = 10, Text = "Выбор:" };
-            //CheckedListBox inputBox = new CheckedListBox() { Left = 50, Top = 50, Width = 400 };
-            ////if (inputBox.CheckedItems.Contains(textBox1.Text) == false)
-            //inputBox.Items.Add("Справочник", CheckState.Checked);
-            //inputBox.Items.Add("Документ", CheckState.Checked);
-            //inputBox.Items.Add("Задача", CheckState.Checked);
+                Form prompt = new Form
+                {
+                    Width = 120,
+                    Height = 80,
+                    Text = "Выбор",
+                    StartPosition = FormStartPosition.CenterScreen,
+                    TopMost = true
+                };
+                Label textLabel = new Label() { Left = 10, Top = 10, Text = "Выбор:" };
+                //CheckedListBox inputBox = new CheckedListBox() { Left = 50, Top = 50, Width = 400 };
+                ////if (inputBox.CheckedItems.Contains(textBox1.Text) == false)
+                //inputBox.Items.Add("Справочник", CheckState.Checked);
+                //inputBox.Items.Add("Документ", CheckState.Checked);
+                //inputBox.Items.Add("Задача", CheckState.Checked);
 
-            Создать.Кнопки кнопки = new Создать.Кнопки(prompt, именаКнопок); ;
-            prompt.Controls.Add(textLabel);
-            //prompt.Controls.Add(inputBox);
-            prompt.ShowDialog();
-            return кнопки.Кнопка;
+                Создать.Кнопки кнопки = new Создать.Кнопки(prompt, именаКнопок); ;
+                prompt.Controls.Add(textLabel);
+                //prompt.Controls.Add(inputBox);
+                prompt.ShowDialog();
+
+                Кнопка = кнопки.Кнопка;
+            }
+            
+            return Кнопка;
         }
 
         private static class Создать

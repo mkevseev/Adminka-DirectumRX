@@ -107,6 +107,9 @@ namespace Админка_RX
                     var сравнениеНаслед = new Dictionary<string, List<string>>();
                     // ЕДМ модель для сравнений и получения реквизитов
                     EDMModel = MetadataRX.ПолучитьEdmМодель();
+
+                    if (EDMModel == null)
+                        return OK;
                     // ОДата для поискоа и изменений
                     ODATAClient = DirectumRX.ODataClient();
                     // Получим типы сущностей

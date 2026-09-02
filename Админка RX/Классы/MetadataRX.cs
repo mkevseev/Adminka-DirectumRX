@@ -68,22 +68,51 @@ namespace Админка_RX.Классы
 
         public static Stream ПолучитьМетаданныеStream()
         {
-            // Create a request for the URL. 
-            WebRequest request = WebRequest.Create(MetadataUrl);
 
-            //set the credentials.
-            request.Credentials = CredentialCache.DefaultCredentials;
+            try
+            {
+                HttpWebRequest request = (HttpWebRequest)WebRequest.Create(MetadataUrl);
 
-            var authenticationHeaderValue = Convert.ToBase64String(Encoding.UTF8.GetBytes($"{Login}:{Password}"));
-            request.Headers.Add("Authorization", "Basic " + authenticationHeaderValue);
+                //set the credentials.
+                request.Credentials = CredentialCache.DefaultCredentials;
 
-            // Get the response.
-            WebResponse response = request.GetResponse();
+                var authenticationHeaderValue = Convert.ToBase64String(Encoding.UTF8.GetBytes($"{Login}:{Password}"));
+                request.Headers.Add("Authorization", "Basic " + authenticationHeaderValue);
 
-            // Get the stream containing content returned by the server.
-            return response.GetResponseStream();
+                // Настройка запроса...
+                HttpWebResponse response = (HttpWebResponse)request.GetResponse();
+                // Обработка ответа
+                return response.GetResponseStream();
+            }
+            catch (WebException ex)
+            {
+                // Здесь можно проанализировать ex.Response, чтобы понять природу ошибки
+                if (ex.Response is HttpWebResponse httpResponse)
+                {
+                    HttpStatusCode statusCode = httpResponse.StatusCode;
+                    // Логируем или обрабатываем разные коды статусов
+                    MessageBox.Show($"Ошибка с кодом: {statusCode}");
+                }
+                // Также можно получить сообщение об ошибке
+                MessageBox.Show($"Сообщение: {ex.Message}");
+            }
 
+            //// Create a request for the URL. 
+            //WebRequest request = WebRequest.Create(MetadataUrl);
 
+            ////set the credentials.
+            //request.Credentials = CredentialCache.DefaultCredentials;
+
+            //var authenticationHeaderValue = Convert.ToBase64String(Encoding.UTF8.GetBytes($"{Login}:{Password}"));
+            //request.Headers.Add("Authorization", "Basic " + authenticationHeaderValue);
+
+            //// Get the response.
+            //WebResponse response = request.GetResponse();
+
+            //// Get the stream containing content returned by the server.
+            //return response.GetResponseStream();
+
+            return null;
         }
 
         public static IEdmModel ПолучитьEdmМодель()
@@ -91,6 +120,8 @@ namespace Админка_RX.Классы
             IEdmModel edmModel = null;
             using (Stream ss = MetadataRX.ПолучитьМетаданныеStream())
             {
+                if (ss == null)
+                    return null;
                 XmlTextReader reader = new XmlTextReader(ss);
 
                 edmModel = CsdlReader.Parse(reader);
