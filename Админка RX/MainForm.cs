@@ -28,6 +28,7 @@ namespace Админка_RX
         public static IDictionary<string, string> ТипИТипСущности = new Dictionary<string, string>();
 
 
+
         public MainForm()
         {
 
