@@ -49,7 +49,11 @@
             this.МассовоеИзменениеРеквизитовПунктДействия = new System.Windows.Forms.ToolStripMenuItem();
             this.ТипыСущностейПодпунктМИРДействия = new System.Windows.Forms.ToolStripComboBox();
             this.ИзменитьПодпунктМИРДействия = new System.Windows.Forms.ToolStripMenuItem();
+            this.миграцияЗаписейToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.ТипыСущностейПодпунктМЗДействия = new System.Windows.Forms.ToolStripComboBox();
+            this.ИзменитьПодпунктМЗДействия = new System.Windows.Forms.ToolStripMenuItem();
             this.ВремяАвтоОбновл = new System.Windows.Forms.Timer(this.components);
+            this.button1 = new System.Windows.Forms.Button();
             this.panel1.SuspendLayout();
             this.statusStrip1.SuspendLayout();
             this.toolStrip1.SuspendLayout();
@@ -78,6 +82,7 @@
             this.panel1.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
+            this.panel1.Controls.Add(this.button1);
             this.panel1.Controls.Add(this.statusStrip1);
             this.panel1.Controls.Add(this.toolStrip1);
             this.panel1.Controls.Add(this.ИД);
@@ -182,7 +187,8 @@
             this.Действия.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.ПоискПоИДПунктДействия,
             this.ИзменитьРеквизитыПунктДействия,
-            this.МассовоеИзменениеРеквизитовПунктДействия});
+            this.МассовоеИзменениеРеквизитовПунктДействия,
+            this.миграцияЗаписейToolStripMenuItem});
             this.Действия.Image = global::Админка_RX.Properties.Resources.Меню;
             this.Действия.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.Действия.Name = "Действия";
@@ -225,9 +231,40 @@
             this.ИзменитьПодпунктМИРДействия.Text = "Изменить";
             this.ИзменитьПодпунктМИРДействия.Click += new System.EventHandler(this.ИзменитьПодпунктМИРДействия_Click);
             // 
+            // миграцияЗаписейToolStripMenuItem
+            // 
+            this.миграцияЗаписейToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.ТипыСущностейПодпунктМЗДействия,
+            this.ИзменитьПодпунктМЗДействия});
+            this.миграцияЗаписейToolStripMenuItem.Name = "миграцияЗаписейToolStripMenuItem";
+            this.миграцияЗаписейToolStripMenuItem.Size = new System.Drawing.Size(257, 22);
+            this.миграцияЗаписейToolStripMenuItem.Text = "Миграция записей";
+            // 
+            // ТипыСущностейПодпунктМЗДействия
+            // 
+            this.ТипыСущностейПодпунктМЗДействия.Name = "ТипыСущностейПодпунктМЗДействия";
+            this.ТипыСущностейПодпунктМЗДействия.Size = new System.Drawing.Size(300, 23);
+            // 
+            // ИзменитьПодпунктМЗДействия
+            // 
+            this.ИзменитьПодпунктМЗДействия.Name = "ИзменитьПодпунктМЗДействия";
+            this.ИзменитьПодпунктМЗДействия.Size = new System.Drawing.Size(360, 22);
+            this.ИзменитьПодпунктМЗДействия.Text = "Изменить";
+            this.ИзменитьПодпунктМЗДействия.Click += new System.EventHandler(this.ИзменитьПодпунктМЗДействия_Click);
+            // 
             // ВремяАвтоОбновл
             // 
             this.ВремяАвтоОбновл.Tick += new System.EventHandler(this.ВремяАвтоОбновл_Tick);
+            // 
+            // button1
+            // 
+            this.button1.Location = new System.Drawing.Point(175, 4);
+            this.button1.Name = "button1";
+            this.button1.Size = new System.Drawing.Size(52, 18);
+            this.button1.TabIndex = 11;
+            this.button1.Text = "button1";
+            this.button1.UseVisualStyleBackColor = true;
+            this.button1.Click += new System.EventHandler(this.button1_Click_1);
             // 
             // MainForm
             // 
@@ -273,6 +310,10 @@
         private System.Windows.Forms.ToolStripComboBox ТипыСущностейПодпунктМИРДействия;
         private System.Windows.Forms.ToolStripMenuItem ИзменитьПодпунктМИРДействия;
         private System.Windows.Forms.ToolStripButton ЗагрузитьВсеИДОбязательно;
+        private System.Windows.Forms.ToolStripMenuItem миграцияЗаписейToolStripMenuItem;
+        private System.Windows.Forms.ToolStripComboBox ТипыСущностейПодпунктМЗДействия;
+        private System.Windows.Forms.ToolStripMenuItem ИзменитьПодпунктМЗДействия;
+        private System.Windows.Forms.Button button1;
     }
 }
 

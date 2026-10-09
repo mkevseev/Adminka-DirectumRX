@@ -9,6 +9,7 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using System.Xml.Linq;
 using Админка_RX.Properties;
 using Админка_RX.Классы;
 using Мониторинг.Resources.Функции;
@@ -22,6 +23,7 @@ namespace Админка_RX
 
         public static List<string> ТипыСущностей = new List<string>();
         public static List<string> ТипыБезНаследников = new List<string>();
+        public static IEnumerable<XElement> ТипыКоллекции = null; 
         public static DataSet МАКСИД = null;
         public static IEdmModel EDMModel = null;
         public static ODataClient ODATAClient = null;
@@ -117,6 +119,14 @@ namespace Админка_RX
                     // Тип и тип сущности 
                     ТипИТипСущности = MetadataRX.ПолучитьТипыИТипыСущности(EDMModel, ТипыСущностей);
 
+                    // Уберём коллекции
+                    ТипыКоллекции = MetadataRX.ПолучитьНавигационноеСвойствоКоллекцию();
+
+                    ТипИТипСущности = ТипИТипСущности.Where(t => !ТипыКоллекции.Any(n => n.Attribute("Type").Value != null && n.Attribute("Type").Value.EndsWith(t.Key + ")"))).ToDictionary(keySelector: item => item.Key,
+                    elementSelector: item => item.Value);
+
+                    ТипыСущностей = ТипыСущностей.Where(t => ТипИТипСущности.Any(tt => tt.Value == t)).ToList();
+
                     foreach (var тип in ТипыСущностей)
                     {
                         List<string> d = new List<string>();
@@ -124,7 +134,6 @@ namespace Админка_RX
                             сравнениеНаслед.Add(тип, MetadataRX.ПолучитьИменаНаследников(EDMModel, тип, тип, d, ТипИТипСущности));
 
                     }
-
 
 
                     var имена = сравнениеНаслед.Select(d => d.Key);
@@ -144,6 +153,9 @@ namespace Админка_RX
 
                         if (!ТипыСущностейПодпунктМИРДействия.Items.Contains(item))
                             ТипыСущностейПодпунктМИРДействия.Items.Add(item);
+
+                        if (!ТипыСущностейПодпунктМЗДействия.Items.Contains(item))
+                            ТипыСущностейПодпунктМЗДействия.Items.Add(item);
 
                         #region Заполнение таблиц
 
@@ -404,6 +416,23 @@ namespace Админка_RX
             }
         }
 
+        private void ИзменитьПодпунктМЗДействия_Click(object sender, EventArgs e)
+        {
+            var тип = ТипыСущностейПодпунктМЗДействия.Text;
+
+            if (string.IsNullOrEmpty(тип))
+                MessageBox.Show("Укажите Тип сущности");
+            else
+            {
+                RecordMigrationForm changeForm = new RecordMigrationForm
+                {
+                    Тип = тип,
+                    Ссылка = Параметры.Ссылка,
+                    Ссылка2 = Параметры.Ссылка2
+                };
+                changeForm.ShowDialog();
+            }
+        }
 
         #endregion
 
@@ -464,7 +493,17 @@ namespace Админка_RX
             var dd = d;
         }
 
+        private void button1_Click(object sender, EventArgs e)
+        {
+            var f = MetadataRX.ПолучитьВсеБазовыеТипы();
+        }
 
-        
+        private void button1_Click_1(object sender, EventArgs e)
+        {
+            //var d = MetadataRX.ПолучитьВсеНавигационныеСвойстваКоллекцийДляТипа();
+            var d2 = MetadataRX.ПолучитьВсеБазовыеТипы();
+            var d = MetadataRX.GetScalarProperties();
+            var d3 = MetadataRX.ПолучитьНавигационноеСвойствоКоллекцию(); 
+        }
     }
 }

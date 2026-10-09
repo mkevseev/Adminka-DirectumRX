@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Data;
 using System.Linq;
 using System.Net.Http;
+using System.Security.Policy;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
@@ -124,6 +125,17 @@ namespace Админка_RX.Классы
             };
 
             return new ODataClient(odataClientSettings);
+        }
+
+        public static ODataClient ODataClient(string url, string login, string password)
+        {
+            Url = url;
+            OdataUrl = Url + "/integration/odata/";
+            Login = login;
+            Password = password;
+            ODataClient();
+
+            return ODataClient();
         }
 
         /// <summary>
@@ -285,6 +297,21 @@ namespace Админка_RX.Классы
             }
         }
 
+        public static async Task<IEnumerable<IDictionary<string, object>>> ПолучитьAsync(ODataClient oDataClient, string Имя, long top)
+        {
+            try
+            {
+                //Получить все сущности через basic API.
+
+                return await oDataClient.For(Имя)
+                .Top(top)
+                .FindEntriesAsync();
+            }
+            catch
+            {
+                return null;
+            }
+        }
         #endregion
 
 
@@ -883,6 +910,23 @@ namespace Админка_RX.Классы
 
         }
 
+        public static async Task<IDictionary<string, object>> Поиск(ODataClient oDataClient, IEdmModel edmModel,  string Имя, string[] ДопРеквизиты, List<string> РеквизитыСравнения)
+        {
+            IDictionary<string, object> изменения = new Dictionary<string, object>();
+
+            var элементEdmМодели = MetadataRX.ПолучитьЭлементEdmМодели(edmModel, Имя);
+
+            var структурныйТип = MetadataRX.ПолучитьСтруктурированныйТип(элементEdmМодели);
+            // Получим все имена и типы реквизитов типа сущности для дальнейшего сравнения 
+            var типОбъекта = элементEdmМодели.EntityType();
+            var nameType = типОбъекта.Name;
+
+            IDictionary<string, object> всеРеквизиты = new Dictionary<string, object>();
+            var реквизиты = MetadataRX.ПолучитьВсеРеквизитыТипа(структурныйТип, всеРеквизиты);
+
+            return изменения;
+        }
+
         public static bool НужныйТипСущности(IEdmStructuredType тип)
         {
             IEdmStructuredType baseType = тип;
@@ -973,8 +1017,9 @@ namespace Админка_RX.Классы
                   .ExecuteAsSingleAsync();
 
             }
-            catch
+            catch (Exception ex)
             {
+                var d = ex.Message;
                 getRequestToFunction.Add("result", false);
             }
 

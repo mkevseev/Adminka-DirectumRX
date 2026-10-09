@@ -23,11 +23,21 @@ namespace Админка_RX
             Логин.Text = Параметры.Логин;
             Пароль.Text = Параметры.Пароль;
             Администратор.Checked = Параметры.Администратор;
+            Ссылка2.Text = Параметры.Ссылка2;
+            Логин2.Text = Параметры.Логин2;
+            Пароль2.Text = Параметры.Пароль2;
+            Администратор2.Checked = Параметры.Администратор2;
         }
 
         private void Ссылка_TextChanged(object sender, EventArgs e)
         {
             Параметры.Ссылка = Ссылка.Text;
+            Параметры.Save();
+        }
+
+        private void Ссылка2_TextChanged(object sender, EventArgs e)
+        {
+            Параметры.Ссылка2 = Ссылка2.Text;
             Параметры.Save();
         }
 
@@ -37,9 +47,21 @@ namespace Админка_RX
             Параметры.Save();
         }
 
+        private void Логин2_TextChanged(object sender, EventArgs e)
+        {
+            Параметры.Логин2 = Логин2.Text;
+            Параметры.Save();
+        }
+
         private void Пароль_TextChanged(object sender, EventArgs e)
         {
             Параметры.Пароль = Пароль.Text;
+            Параметры.Save();
+        }
+
+        private void Пароль2_TextChanged(object sender, EventArgs e)
+        {
+            Параметры.Пароль2 = Пароль2.Text;
             Параметры.Save();
         }
 
@@ -51,6 +73,10 @@ namespace Админка_RX
                 ЭтоАдмин();
             }
 
+            if (!string.IsNullOrEmpty(Ссылка2.Text) && !string.IsNullOrEmpty(Логин2.Text) && !string.IsNullOrEmpty(Пароль2.Text))
+            {
+                ЭтоАдмин2();
+            }
         }
 
         private async void ЭтоАдмин()
@@ -63,6 +89,20 @@ namespace Админка_RX
             Параметры.Save();
 
         }
+
+        private async void ЭтоАдмин2()
+        {
+
+
+            var ответ = await DirectumRX.IsCurrentUserAdmin(DirectumRX.ODataClient(Ссылка2.Text, Логин2.Text, Пароль2.Text));
+
+            Параметры.Администратор2 = (bool)ответ.First().Value;
+            Параметры.Save();
+
+        }
+
+
+
 
 
         //public DataSet ЗаполнитьТаблицу(DataTable Файлы)
@@ -464,6 +504,7 @@ namespace Админка_RX
             }
 
         }
+
 
     }
 }

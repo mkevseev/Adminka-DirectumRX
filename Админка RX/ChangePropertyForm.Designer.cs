@@ -91,7 +91,7 @@
             this.Изменить.TabIndex = 4;
             this.Изменить.Text = "Сохранить все изменения";
             this.Изменить.UseVisualStyleBackColor = true;
-            this.Изменить.Click += new System.EventHandler(this.button1_Click);
+            this.Изменить.Click += new System.EventHandler(this.Изменить_Click);
             // 
             // ChangePropertyForm
             // 

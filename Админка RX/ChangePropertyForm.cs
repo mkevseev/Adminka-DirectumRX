@@ -291,7 +291,7 @@ namespace Админка_RX
         }
 
 
-        private async void button1_Click(object sender, EventArgs e)
+        private async void Изменить_Click(object sender, EventArgs e)
         {
             var изменения = await DirectumRX.Проверить(ODATAClient, EDMModel, ТипыСущностей, Тип, Ид, ДопРеквизиты.ToArray(), Данные);
 

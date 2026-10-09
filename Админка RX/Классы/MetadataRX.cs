@@ -5,10 +5,13 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Net;
+using System.Net.Http;
 using System.Text;
+using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Xml;
 using System.Xml.Linq;
+using static System.Net.WebRequestMethods;
 
 
 namespace Админка_RX.Классы
@@ -115,6 +118,7 @@ namespace Админка_RX.Классы
             return null;
         }
 
+
         public static IEdmModel ПолучитьEdmМодель()
         {
             IEdmModel edmModel = null;
@@ -128,6 +132,16 @@ namespace Админка_RX.Классы
             }
 
             return edmModel;
+        }
+
+        public static IEdmModel ПолучитьEdmМодель(string url, string login, string password)
+        {
+            Url = url;
+            MetadataUrl = Url + "/integration/odata/$metadata";
+            Login = login;
+            Password = password;
+
+            return ПолучитьEdmМодель();
         }
 
         public static List<string> ПолучитьТипыСущностей(IEdmModel edm)
@@ -183,7 +197,7 @@ namespace Админка_RX.Классы
             }
             catch (System.StackOverflowException)
             { return null; }
-            
+
         }
 
         public static IEdmEntitySet ПолучитьРеквизитыТипаРеквизита(IEdmModel edm, string имя)
@@ -473,6 +487,8 @@ namespace Админка_RX.Классы
 
         public static ТипРеквизита? ПолучитьТипРеквизита(IEdmProperty property)
         {
+            if (property == null)
+                return null;
             // Имя реквизита
             string propertyName = property.Name;
 
@@ -592,8 +608,100 @@ namespace Админка_RX.Классы
         }
 
 
+        public static Dictionary<string, string> ПолучитьВсеБазовыеТипы()
+        {
+            using (Stream stream = MetadataRX.ПолучитьМетаданныеStream())
+            {
+                XDocument xdoc = XDocument.Load(stream);
+
+                XNamespace edmx = "http://schemas.microsoft.com/ado/2007/06/edmx";
+                XNamespace edm = "http://docs.oasis-open.org/odata/ns/edmx";
+
+                // Ищем все типы, у которых есть BaseType (значит, они наследники)
+                var subtypes = xdoc
+                    .Descendants().Where(n => n.Name.LocalName == "EntityType")
+                    .Where(t => t.Attribute("BaseType") != null)
+                    .Select(t => new
+                    {
+                        Name = t.Attribute("Name")?.Value,
+                        BaseType = t.Attribute("BaseType")?.Value
+                    })
+                    .ToList().ToDictionary(
+                    keySelector: item => item.Name,
+                    elementSelector: item => item.BaseType
+                    );
 
 
+                return subtypes;
+            }
+
+        }
+
+        public static IEnumerable<XElement> ПолучитьНавигационноеСвойствоКоллекцию()
+        {
+            using (Stream stream = MetadataRX.ПолучитьМетаданныеStream())
+            {
+                XDocument xdoc = XDocument.Load(stream);
+
+                XNamespace edmx = "http://schemas.microsoft.com/ado/2007/06/edmx";
+                XNamespace edm = "http://docs.oasis-open.org/odata/ns/edm";
+
+                // Ищем все типы, у которых есть BaseType (значит, они наследники)
+                var navProps = xdoc
+                               .Descendants().Where(n => n.Name.LocalName == "NavigationProperty")
+                //.Where(t => t.Attribute("Name")?.Value == name)
+                .Where(t => t.Attribute("Type").Value != null && t.Attribute("Type").Value.StartsWith("Collection("));
+
+                return navProps;
+            }
+
+        }
+
+
+        /// <summary>
+        /// Возвращает список имён скалярных свойств для всех сущностей (или конкретной, если указать nameFilter).
+        /// </summary>
+        public static Dictionary<string, List<string>> GetScalarProperties()
+        {
+            var result = new Dictionary<string, List<string>>();
+            using (Stream stream = MetadataRX.ПолучитьМетаданныеStream())
+            {
+                XDocument xdoc = XDocument.Load(stream);
+                var entityTypes = xdoc
+                .Descendants().Where(n => n.Name.LocalName == "EntityType")
+               // .Where(et => nameFilter == null || et.Attribute("Name")?.Value == nameFilter)
+                .ToList();
+
+                foreach (var et in entityTypes)
+                {
+                    var entityName = et.Attribute("Name")?.Value;
+                    var containsMany = et.Attribute("ContainsMany")?.Value;
+                    if (string.IsNullOrEmpty(entityName)) continue;
+
+                    var scalarProps = new List<string>();
+
+                    // Property — это всегда скаляр (Edm.String, Edm.Int32 и т. п.)
+                    foreach (var prop in et.Elements().Where(n => n.Name.LocalName == "Property"))
+                    {
+                        var name = prop.Attribute("Name")?.Value;
+                        if (!string.IsNullOrEmpty(name))
+                            scalarProps.Add(name);
+                    }
+
+                    // NavigationProperty — это связи: одиночные или коллекции. Мы их НЕ берём.
+                    // Если хочешь отдельно видеть одиночные ссылки — можно добавить отдельный список.
+
+                    result[entityName] = scalarProps;
+                }
+            }
+
+
+            
+
+            
+
+            return result;
+        }
 
         #region Секция со списком типов сущностей
 
