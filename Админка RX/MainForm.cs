@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Data;
 using System.IO;
 using System.Linq;
+using System.Security.AccessControl;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
@@ -21,13 +22,19 @@ namespace Админка_RX
     {
         readonly Properties.Settings Параметры = Properties.Settings.Default;
 
+
+        Dictionary<IEdmEntityType, IEdmEntitySet> ТипИТипСущности = new Dictionary<IEdmEntityType, IEdmEntitySet>();
+
+
+
+
         public static List<string> ТипыСущностей = new List<string>();
         public static List<string> ТипыБезНаследников = new List<string>();
-        public static IEnumerable<XElement> ТипыКоллекции = null; 
+        public static IEnumerable<XElement> ТипыКоллекции = null;
         public static DataSet МАКСИД = null;
         public static IEdmModel EDMModel = null;
         public static ODataClient ODATAClient = null;
-        public static IDictionary<string, string> ТипИТипСущности = new Dictionary<string, string>();
+        //public static IDictionary<string, string> ТипИТипСущности = new Dictionary<string, string>();
 
 
 
@@ -94,11 +101,6 @@ namespace Админка_RX
 
         public bool ЗагрузитьДанные()
         {
-
-            //long rfr = 169;
-            //KeyValuePair<string, object> keyValuePair = new KeyValuePair<string, object>("Id", rfr);
-            //var fff = f.Where(d => d.Contains(keyValuePair));
-            //var ffff = fff;
             bool OK = false;
 
 
@@ -106,6 +108,8 @@ namespace Админка_RX
             {
                 try
                 {
+                    ТипИТипСущности.Clear();
+
                     var сравнениеНаслед = new Dictionary<string, List<string>>();
                     // ЕДМ модель для сравнений и получения реквизитов
                     EDMModel = MetadataRX.ПолучитьEdmМодель();
@@ -114,56 +118,58 @@ namespace Админка_RX
                         return OK;
                     // ОДата для поискоа и изменений
                     ODATAClient = DirectumRX.ODataClient();
-                    // Получим типы сущностей
-                    ТипыСущностей = MetadataRX.ПолучитьТипыСущностей(EDMModel);
-                    // Тип и тип сущности 
-                    ТипИТипСущности = MetadataRX.ПолучитьТипыИТипыСущности(EDMModel, ТипыСущностей);
+
+                    var типИТипСущности = MetadataRX.GetEntityTypesAndEntitySet(EDMModel);
 
                     // Уберём коллекции
                     ТипыКоллекции = MetadataRX.ПолучитьНавигационноеСвойствоКоллекцию();
 
-                    ТипИТипСущности = ТипИТипСущности.Where(t => !ТипыКоллекции.Any(n => n.Attribute("Type").Value != null && n.Attribute("Type").Value.EndsWith(t.Key + ")"))).ToDictionary(keySelector: item => item.Key,
-                    elementSelector: item => item.Value);
-
-                    ТипыСущностей = ТипыСущностей.Where(t => ТипИТипСущности.Any(tt => tt.Value == t)).ToList();
-
-                    foreach (var тип in ТипыСущностей)
+                    foreach (var item in типИТипСущности)
                     {
-                        List<string> d = new List<string>();
-                        if (!сравнениеНаслед.ContainsKey(тип))
-                            сравнениеНаслед.Add(тип, MetadataRX.ПолучитьИменаНаследников(EDMModel, тип, тип, d, ТипИТипСущности));
+                        var baseType = item.Key.BaseType;
+                        for (int j = 1; baseType != null; j++)
+                        {
+                            var type = baseType;
 
+                            var nameFull = type.FullTypeName();
+
+                            var f = item.Key.BaseType.FullTypeName();
+                            if (!ТипыКоллекции.Any(n => n.Attribute("Type").Value.Contains(nameFull)))
+                            {
+                                if (!ТипИТипСущности.ContainsKey(item.Key))
+                                    ТипИТипСущности.Add(item.Key, item.Value);
+                            }
+                            else if (ТипИТипСущности.ContainsKey(item.Key))
+                                ТипИТипСущности.Remove(item.Key);
+
+                            if (baseType == type)
+                                baseType = baseType.BaseType;
+                        }
                     }
-
-
-                    var имена = сравнениеНаслед.Select(d => d.Key);
-
-                    ТипыБезНаследников = имена.Where(d => !сравнениеНаслед.Any(n => n.Value.Contains(d))).ToList();
 
                     МАКСИД = Параметры.МаксИД;
 
 
+                    if (МАКСИД == null || МАКСИД.Tables.Count != ТипИТипСущности.Count)
+                        МАКСИД = new DataSet();
 
-                    if (МАКСИД == null)
-                    МАКСИД = new DataSet();
-                     
                     // Для массового изменения
-                    foreach (var item in ТипыБезНаследников)
+                    foreach (var item in ТипИТипСущности)
                     {
 
-                        if (!ТипыСущностейПодпунктМИРДействия.Items.Contains(item))
-                            ТипыСущностейПодпунктМИРДействия.Items.Add(item);
+                        if (!ТипыСущностейПодпунктМИРДействия.Items.Contains(item.Value.Name))
+                            ТипыСущностейПодпунктМИРДействия.Items.Add(item.Value.Name);
 
-                        if (!ТипыСущностейПодпунктМЗДействия.Items.Contains(item))
-                            ТипыСущностейПодпунктМЗДействия.Items.Add(item);
+                        if (!ТипыСущностейПодпунктМЗДействия.Items.Contains(item.Value.Name))
+                            ТипыСущностейПодпунктМЗДействия.Items.Add(item.Value.Name);
 
                         #region Заполнение таблиц
 
 
-                        if (!МАКСИД.Tables.Contains(item))
+                        if (!МАКСИД.Tables.Contains(item.Value.Name))
                         {
                             // Создать новую таблицу  
-                            DataTable dataTable = new DataTable(item);
+                            DataTable dataTable = new DataTable(item.Value.Name);
                             dataTable.Columns.Add("MaxId", typeof(long));
 
                             DataRow _ravi = dataTable.NewRow();
@@ -194,11 +200,11 @@ namespace Админка_RX
                     {
 
                         #region Русификация
-                        if (!Файлы.Tables.Contains(pair.Key))
+                        if (!Файлы.Tables.Contains(pair.Key.Name))
                         {
 
                             // Создать новую таблицу  
-                            DataTable dataTable = new DataTable(pair.Key);
+                            DataTable dataTable = new DataTable(pair.Key.Name);
                             dataTable.Columns.Add("Type", typeof(string));
                             // Добавим ТипСущности Для удобства и создадим первую и последнюю строку таблицы 
                             if (dataTable.Rows.Count == 0)
@@ -222,7 +228,6 @@ namespace Админка_RX
 
 
                     OK = true;
-                    //  НУЖНА ЕЩЁ ПРОВЕРКА НА ЗАГРУЖЕННОСТЬ ДАННЫХ И НА ВРЕМЯ ЗАГРУЗКИ
 
                 }
                 catch (Exception ex)
@@ -365,6 +370,9 @@ namespace Админка_RX
 
         private void КнопкаОбновить_Click(object sender, EventArgs e)
         {
+            EDMModel = null;
+            ODATAClient = null;
+
             ЗагрузитьДанныеAsync();
         }
 
@@ -481,7 +489,7 @@ namespace Админка_RX
 
             }
 
-            
+
             Параметры.МаксИД = МАКСИД;
             Параметры.Save();
 
@@ -500,10 +508,7 @@ namespace Админка_RX
 
         private void button1_Click_1(object sender, EventArgs e)
         {
-            //var d = MetadataRX.ПолучитьВсеНавигационныеСвойстваКоллекцийДляТипа();
-            var d2 = MetadataRX.ПолучитьВсеБазовыеТипы();
-            var d = MetadataRX.GetScalarProperties();
-            var d3 = MetadataRX.ПолучитьНавигационноеСвойствоКоллекцию(); 
+
         }
     }
 }

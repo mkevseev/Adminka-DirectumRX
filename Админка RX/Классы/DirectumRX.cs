@@ -942,9 +942,9 @@ namespace Админка_RX.Классы
                 var nameFull = ss.FullName();
                 if (nameFull.Contains("Sungero.IntegrationService.Models.Generated.Workflow") || // Задачи и задания
 
-                    //nameFull.Contains("Sungero.IntegrationService.Models.Generated.Docflow.IOfficialDocumentTrackingDto") ||
-                    //nameFull.Contains("Sungero.IntegrationService.Models.Generated.Content.IElectronicDocumentVersionsDto") || // Версии документа (есть примеры как добавлять, не тут уж точно)
-                    nameFull.Contains("Sungero.IntegrationService.Models.Generated.CoreEntities.IGroupRecipientLinksDto")
+                    nameFull.Contains("IOfficialDocumentTrackingDto") ||
+                    nameFull.Contains("IElectronicDocumentVersionsDto") || // Версии документа (есть примеры как добавлять, не тут уж точно)
+                    nameFull.Contains("IGroupRecipientLinksDto")
                     )
                 {
                     ok = false;

@@ -124,7 +124,7 @@ namespace Админка_RX
 
                             // Создадим такие же колонки для фильтра
                             if (!isFiltr && !Фильтр.Columns.Contains(name))
-                                СоздатьКолонку(Фильтр, new DataGridViewTextBoxColumn(), name, name, DataGridViewAutoSizeColumnMode.None, true, true);
+                                СоздатьКолонку(Фильтр, new DataGridViewTextBoxColumn(), name, name, DataGridViewAutoSizeColumnMode.None, true, false);
 
                         }
 
@@ -138,7 +138,7 @@ namespace Админка_RX
 
                             // Создадим такие же колонки для фильтра
                             if (!isFiltr && !Фильтр.Columns.Contains(name))
-                                СоздатьКолонку(Фильтр, new DataGridViewTextBoxColumn(), name, name, DataGridViewAutoSizeColumnMode.None, true, true);
+                                СоздатьКолонку(Фильтр, new DataGridViewTextBoxColumn(), name, name, DataGridViewAutoSizeColumnMode.None, true, false);
                         }
 
                         //if (типРеквизита == MetadataRX.ТипРеквизита.Коллекция)
