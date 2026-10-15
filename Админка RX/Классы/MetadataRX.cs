@@ -517,230 +517,10 @@ namespace Админка_RX.Классы
             Коллекция
         }
 
-
-
-
-
-
-
-
-
-
-        public static void ПолучитьИменаФункции()
-        {
-            using (Stream stream = MetadataRX.ПолучитьМетаданныеStream())
-            {
-
-
-                XDocument xdoc = XDocument.Load(stream);
-
-                // получаем корневой узел
-                var edmx = xdoc.Elements();//.Element("schema");
-                var dataServices = edmx.Elements();
-                var schema = dataServices.Elements();
-
-
-
-                if (schema != null)
-                {
-                    // ЭТА ТЕМА ПОЛНОСЬЮ РАБОЧАЯ. НУЖНО НЕМНОГО ПОСМОТРЕТЬ ДЕБАГЕР
-                    var EntityType = dataServices.Elements().Elements().Where((n) => n.Name.LocalName == "EntityType");
-                    var EntitySet = dataServices.Elements().Elements().Where((n) => n.Name.LocalName == "EntityContainer").Elements().Where((n) => n.Name.LocalName == "EntitySet");
-                    var ComplexType = dataServices.Elements().Elements().Where((n) => n.Name.LocalName == "ComplexType");
-                    var Function = dataServices.Elements().Elements().Where((n) => n.Name.LocalName == "Function");
-                    var Action = dataServices.Elements().Elements().Where((n) => n.Name.LocalName == "Action");
-                    var NavigationPropertyBinding = dataServices.Elements().Elements().Where((n) => n.Name.LocalName == "NavigationPropertyBinding");
-
-                    var ff = dataServices.Elements().Elements().Where((n) => n.Name.LocalName == "EntityContainer");
-
-                    var fff = Function.Attributes();
-                    foreach (var f in Function)
-                    {
-                        var d = f;
-                    }
-
-
-                    // проходим по всем элементам person
-
-                }
-            }
-        }
-
-
-
-        const string FILENAME = @"C:\Новая папка (2)\ffddd копия.xml";
-        public static void Mains()
-        {
-
-            //// передаем в конструктор тип класса Person
-            //XmlSerializer xmlSerializer = new XmlSerializer(typeof(Edmx));
-
-            //// десериализуем объект
-            //using (FileStream fs = new FileStream(FILENAME, FileMode.OpenOrCreate))
-            //{
-            //    Edmx? person = (Edmx)xmlSerializer.Deserialize(fs);
-            //    var dd = person.DataServices.Schema.EntityType;
-            //    foreach (var item in dd)
-            //    {
-            //        var dddd = item;
-            //    }
-            //}
-
-            //try
-            //{
-            //    Microsoft.OData.ModelBuilder.
-            //    string myxml = File.ReadAllText(FILENAME);
-
-            //    DataServices OdataSchema = new DataServices();
-            //    Stream stream = new MemoryStream(Encoding.UTF8.GetBytes(myxml));
-            //    XmlSerializer reader = new System.Xml.Serialization.XmlSerializer(typeof(DataServices));
-            //    OdataSchema = (DataServices)reader.Deserialize(stream);
-            //    foreach (var item in OdataSchema.Schema)
-            //    {
-            //        var ddd = item;
-            //    }
-            //}
-            //catch (Exception ex)
-            //{
-            //    MessageBox.Show(ex.GetBaseException().Message);
-            //}
-
-
-
-        }
-
-
-
-        #region Секция со списком типов сущностей
-
-        public class EntityContainer
-        {
-            public string Name { get; set; }
-            public string xmlns { get; set; }
-
-            public List<EntitySet> EntitySet { get; set; }
-
-        }
-        public class EntitySet
-        {
-            public string Name { get; set; }
-            public string EntityType { get; set; }
-            public List<NavigationPropertyBinding> NavigationPropertyBinding { get; set; }
-        }
-
-        public class NavigationPropertyBinding
-        {
-            public string Path { get; set; }
-            public string Target { get; set; }
-
-        }
-
-        #endregion
-
-
-        public static EntityContainer ПолучитьСписокТиповСущностей()
-        {
-            using (Stream stream = MetadataRX.ПолучитьМетаданныеStream())
-            {
-                XDocument xdoc = XDocument.Load(stream);
-
-                // получаем корневой узел
-                var edmx = xdoc.Elements();
-                var dataServices = edmx.Elements();
-                var schema = dataServices.Elements();
-
-                EntityContainer entityContainer = new EntityContainer();
-
-                if (schema != null)
-                {
-                    var EntitySet = dataServices.Elements().Elements().Where((n) => n.Name.LocalName == "EntityContainer").Elements().Where((n) => n.Name.LocalName == "EntitySet");
-
-                    List<EntitySet> entitySet = new List<EntitySet>();
-
-
-                    foreach (var item in EntitySet)
-                    {
-                        EntitySet entity = new EntitySet();
-                        List<NavigationPropertyBinding> navigationPropertyBinding = new List<NavigationPropertyBinding>();
-
-                        entity.Name = item.Attributes().Where((a) => a.Name == "Name").FirstOrDefault().Value;
-                        entity.EntityType = item.Attributes().Where((a) => a.Name == "EntityType").FirstOrDefault().Value;
-
-                        foreach (var item1 in item.Elements())
-                        {
-                            NavigationPropertyBinding navigationProperty = new NavigationPropertyBinding();
-                            navigationProperty.Path = item1.Attributes().Where((a) => a.Name == "Path").FirstOrDefault().Value;
-                            navigationProperty.Target = item1.Attributes().Where((a) => a.Name == "Target").FirstOrDefault().Value;
-                            navigationPropertyBinding.Add(navigationProperty);
-                        }
-                        entity.NavigationPropertyBinding = navigationPropertyBinding;
-                        entitySet.Add(entity);
-                    }
-                    entityContainer.EntitySet = entitySet;
-                }
-                return entityContainer;
-            }
-        }
-
-
-        #region Секция с типами сущности модуля
-
-        public class SchemaEntityType
-        {
-            public string Namespace { get; set; }
-            public List<EntityType> EntityType { get; set; }
-
-        }
-
-        public class EntityType
-        {
-
-            public string Name { get; set; }
-            public string BaseType { get; set; }
-            public List<Key> Key { get; set; }
-            public List<Property> Properties { get; set; }
-            public List<NavigationProperty> NavigationProperty { get; set; }
-        }
-
-        public class Property
-        {
-
-            public string Name { get; set; }
-
-            public string Type { get; set; }
-            public bool Nullable { get; set; }
-        }
-
-        public class NavigationProperty
-        {
-            public string Name { get; set; }
-            public string Type { get; set; }
-            public bool Nullable { get; set; }
-        }
-
-        public class Key
-        {
-            public List<PropertyRef> PropertyRef { get; set; }
-        }
-        public class PropertyRef
-        {
-            public string Name { get; set; }
-
-        }
-
-        #endregion
-
-
-
-
-
-
-
-
         #region Новый код
 
 
-        public static Dictionary<IEdmEntityType, IEdmEntitySet> GetEntityTypesAndEntitySet(IEdmModel model)
+        public static Dictionary<IEdmEntityType, IEdmEntitySet> GetAllEntityTypesAndEntitySet(IEdmModel model)
         {
             if (model == null)
                 return new Dictionary<IEdmEntityType, IEdmEntitySet>();
@@ -758,15 +538,18 @@ namespace Админка_RX.Классы
 
             foreach (var item in listSort)
             {
+                if (item.EndsWith("VersionsDto") || item.EndsWith("TrackingDto"))
+                    continue;
+
 
                 var entity = elements.OfType<IEdmEntityType>().FirstOrDefault(n => n.Name == item);
 
                 if (entity == null)
                     continue;
 
-                // 1. Это наследник? (у него есть базовый тип)
-                if (entity.BaseType() == null)
-                    continue;
+                //// 1. Это наследник? (у него есть базовый тип)
+                //if (entity.BaseType() == null)
+                //    continue;
 
                 // 2. Это НЕ абстрактный тип? (чтобы не брать абстрактные базовые классы)
                 if (entity.IsAbstract)
@@ -813,7 +596,47 @@ namespace Админка_RX.Классы
         }
 
 
+        public static Dictionary<IEdmEntityType, IEdmEntitySet> УбратьЛишниеТипы(Dictionary<IEdmEntityType, IEdmEntitySet> всеТипИТипСущности, IEnumerable<XElement> типыКоллекции)
+        {
+            Dictionary<IEdmEntityType, IEdmEntitySet> типИТипСущности = new Dictionary<IEdmEntityType, IEdmEntitySet>();
 
+            foreach (var item in всеТипИТипСущности)
+            {
+                var baseType = item.Key.BaseType;
+
+
+                var properties = item.Key.Properties();
+                var keys = item.Key.Key();
+
+                // Если одинаковое колличество или 1, то пропускаем
+                if (!properties.Any() || properties.Count() == 1 || properties.Count() == keys.Count())
+                    continue;
+
+                if (baseType == null && !типыКоллекции.Any(n => n.Attribute("Type").Value.Contains(item.Key.FullName())))
+                    типИТипСущности.Add(item.Key, item.Value);
+
+                for (int j = 1; baseType != null; j++)
+                {
+                    var type = baseType;
+
+                    var nameFull = type.FullTypeName();
+
+                    var f = item.Key.BaseType.FullTypeName();
+                    if (!типыКоллекции.Any(n => n.Attribute("Type").Value.Contains(nameFull)))
+                    {
+                        if (!типИТипСущности.ContainsKey(item.Key))
+                            типИТипСущности.Add(item.Key, item.Value);
+                    }
+                    else if (типИТипСущности.ContainsKey(item.Key))
+                        типИТипСущности.Remove(item.Key);
+
+                    if (baseType == type)
+                        baseType = baseType.BaseType;
+                }
+            }
+
+            return типИТипСущности;
+        }
 
 
 
@@ -930,6 +753,180 @@ namespace Админка_RX.Классы
         }
 
         #endregion
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        #region Старый код АРХИВ возможностей
+
+        public static EntityContainer ПолучитьСписокТиповСущностей()
+        {
+            using (Stream stream = MetadataRX.ПолучитьМетаданныеStream())
+            {
+                XDocument xdoc = XDocument.Load(stream);
+
+                // получаем корневой узел
+                var edmx = xdoc.Elements();
+                var dataServices = edmx.Elements();
+                var schema = dataServices.Elements();
+
+                EntityContainer entityContainer = new EntityContainer();
+
+                if (schema != null)
+                {
+                    var EntitySet = dataServices.Elements().Elements().Where((n) => n.Name.LocalName == "EntityContainer").Elements().Where((n) => n.Name.LocalName == "EntitySet");
+
+                    List<EntitySet> entitySet = new List<EntitySet>();
+
+
+                    foreach (var item in EntitySet)
+                    {
+                        EntitySet entity = new EntitySet();
+                        List<NavigationPropertyBinding> navigationPropertyBinding = new List<NavigationPropertyBinding>();
+
+                        entity.Name = item.Attributes().Where((a) => a.Name == "Name").FirstOrDefault().Value;
+                        entity.EntityType = item.Attributes().Where((a) => a.Name == "EntityType").FirstOrDefault().Value;
+
+                        foreach (var item1 in item.Elements())
+                        {
+                            NavigationPropertyBinding navigationProperty = new NavigationPropertyBinding();
+                            navigationProperty.Path = item1.Attributes().Where((a) => a.Name == "Path").FirstOrDefault().Value;
+                            navigationProperty.Target = item1.Attributes().Where((a) => a.Name == "Target").FirstOrDefault().Value;
+                            navigationPropertyBinding.Add(navigationProperty);
+                        }
+                        entity.NavigationPropertyBinding = navigationPropertyBinding;
+                        entitySet.Add(entity);
+                    }
+                    entityContainer.EntitySet = entitySet;
+                }
+                return entityContainer;
+            }
+        }
+
+        const string FILENAME = @"C:\Новая папка (2)\ffddd копия.xml";
+        public static void Mains()
+        {
+
+            //// передаем в конструктор тип класса Person
+            //XmlSerializer xmlSerializer = new XmlSerializer(typeof(Edmx));
+
+            //// десериализуем объект
+            //using (FileStream fs = new FileStream(FILENAME, FileMode.OpenOrCreate))
+            //{
+            //    Edmx? person = (Edmx)xmlSerializer.Deserialize(fs);
+            //    var dd = person.DataServices.Schema.EntityType;
+            //    foreach (var item in dd)
+            //    {
+            //        var dddd = item;
+            //    }
+            //}
+
+            //try
+            //{
+            //    Microsoft.OData.ModelBuilder.
+            //    string myxml = File.ReadAllText(FILENAME);
+
+            //    DataServices OdataSchema = new DataServices();
+            //    Stream stream = new MemoryStream(Encoding.UTF8.GetBytes(myxml));
+            //    XmlSerializer reader = new System.Xml.Serialization.XmlSerializer(typeof(DataServices));
+            //    OdataSchema = (DataServices)reader.Deserialize(stream);
+            //    foreach (var item in OdataSchema.Schema)
+            //    {
+            //        var ddd = item;
+            //    }
+            //}
+            //catch (Exception ex)
+            //{
+            //    MessageBox.Show(ex.GetBaseException().Message);
+            //}
+
+
+
+        }
+
+        #region Секция со списком типов сущностей
+
+        public class EntityContainer
+        {
+            public string Name { get; set; }
+            public string xmlns { get; set; }
+
+            public List<EntitySet> EntitySet { get; set; }
+
+        }
+        public class EntitySet
+        {
+            public string Name { get; set; }
+            public string EntityType { get; set; }
+            public List<NavigationPropertyBinding> NavigationPropertyBinding { get; set; }
+        }
+
+        public class NavigationPropertyBinding
+        {
+            public string Path { get; set; }
+            public string Target { get; set; }
+
+        }
+
+        #endregion
+
+        public static void ПолучитьИменаФункции()
+        {
+            using (Stream stream = MetadataRX.ПолучитьМетаданныеStream())
+            {
+
+
+                XDocument xdoc = XDocument.Load(stream);
+
+                // получаем корневой узел
+                var edmx = xdoc.Elements();//.Element("schema");
+                var dataServices = edmx.Elements();
+                var schema = dataServices.Elements();
+
+
+
+                if (schema != null)
+                {
+                    // ЭТА ТЕМА ПОЛНОСЬЮ РАБОЧАЯ. НУЖНО НЕМНОГО ПОСМОТРЕТЬ ДЕБАГЕР
+                    var EntityType = dataServices.Elements().Elements().Where((n) => n.Name.LocalName == "EntityType");
+                    var EntitySet = dataServices.Elements().Elements().Where((n) => n.Name.LocalName == "EntityContainer").Elements().Where((n) => n.Name.LocalName == "EntitySet");
+                    var ComplexType = dataServices.Elements().Elements().Where((n) => n.Name.LocalName == "ComplexType");
+                    var Function = dataServices.Elements().Elements().Where((n) => n.Name.LocalName == "Function");
+                    var Action = dataServices.Elements().Elements().Where((n) => n.Name.LocalName == "Action");
+                    var NavigationPropertyBinding = dataServices.Elements().Elements().Where((n) => n.Name.LocalName == "NavigationPropertyBinding");
+
+                    var ff = dataServices.Elements().Elements().Where((n) => n.Name.LocalName == "EntityContainer");
+
+                    var fff = Function.Attributes();
+                    foreach (var f in Function)
+                    {
+                        var d = f;
+                    }
+
+
+                    // проходим по всем элементам person
+
+                }
+            }
+        }
+
+        #endregion
+
 
     }
 }

@@ -24,13 +24,14 @@ namespace Админка_RX
 
 
         Dictionary<IEdmEntityType, IEdmEntitySet> ТипИТипСущности = new Dictionary<IEdmEntityType, IEdmEntitySet>();
-
+        Dictionary<IEdmEntityType, IEdmEntitySet> ВсеТипИТипСущности = new Dictionary<IEdmEntityType, IEdmEntitySet>();
+        public static IEnumerable<XElement> ТипыКоллекции = null;
 
 
 
         public static List<string> ТипыСущностей = new List<string>();
         public static List<string> ТипыБезНаследников = new List<string>();
-        public static IEnumerable<XElement> ТипыКоллекции = null;
+        
         public static DataSet МАКСИД = null;
         public static IEdmModel EDMModel = null;
         public static ODataClient ODATAClient = null;
@@ -42,9 +43,6 @@ namespace Админка_RX
         {
 
             InitializeComponent();
-            // Автообновление
-            ВремяАвтоОбновл.Interval = 60000; // Установите интервал в 60 000 миллисекунд (60 секунда)
-            ВремяАвтоОбновл.Start(); // Запустите таймер
             // Сразузагрузим данные для быстрого поиска
             ЗагрузитьДанныеAsync();
         }
@@ -108,7 +106,7 @@ namespace Админка_RX
             {
                 try
                 {
-                    ТипИТипСущности.Clear();
+                    
 
                     var сравнениеНаслед = new Dictionary<string, List<string>>();
                     // ЕДМ модель для сравнений и получения реквизитов
@@ -116,42 +114,25 @@ namespace Админка_RX
 
                     if (EDMModel == null)
                         return OK;
+
                     // ОДата для поискоа и изменений
                     ODATAClient = DirectumRX.ODataClient();
 
-                    var типИТипСущности = MetadataRX.GetEntityTypesAndEntitySet(EDMModel);
-
-                    // Уберём коллекции
+                    // Найдём вообще все типы по которым можно работать
+                    ВсеТипИТипСущности = MetadataRX.GetAllEntityTypesAndEntitySet(EDMModel);
+                    
+                    // Найдём реквизиты коллекции, правятся они в основной сущности
                     ТипыКоллекции = MetadataRX.ПолучитьНавигационноеСвойствоКоллекцию();
-
-                    foreach (var item in типИТипСущности)
-                    {
-                        var baseType = item.Key.BaseType;
-                        for (int j = 1; baseType != null; j++)
-                        {
-                            var type = baseType;
-
-                            var nameFull = type.FullTypeName();
-
-                            var f = item.Key.BaseType.FullTypeName();
-                            if (!ТипыКоллекции.Any(n => n.Attribute("Type").Value.Contains(nameFull)))
-                            {
-                                if (!ТипИТипСущности.ContainsKey(item.Key))
-                                    ТипИТипСущности.Add(item.Key, item.Value);
-                            }
-                            else if (ТипИТипСущности.ContainsKey(item.Key))
-                                ТипИТипСущности.Remove(item.Key);
-
-                            if (baseType == type)
-                                baseType = baseType.BaseType;
-                        }
-                    }
+                    // Уберём всё лишнее
+                    ТипИТипСущности = MetadataRX.УбратьЛишниеТипы(ВсеТипИТипСущности, ТипыКоллекции);
 
                     МАКСИД = Параметры.МаксИД;
 
 
                     if (МАКСИД == null || МАКСИД.Tables.Count != ТипИТипСущности.Count)
                         МАКСИД = new DataSet();
+
+
 
                     // Для массового изменения
                     foreach (var item in ТипИТипСущности)
@@ -185,7 +166,6 @@ namespace Админка_RX
 
                         #endregion
                     }
-
 
 
 
@@ -249,11 +229,6 @@ namespace Админка_RX
             //MessageBox.Show("");
         }
 
-
-        private void ВремяАвтоОбновл_Tick(object sender, EventArgs e)
-        {
-            ЗагрузитьДанныеAsync();
-        }
 
 
         private async void ПоискПоИД(string ид)

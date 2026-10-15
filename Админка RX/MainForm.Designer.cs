@@ -28,7 +28,6 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MainForm));
             this.ИД = new System.Windows.Forms.TextBox();
             this.ВсёОК = new System.Windows.Forms.CheckBox();
@@ -52,8 +51,6 @@
             this.миграцияЗаписейToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.ТипыСущностейПодпунктМЗДействия = new System.Windows.Forms.ToolStripComboBox();
             this.ИзменитьПодпунктМЗДействия = new System.Windows.Forms.ToolStripMenuItem();
-            this.ВремяАвтоОбновл = new System.Windows.Forms.Timer(this.components);
-            this.button1 = new System.Windows.Forms.Button();
             this.panel1.SuspendLayout();
             this.statusStrip1.SuspendLayout();
             this.toolStrip1.SuspendLayout();
@@ -82,7 +79,6 @@
             this.panel1.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.panel1.Controls.Add(this.button1);
             this.panel1.Controls.Add(this.statusStrip1);
             this.panel1.Controls.Add(this.toolStrip1);
             this.panel1.Controls.Add(this.ИД);
@@ -252,20 +248,6 @@
             this.ИзменитьПодпунктМЗДействия.Text = "Изменить";
             this.ИзменитьПодпунктМЗДействия.Click += new System.EventHandler(this.ИзменитьПодпунктМЗДействия_Click);
             // 
-            // ВремяАвтоОбновл
-            // 
-            this.ВремяАвтоОбновл.Tick += new System.EventHandler(this.ВремяАвтоОбновл_Tick);
-            // 
-            // button1
-            // 
-            this.button1.Location = new System.Drawing.Point(175, 4);
-            this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(52, 18);
-            this.button1.TabIndex = 11;
-            this.button1.Text = "button1";
-            this.button1.UseVisualStyleBackColor = true;
-            this.button1.Click += new System.EventHandler(this.button1_Click_1);
-            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -293,7 +275,6 @@
         private System.Windows.Forms.TextBox ИД;
         private System.Windows.Forms.CheckBox ВсёОК;
         private System.Windows.Forms.Panel panel1;
-        private System.Windows.Forms.Timer ВремяАвтоОбновл;
         private System.Windows.Forms.ToolStrip toolStrip1;
         private System.Windows.Forms.ToolStripButton КнопкаОбновить;
         private System.Windows.Forms.ToolStripButton КнопкаНастройка;
@@ -313,7 +294,6 @@
         private System.Windows.Forms.ToolStripMenuItem миграцияЗаписейToolStripMenuItem;
         private System.Windows.Forms.ToolStripComboBox ТипыСущностейПодпунктМЗДействия;
         private System.Windows.Forms.ToolStripMenuItem ИзменитьПодпунктМЗДействия;
-        private System.Windows.Forms.Button button1;
     }
 }
 
