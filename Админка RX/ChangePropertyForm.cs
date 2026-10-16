@@ -16,16 +16,21 @@ namespace Админка_RX
 {
     public partial class ChangePropertyForm : Form
     {
-        public string Тип = string.Empty;
         public string Ид = string.Empty;
-        public static IDictionary<string, object> Данные = new Dictionary<string, object>();
-        public static IDictionary<string, object> Реквизиты = new Dictionary<string, object>();
-        public List<string> ДопРеквизиты = new List<string>();
+        public string Тип = string.Empty;
         public static ODataClient ODATAClient = MainForm.ODATAClient;
         public static IEdmModel EDMModel = MainForm.EDMModel;
-        public List<string> ТипыСущностей = MainForm.ТипыСущностей;
+        public static List<IEdmProperty> ВсеРеквизиты = new List<IEdmProperty>();
+        public static List<IEdmNavigationProperty> НавигационныеРеквизиты = new List<IEdmNavigationProperty>();
+        public List<string> ИменаНавигРеквиз = new List<string>();
+        public static IDictionary<string, object> Данные = new Dictionary<string, object>();
         private IEdmEntityType ТипОбъекта = null;
         private IEdmEntitySet ЭлементEdmМодели = null;
+
+
+
+        public List<string> ТипыСущностей = MainForm.ТипыСущностей;
+        
         private bool newOpen = true;
 
         public ChangePropertyForm()
@@ -52,114 +57,68 @@ namespace Админка_RX
         {
             try
             {
-
-
-
-
-                IDictionary<string, object> всеРеквизиты = new Dictionary<string, object>();
-
                 ЭлементEdmМодели = ПолучитьЭлементEdmМодели(EDMModel, Тип);
-
-
-                var структурныйТип = ПолучитьСтруктурированныйТип(ЭлементEdmМодели);
-                // Получим все имена и типы реквизитов типа сущности для дальнейшего сравнения 
                 ТипОбъекта = ЭлементEdmМодели.EntityType();
-                var nameType = ТипОбъекта.Name;
-
-
-                Реквизиты = ПолучитьВсеРеквизитыТипа(структурныйТип, всеРеквизиты);
-
+                ВсеРеквизиты = ТипОбъекта.Properties().ToList();
+                НавигационныеРеквизиты = ТипОбъекта.NavigationProperties().ToList();
+                ИменаНавигРеквиз = НавигационныеРеквизиты.Select(i => i.Name).ToList();
 
                 var фильтр = $"Id eq {int.Parse(Ид)}";
-
-                foreach (var реквизит in Реквизиты)
-                    if (!БазовыйТип(реквизит.Value.ToString()) && !ДопРеквизиты.Contains(реквизит.Key))
-                        ДопРеквизиты.Add(реквизит.Key);
 
                 // Создадим колонки
                 СоздатьКолонки();
 
-                if (ДопРеквизиты.Any())
+                if (ИменаНавигРеквиз.Any())
                 {
-                    var записи = await DirectumRX.ПолучитьAsync(ODATAClient, Тип, фильтр, ДопРеквизиты.ToArray());
-
+                    var записи = await DirectumRX.ПолучитьAsync(ODATAClient, Тип, фильтр, ИменаНавигРеквиз.ToArray());
                     Данные = записи.First();
                 }
                 else
                 {
                     var записи = await DirectumRX.ПолучитьAsync(ODATAClient, Тип, фильтр);
-
                     Данные = записи.First();
                 }
 
-                    
-
                 foreach (var line in Данные)
                 {
-
                     var name = line.Key;
                     var value = line.Value;
-                    var реквизит = Реквизиты.Where(r => r.Key == name).First();
-                    var property = ТипОбъекта.FindProperty(name);
+
+                    var property = ВсеРеквизиты.Where(r => r.Name == name).First();
 
                     var типРеквизита = ПолучитьТипРеквизита(property);
 
                     if (типРеквизита == ТипРеквизита.Обычный)
                     {
-
                         if (property.IsKey())
                             continue;
 
+                        var имяТипа = ((IEdmPrimitiveType)property.Type.Definition).Name;
+
                         var строка = Таблица.Rows.Add();
 
-                        Таблица.Rows[строка].Cells[0].Value = реквизит.Value;   // Тип реквизита
-                        Таблица.Rows[строка].Cells[1].Value = ((IEdmPrimitiveType)property.Type.Definition).Name; // Тип
-                        Таблица.Rows[строка].Cells[2].Value = реквизит.Key;   // Имя реквизита
-                        Таблица.Rows[строка].Cells[3].Value = DirectumRX.РусскоеИмяРеквизита(EDMModel, name, реквизит.Value.ToString(), Тип);   // Русское имя реквизита
-                        Таблица.Rows[строка].Cells[4].Value = line.Value; // Тут всегда обычные реквизиты
-
+                        Таблица.Rows[строка].Cells[0].Value = имяТипа;   // Тип реквизита
+                        Таблица.Rows[строка].Cells[1].Value = имяТипа; // Тип
+                        Таблица.Rows[строка].Cells[2].Value = property.Name;   // Имя реквизита
+                        Таблица.Rows[строка].Cells[3].Value = DirectumRX.РусскоеИмяРеквизита(EDMModel, name, имяТипа.ToString(), Тип);   // Русское имя реквизита
+                        Таблица.Rows[строка].Cells[4].Value = value; // Тут всегда обычные реквизиты
 
                     }
 
-                    if (типРеквизита == ТипРеквизита.Сущность)
+                    if (типРеквизита == ТипРеквизита.Сущность || типРеквизита == ТипРеквизита.Коллекция)
                     {
-                        var NavigProperties = ТипОбъекта.NavigationProperties().Where(s => s.Name == name);
+                        var navProperty = (IEdmNavigationProperty)property;
+                        var имяТипа = navProperty.ToEntityType().Name;
+                        var типСущ = ЭлементEdmМодели.FindNavigationTarget(navProperty); // Тип данных
 
-                        if (NavigProperties.Any())
-                        {
-                            var типСущ = ЭлементEdmМодели.FindNavigationTarget(NavigProperties.First()); // Тип данных
+                        var строка = Таблица.Rows.Add();
 
-                            var строка = Таблица.Rows.Add();
+                        Таблица.Rows[строка].Cells[0].Value = имяТипа;   // Тип реквизита
+                        Таблица.Rows[строка].Cells[1].Value = типСущ.Name; // Тип
+                        Таблица.Rows[строка].Cells[2].Value = property.Name;   // Имя реквизита
+                        Таблица.Rows[строка].Cells[3].Value = DirectumRX.РусскоеИмяРеквизита(EDMModel, name, имяТипа.ToString(), Тип);   // Русское имя реквизита
+                        Таблица.Rows[строка].Cells[4].Value = типРеквизита == ТипРеквизита.Сущность ? ((IDictionary<string, object>)value)?["Id"] : "[Просмотр при изменении значений]"; // Значение
 
-                            Таблица.Rows[строка].Cells[0].Value = реквизит.Value;   // Тип реквизита
-                            Таблица.Rows[строка].Cells[1].Value = типСущ.Name; // Тип
-                            Таблица.Rows[строка].Cells[2].Value = реквизит.Key;   // Имя реквизита
-                            Таблица.Rows[строка].Cells[3].Value = DirectumRX.РусскоеИмяРеквизита(EDMModel, name, реквизит.Value.ToString(), Тип);   // Русское имя реквизита
-                            Таблица.Rows[строка].Cells[4].Value = ((IDictionary<string, object>)line.Value)?["Id"]; // Значение
-
-
-
-                        }
-                    }
-
-                    if (типРеквизита == ТипРеквизита.Коллекция)
-                    {
-                        var NavigProperties = ТипОбъекта.NavigationProperties().Where(s => s.Name == name);
-
-                        if (NavigProperties.Any())
-                        {
-                            var типСущ = ЭлементEdmМодели.FindNavigationTarget(NavigProperties.First()); // Тип данных
-
-                            var строка = Таблица.Rows.Add();
-
-                            Таблица.Rows[строка].Cells[0].Value = реквизит.Value;   // Тип реквизита
-                            Таблица.Rows[строка].Cells[1].Value = типСущ.Name; // Тип
-                            Таблица.Rows[строка].Cells[2].Value = реквизит.Key;   // Имя реквизита
-                            Таблица.Rows[строка].Cells[3].Value = DirectumRX.РусскоеИмяРеквизита(EDMModel, name, реквизит.Value.ToString(), Тип);   // Русское имя реквизита
-                            Таблица.Rows[строка].Cells[4].Value = "[Просмотр при изменении значений]"; // Значение
-
-
-                        }
                     }
 
                 }
@@ -293,11 +252,11 @@ namespace Админка_RX
 
         private async void Изменить_Click(object sender, EventArgs e)
         {
-            var изменения = await DirectumRX.Проверить(ODATAClient, EDMModel, ТипыСущностей, Тип, Ид, ДопРеквизиты.ToArray(), Данные);
+            var изменения = await DirectumRX.Проверить(ODATAClient, EDMModel, ТипыСущностей, Тип, Ид, ИменаНавигРеквиз.ToArray(), Данные);
 
             try
             {
-                DirectumRX.ИзменитьПакетно(ODATAClient, EDMModel, Тип, Ид, ДопРеквизиты.ToArray(), изменения);
+                DirectumRX.ИзменитьПакетно(ODATAClient, EDMModel, Тип, Ид, ИменаНавигРеквиз.ToArray(), изменения);
                 this.Close();
             }
             catch (Exception ex)

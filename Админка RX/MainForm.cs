@@ -26,12 +26,13 @@ namespace Админка_RX
         Dictionary<IEdmEntityType, IEdmEntitySet> ТипИТипСущности = new Dictionary<IEdmEntityType, IEdmEntitySet>();
         Dictionary<IEdmEntityType, IEdmEntitySet> ВсеТипИТипСущности = new Dictionary<IEdmEntityType, IEdmEntitySet>();
         public static IEnumerable<XElement> ТипыКоллекции = null;
+        public static List<IEdmStructuredType> БазовыеТипы = new List<IEdmStructuredType>();
 
 
 
         public static List<string> ТипыСущностей = new List<string>();
         public static List<string> ТипыБезНаследников = new List<string>();
-        
+
         public static DataSet МАКСИД = null;
         public static IEdmModel EDMModel = null;
         public static ODataClient ODATAClient = null;
@@ -106,7 +107,7 @@ namespace Админка_RX
             {
                 try
                 {
-                    
+
 
                     var сравнениеНаслед = new Dictionary<string, List<string>>();
                     // ЕДМ модель для сравнений и получения реквизитов
@@ -120,11 +121,15 @@ namespace Админка_RX
 
                     // Найдём вообще все типы по которым можно работать
                     ВсеТипИТипСущности = MetadataRX.GetAllEntityTypesAndEntitySet(EDMModel);
-                    
+
                     // Найдём реквизиты коллекции, правятся они в основной сущности
                     ТипыКоллекции = MetadataRX.ПолучитьНавигационноеСвойствоКоллекцию();
                     // Уберём всё лишнее
                     ТипИТипСущности = MetadataRX.УбратьЛишниеТипы(ВсеТипИТипСущности, ТипыКоллекции);
+
+                    БазовыеТипы = MetadataRX.ПолучитьВсеБазовыеТипы(ТипИТипСущности);
+
+                    //ВсеБазовыеТипы = MetadataRX.
 
                     МАКСИД = Параметры.МаксИД;
 
@@ -132,17 +137,22 @@ namespace Админка_RX
                     if (МАКСИД == null || МАКСИД.Tables.Count != ТипИТипСущности.Count)
                         МАКСИД = new DataSet();
 
+                    // Русификация
+                    var Файлы = Параметры.Файлы;
 
+
+                    if (Файлы == null)
+                        Файлы = new DataSet();
 
                     // Для массового изменения
                     foreach (var item in ТипИТипСущности)
                     {
 
-                        if (!ТипыСущностейПодпунктМИРДействия.Items.Contains(item.Value.Name))
-                            ТипыСущностейПодпунктМИРДействия.Items.Add(item.Value.Name);
+                        //if (!ТипыСущностейПодпунктМИРДействия.Items.Contains(item.Value.Name))
+                        //    ТипыСущностейПодпунктМИРДействия.Items.Add(item.Value.Name);
 
-                        if (!ТипыСущностейПодпунктМЗДействия.Items.Contains(item.Value.Name))
-                            ТипыСущностейПодпунктМЗДействия.Items.Add(item.Value.Name);
+                        //if (!ТипыСущностейПодпунктМЗДействия.Items.Contains(item.Value.Name))
+                        //    ТипыСущностейПодпунктМЗДействия.Items.Add(item.Value.Name);
 
                         #region Заполнение таблиц
 
@@ -165,47 +175,27 @@ namespace Админка_RX
                         }
 
                         #endregion
-                    }
-
-
-
-                    // Русификация
-                    var Файлы = Параметры.Файлы;
-
-
-                    if (Файлы == null)
-                        Файлы = new DataSet();
-
-                    foreach (var pair in ТипИТипСущности)
-                    {
 
                         #region Русификация
-                        if (!Файлы.Tables.Contains(pair.Key.Name))
+                        if (!Файлы.Tables.Contains(item.Key.Name))
                         {
 
                             // Создать новую таблицу  
-                            DataTable dataTable = new DataTable(pair.Key.Name);
+                            DataTable dataTable = new DataTable(item.Key.Name);
                             dataTable.Columns.Add("Type", typeof(string));
                             // Добавим ТипСущности Для удобства и создадим первую и последнюю строку таблицы 
                             if (dataTable.Rows.Count == 0)
                                 dataTable.Rows.Add();
-                            dataTable.Rows[0][0] = pair.Value;
+                            dataTable.Rows[0][0] = item.Value;
                             Файлы.Tables.Add(dataTable);
-
-
 
                         }
                         #endregion
-
                     }
-
 
                     Параметры.Файлы = Файлы;
                     Параметры.МаксИД = МАКСИД;
                     Параметры.Save();
-
-
-
 
                     OK = true;
 
@@ -220,9 +210,6 @@ namespace Админка_RX
 
                 }
             }
-
-
-
 
             return OK;
             // ТУТ МОЖНО СДЕЛАТЬ ДИАЛОГ ИЛИ ЧТО ТО, ПОКАЖЕТ НЕ ЗАБИРАЯ ДОСТУП
@@ -298,8 +285,11 @@ namespace Админка_RX
             }
 
 
+            var типы = MetadataRX.УбратьЛишнихНаследников(ТипИТипСущности, БазовыеТипы, лист);
+
+
             // Создадим диалог и получим нажатую кнопку
-            кнопка = Диалоги.Показать(лист);
+            кнопка = Диалоги.Показать(типы);
 
             if (!string.IsNullOrEmpty(кнопка))
             {
@@ -314,8 +304,6 @@ namespace Админка_RX
                 }
 
             }
-
-
 
         }
 

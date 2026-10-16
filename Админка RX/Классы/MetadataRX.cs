@@ -8,6 +8,7 @@ using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Runtime.InteropServices;
+using System.Security.AccessControl;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
@@ -541,6 +542,10 @@ namespace Админка_RX.Классы
                 if (item.EndsWith("VersionsDto") || item.EndsWith("TrackingDto"))
                     continue;
 
+                if (item == "IAssignmentBaseDto")
+                {
+                    var f = item;
+                }
 
                 var entity = elements.OfType<IEdmEntityType>().FirstOrDefault(n => n.Name == item);
 
@@ -558,7 +563,7 @@ namespace Админка_RX.Классы
                 // 3. Ищем EntitySet именно для этого типа
                 var entitySets = GetEntitySetsForType(model, entity);
 
-                if (!DirectumRX.НужныйТипСущности(entity.BaseType()))
+                if (!DirectumRX.НужныйТипСущности(entity))
                     continue;
 
                 // Если у типа нет своего EntitySet — значит, он используется только как свойство/навигация у других.
@@ -638,36 +643,43 @@ namespace Админка_RX.Классы
             return типИТипСущности;
         }
 
-
-
-
-        public static Dictionary<string, string> ПолучитьВсеБазовыеТипы()
+        public static List<string> УбратьЛишнихНаследников(Dictionary<IEdmEntityType, IEdmEntitySet> типИТипСущности, List<IEdmStructuredType> базовыеТипы, List<string> типы)
         {
-            using (Stream stream = MetadataRX.ПолучитьМетаданныеStream())
+            var лист = new List<string>();
+            foreach (var тип in типы)
             {
-                XDocument xdoc = XDocument.Load(stream);
-
-                XNamespace edmx = "http://schemas.microsoft.com/ado/2007/06/edmx";
-                XNamespace edm = "http://docs.oasis-open.org/odata/ns/edmx";
-
-                // Ищем все типы, у которых есть BaseType (значит, они наследники)
-                var subtypes = xdoc
-                    .Descendants().Where(n => n.Name.LocalName == "EntityType")
-                    .Where(t => t.Attribute("BaseType") != null)
-                    .Select(t => new
-                    {
-                        Name = t.Attribute("Name")?.Value,
-                        BaseType = t.Attribute("BaseType")?.Value
-                    })
-                    .ToList().ToDictionary(
-                    keySelector: item => item.Name,
-                    elementSelector: item => item.BaseType
-                    );
-
-
-                return subtypes;
+                var item = типИТипСущности.First(i => i.Value.Name == тип);
+                if (!базовыеТипы.Any(i => ((IEdmEntityType)i).Name == item.Key.Name) && !лист.Contains(тип))
+                    лист.Add(тип);
             }
 
+            return лист;
+        }
+
+    
+
+        public static List<IEdmStructuredType> ПолучитьВсеБазовыеТипы(Dictionary<IEdmEntityType, IEdmEntitySet> типИТипСущности)
+        {
+            var bases = new List<IEdmStructuredType>();
+
+            // Соберём все базовые типы
+            foreach (var item in типИТипСущности)
+            {
+                var baseType = item.Key.BaseType;
+
+                for (int j = 1; baseType != null; j++)
+                {
+                    var type = baseType;
+
+                    if (!bases.Contains(type))
+                    bases.Add(type);
+
+                    if (baseType == type)
+                        baseType = baseType.BaseType;
+                }
+            }
+
+            return bases;
         }
 
         public static IEnumerable<XElement> ПолучитьНавигационноеСвойствоКоллекцию()
@@ -773,6 +785,35 @@ namespace Админка_RX.Классы
 
 
         #region Старый код АРХИВ возможностей
+
+        public static Dictionary<string, string> ПолучитьВсеБазовыеТипы()
+        {
+            using (Stream stream = MetadataRX.ПолучитьМетаданныеStream())
+            {
+                XDocument xdoc = XDocument.Load(stream);
+
+                XNamespace edmx = "http://schemas.microsoft.com/ado/2007/06/edmx";
+                XNamespace edm = "http://docs.oasis-open.org/odata/ns/edmx";
+
+                // Ищем все типы, у которых есть BaseType (значит, они наследники)
+                var subtypes = xdoc
+                    .Descendants().Where(n => n.Name.LocalName == "EntityType")
+                    .Where(t => t.Attribute("BaseType") != null)
+                    .Select(t => new
+                    {
+                        Name = t.Attribute("Name")?.Value,
+                        BaseType = t.Attribute("BaseType")?.Value
+                    })
+                    .ToList().ToDictionary(
+                    keySelector: item => item.Name,
+                    elementSelector: item => item.BaseType
+                    );
+
+
+                return subtypes;
+            }
+
+        }
 
         public static EntityContainer ПолучитьСписокТиповСущностей()
         {

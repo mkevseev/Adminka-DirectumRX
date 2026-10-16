@@ -2,6 +2,7 @@
 using Simple.OData.Client;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Windows.Forms;
 using Админка_RX.Классы;
 using static Админка_RX.Классы.MetadataRX;
@@ -15,13 +16,19 @@ namespace Админка_RX
         public string Тип = string.Empty;
         public string Ид = string.Empty;
         public DataGridViewCell Cell = null;
-        private IDictionary<string, object> ЛистФильтра = new Dictionary<string, object>();
+        public static List<IEdmProperty> ВсеРеквизиты = new List<IEdmProperty>();
+        public static List<IEdmNavigationProperty> НавигационныеРеквизиты = new List<IEdmNavigationProperty>();
+        public List<string> ИменаНавигРеквиз = new List<string>();
         private static IEnumerable<IDictionary<string, object>> Данные { get; set; }
-        private IDictionary<string, object> Реквизиты = new Dictionary<string, object>();
-        private ODataClient ODATAClient = ChangePropertyForm.ODATAClient;
-        private IEdmModel EDMModel = ChangePropertyForm.EDMModel;
         private IEdmEntityType ТипОбъекта = null;
         private IEdmEntitySet ЭлементEdmМодели = null;
+        private ODataClient ODATAClient = ChangePropertyForm.ODATAClient;
+        private IEdmModel EDMModel = ChangePropertyForm.EDMModel;
+        private IDictionary<string, object> ЛистФильтра = new Dictionary<string, object>();
+      
+
+
+
 
         public SelectForm()
         {
@@ -33,9 +40,6 @@ namespace Админка_RX
             // Заполняем таблицу данными
             ЗаполнитьТаблицу(null);
         }
-
-
-
 
         public async void ЗаполнитьТаблицу(string фильтр)
         {
@@ -50,27 +54,17 @@ namespace Админка_RX
                 //Таблица.Columns[3].ContextMenuStrip = contextMenu;
 
                 bool isFiltr = !string.IsNullOrEmpty(фильтр);
-                List<string> допРеквизиты = new List<string>();
-                IDictionary<string, object> всеРеквизиты = new Dictionary<string, object>();
 
                 ЭлементEdmМодели = ПолучитьЭлементEdmМодели(EDMModel, Тип);
-
-                var структурныйТип = ПолучитьСтруктурированныйТип(ЭлементEdmМодели);
-                // Получим все имена и типы реквизитов типа сущности для дальнейшего сравнения 
                 ТипОбъекта = ЭлементEdmМодели.EntityType();
-                var nameType = ТипОбъекта.Name;
-
-
-                Реквизиты = ПолучитьВсеРеквизитыТипа(структурныйТип, всеРеквизиты);
-
-                foreach (var реквизит in Реквизиты)
-                    if (!БазовыйТип(реквизит.Value.ToString()) && !допРеквизиты.Contains(реквизит.Key))
-                        допРеквизиты.Add(реквизит.Key);
+                ВсеРеквизиты = ТипОбъекта.Properties().ToList();
+                НавигационныеРеквизиты = ТипОбъекта.NavigationProperties().ToList();
+                ИменаНавигРеквиз = НавигационныеРеквизиты.Select(i => i.Name).ToList();
 
                 if (isFiltr)
-                    Данные = await DirectumRX.ПолучитьAsync(ODATAClient, Тип, допРеквизиты.ToArray(), 100, фильтр);
+                    Данные = await DirectumRX.ПолучитьAsync(ODATAClient, Тип, ИменаНавигРеквиз.ToArray(), 100, фильтр);
                 else
-                    Данные = await DirectumRX.ПолучитьAsync(ODATAClient, Тип, допРеквизиты.ToArray(), 100);
+                    Данные = await DirectumRX.ПолучитьAsync(ODATAClient, Тип, ИменаНавигРеквиз.ToArray(), 100);
 
 
                 if (Данные == null && !isFiltr)
@@ -116,11 +110,9 @@ namespace Админка_RX
                         // Сразу добавим меню
                         cell.ContextMenuStrip = contextMenu;
 
-
                         if (типРеквизита == MetadataRX.ТипРеквизита.Обычный)
                         {
-
-                            cell.Value = line.Value;
+                            cell.Value = value;
 
                             // Создадим такие же колонки для фильтра
                             if (!isFiltr && !Фильтр.Columns.Contains(name))
@@ -133,8 +125,6 @@ namespace Админка_RX
                             IDictionary<string, object> val = value as IDictionary<string, object>;
                             if (val != null)
                                 cell.Value = val.ContainsKey("Name") ? val["Name"] : val["Id"];
-
-
 
                             // Создадим такие же колонки для фильтра
                             if (!isFiltr && !Фильтр.Columns.Contains(name))
@@ -239,7 +229,7 @@ namespace Админка_RX
             {
                 // Удаляем старое значение
                 ЛистФильтра.Remove(key);
-                return;
+                //return;
             }
 
             // Если не найдено в листе и значение не null
@@ -264,18 +254,7 @@ namespace Админка_RX
                 {
                     MetadataRX.ТипВвода типВвода = MetadataRX.ТипВвода.Все;
                     MetadataRX.ОпределитьТипВвода(((IEdmPrimitiveType)property.Type.Definition).Name, ref типВвода);
-                    //// Дата
-                    //if (типВвода == MetadataRX.ТипВвода.DateTimeOffset)
-                    //{
-                    //    // Дата обрабатывается отдельно   и Enumerlable не работал при фильтре contains({0},'{1}') нужно всё расписать по одному для контроля
-
-                    //}
-                    //else
-                    // Строка
-                    фильтр.Add($"{string.Format("contains({0},'{1}')", name, val)}");
-
-
-
+                    фильтр.Add($"{DirectumRX.ПолучитьСтрокуФильтра(типВвода,  name, val)}");
 
                 }
 
@@ -314,7 +293,12 @@ namespace Админка_RX
             var фильтр = ((TextBox)sender).Text;
 
             if (string.IsNullOrEmpty(фильтр))
-                return;
+            {
+                Фильтр.DataSource = null;
+                Фильтр.Rows.Clear();
+                Фильтр.Columns.Clear();
+                Фильтр.Refresh();
+            }               
 
             Таблица.DataSource = null;
             Таблица.Rows.Clear();
@@ -324,7 +308,6 @@ namespace Админка_RX
 
             // Заполняем таблицу данными
             ЗаполнитьТаблицу(фильтр);
-
 
         }
 

@@ -9,6 +9,7 @@ using System.Security.Policy;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using System.Xml.Linq;
 using static System.Windows.Forms.VisualStyles.VisualStyleElement;
 
 
@@ -910,7 +911,7 @@ namespace Админка_RX.Классы
 
         }
 
-        public static async Task<IDictionary<string, object>> Поиск(ODataClient oDataClient, IEdmModel edmModel,  string Имя, string[] ДопРеквизиты, List<string> РеквизитыСравнения)
+        public static async Task<IDictionary<string, object>> Поиск(ODataClient oDataClient, IEdmModel edmModel, string Имя, string[] ДопРеквизиты, List<string> РеквизитыСравнения)
         {
             IDictionary<string, object> изменения = new Dictionary<string, object>();
 
@@ -927,7 +928,7 @@ namespace Админка_RX.Классы
             return изменения;
         }
 
-        public static bool НужныйТипСущности(IEdmStructuredType тип)
+        public static bool НужныйТипСущности(IEdmEntityType тип)
         {
             IEdmStructuredType baseType = тип;
             // 10 наследников
@@ -1070,6 +1071,30 @@ namespace Админка_RX.Классы
                 имяТипаСущности = типСущности.Substring(1, типСущности.Length - 4);
 
             return имяТипаСущности;
+        }
+
+
+        public static string ПолучитьСтрокуФильтра(MetadataRX.ТипВвода типВвода, string name, object val)
+        {
+            string filter = string.Empty;
+            // Число
+            if (типВвода == MetadataRX.ТипВвода.Int32 || типВвода == MetadataRX.ТипВвода.Int64 || типВвода == MetadataRX.ТипВвода.Double)
+                filter = string.Format("{0} eq {1}", name, val);
+            // Гуид
+            if (типВвода == MetadataRX.ТипВвода.Guid)
+                filter = string.Format("{0} eq guid'{1}'", name, val);
+            //Строка
+            if (типВвода == MetadataRX.ТипВвода.String)
+                filter = string.Format("contains({0},'{1}')", name, val);
+            // Дата
+            if (типВвода == MetadataRX.ТипВвода.DateTimeOffset)
+                filter = string.Format("{0} eq datetime'{1}'", name, val);
+            // Логическое
+            if (типВвода == MetadataRX.ТипВвода.Boolean)
+                filter = string.Format("{0} eq {1}", name, val);
+
+
+            return filter;
         }
 
     }
