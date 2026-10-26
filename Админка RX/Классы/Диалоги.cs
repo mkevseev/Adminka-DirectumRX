@@ -15,6 +15,7 @@ namespace Мониторинг.Resources.Функции
     {
         readonly Админка_RX.Properties.Settings Параметры = Админка_RX.Properties.Settings.Default;
 
+        public static string _Значение;
 
         //СОЗДАНИЕ ДИАЛОГА (и пример)
         public static string Показать(List<string> именаКнопок)
@@ -356,7 +357,49 @@ namespace Мониторинг.Resources.Функции
             prompt.Dispose();
         }
 
+        public static string Показать(Control реквизит, string имяКнопки)
+        {
+            Form prompt = new Form
+            {
+                Width = реквизит.Width + 30,
+                Height = реквизит.Height + 80,
+                Text = "Выбор",
+                StartPosition = FormStartPosition.CenterScreen,
+                TopMost = true
+            };
 
+            prompt.Controls.Add(реквизит);
+
+            //реквизит.TextChanged += (sender, e) => { _Значение = реквизит.Text; };
+
+            //prompt.FormClosing += (sender, e) => { _Значение = реквизит.Text; };
+
+            if (!string.IsNullOrEmpty(имяКнопки))
+            {
+                Button button = new Button
+                {
+                    Left = prompt.Width / 2 - (имяКнопки.Length * 6),
+                    Top = 30,
+                    Text = имяКнопки,
+
+                };
+                prompt.Controls.Add(button);
+                
+                button.Click += (sender, e) => 
+                { 
+                    _Значение = реквизит.Text;
+                    prompt.Close();
+                };
+            }
+
+           
+
+            prompt.ShowDialog();
+            //return реквизит.Значение;
+            prompt.Dispose();
+
+            return _Значение;
+        }
 
     }
 }

@@ -14,7 +14,8 @@ using System.Xml.Linq;
 using Админка_RX.Properties;
 using Админка_RX.Классы;
 using Мониторинг.Resources.Функции;
-using static System.Windows.Forms.VisualStyles.VisualStyleElement;
+using static Админка_RX.Классы.MetadataRX;
+using static Админка_RX.Классы.Функции;
 
 namespace Админка_RX
 {
@@ -107,9 +108,6 @@ namespace Админка_RX
             {
                 try
                 {
-
-
-                    var сравнениеНаслед = new Dictionary<string, List<string>>();
                     // ЕДМ модель для сравнений и получения реквизитов
                     EDMModel = MetadataRX.ПолучитьEdmМодель();
 
@@ -118,21 +116,15 @@ namespace Админка_RX
 
                     // ОДата для поискоа и изменений
                     ODATAClient = DirectumRX.ODataClient();
-
                     // Найдём вообще все типы по которым можно работать
                     ВсеТипИТипСущности = MetadataRX.GetAllEntityTypesAndEntitySet(EDMModel);
-
                     // Найдём реквизиты коллекции, правятся они в основной сущности
                     ТипыКоллекции = MetadataRX.ПолучитьНавигационноеСвойствоКоллекцию();
                     // Уберём всё лишнее
                     ТипИТипСущности = MetadataRX.УбратьЛишниеТипы(ВсеТипИТипСущности, ТипыКоллекции);
-
                     БазовыеТипы = MetadataRX.ПолучитьВсеБазовыеТипы(ТипИТипСущности);
 
-                    //ВсеБазовыеТипы = MetadataRX.
-
                     МАКСИД = Параметры.МаксИД;
-
 
                     if (МАКСИД == null || МАКСИД.Tables.Count != ТипИТипСущности.Count)
                         МАКСИД = new DataSet();
@@ -140,22 +132,13 @@ namespace Админка_RX
                     // Русификация
                     var Файлы = Параметры.Файлы;
 
-
                     if (Файлы == null)
                         Файлы = new DataSet();
 
                     // Для массового изменения
                     foreach (var item in ТипИТипСущности)
                     {
-
-                        //if (!ТипыСущностейПодпунктМИРДействия.Items.Contains(item.Value.Name))
-                        //    ТипыСущностейПодпунктМИРДействия.Items.Add(item.Value.Name);
-
-                        //if (!ТипыСущностейПодпунктМЗДействия.Items.Contains(item.Value.Name))
-                        //    ТипыСущностейПодпунктМЗДействия.Items.Add(item.Value.Name);
-
                         #region Заполнение таблиц
-
 
                         if (!МАКСИД.Tables.Contains(item.Value.Name))
                         {
@@ -177,9 +160,9 @@ namespace Админка_RX
                         #endregion
 
                         #region Русификация
+
                         if (!Файлы.Tables.Contains(item.Key.Name))
                         {
-
                             // Создать новую таблицу  
                             DataTable dataTable = new DataTable(item.Key.Name);
                             dataTable.Columns.Add("Type", typeof(string));
@@ -190,7 +173,9 @@ namespace Админка_RX
                             Файлы.Tables.Add(dataTable);
 
                         }
+
                         #endregion
+
                     }
 
                     Параметры.Файлы = Файлы;
@@ -220,33 +205,43 @@ namespace Админка_RX
 
         private async void ПоискПоИД(string ид)
         {
-            var типыСущностей = MetadataRX.ПолучитьТипыСущностей(EDMModel);
-            var типыСущностей2 = new List<string>();
-            var наследники = new List<string>();
+            var лист = new List<string>();
+
             string кнопка = string.Empty;
 
+            var bar = ОбработкаProgressBar;
+            bar.Minimum = 0;
+            bar.Value = 0;
+            bar.Maximum = МАКСИД.Tables.Count;
 
-            foreach (var тип in типыСущностей)
+            foreach (DataTable table in МАКСИД.Tables)
             {
-                наследники.AddRange(MetadataRX.ПолучитьИменаНаследников(EDMModel, тип));
+                bar.Value += 1;
 
-                if (!наследники.Any(н => н == тип))
-                {
-                    var значениеРХ = await DirectumRX.ПолучитьAsync(ODATAClient, тип, $"Id eq {int.Parse(ид)}");
-                    if (значениеРХ != null)
-                    {
-                        типыСущностей2.Add(тип);
-                        //var d = значениеРХ.First();
-                        //var dd = d["Id"];
-                        //if (!результат.Result)
-                        //    типыСущностей.Remove(тип);
-                        значениеРХ = null;
-                    }
-                }
+
+                if (long.Parse(table.Rows[0][0].ToString()) == -1)
+                    continue;
+
+                // Если ИД больше МАКСИД, то и искать не стоит
+                if (long.Parse(ид) > long.Parse(table.Rows[0][0].ToString()))
+                    continue;
+
+                var тип = table.TableName;
+
+                var значениеРХ = await DirectumRX.ПолучитьAsync(ODATAClient, тип, $"Id eq {long.Parse(ид)}");
+                if (значениеРХ != null)
+                    лист.Add(тип);
+
 
             }
+
+
+            var типы = MetadataRX.УбратьЛишнихНаследников(ТипИТипСущности, БазовыеТипы, лист);
+
+
             // Создадим диалог и получим нажатую кнопку
-            кнопка = Диалоги.Показать(типыСущностей2);
+            кнопка = Диалоги.Показать(типы);
+
 
 
         }
@@ -297,6 +292,7 @@ namespace Админка_RX
                 {
                     propertyForm.ТипСущности.Text = кнопка;
                     propertyForm.Тип = кнопка;
+                    propertyForm.ТипЗапускаФормы = ТипЗапускаФормы.ИзменениеРеквизитов;
                     propertyForm.ИДЗаписи.Text = ид;
                     propertyForm.Ид = ид;
                     propertyForm.ShowDialog();
@@ -306,7 +302,6 @@ namespace Админка_RX
             }
 
         }
-
 
 
         public string GetXml(DataSet dataSet)
@@ -355,6 +350,8 @@ namespace Админка_RX
 
             if (string.IsNullOrEmpty(ид))
                 MessageBox.Show("Укажите ИД");
+            else if (Параметры.ЗагрузкаИд)
+                MessageBox.Show("Сделайте загрузку ИД");
             else
                 ПоискПоИД(ид);
         }
@@ -371,25 +368,38 @@ namespace Админка_RX
                 ИзменениеРеквизитов(ид);
         }
 
-        private void ИзменитьПодпунктМИРДействия_Click(object sender, EventArgs e)
+        private void МассовоеИзменениеРеквизитовПунктДействия_Click(object sender, EventArgs e)
         {
-            var тип = ТипыСущностейПодпунктМИРДействия.Text;
+            var names = ТипИТипСущности.Select(s => s.Value.Name);
+            var f = names.Max(s => s.Length);
+            var реквизит = new ComboBox
+            {
+                Width = f * 5,
+                Height = 80,
+                Top = 5,
+                Left = 5,
+            };
+
+            реквизит.Items.AddRange(names.ToArray());
+
+            var тип = Диалоги.Показать(реквизит, "Выбрать");
 
             if (string.IsNullOrEmpty(тип))
                 MessageBox.Show("Укажите Тип сущности");
             else
             {
-                MassiveChangeForm changeForm = new MassiveChangeForm
+                SelectForm changeForm = new SelectForm
                 {
-                    Тип = тип
+                    Тип = тип,
+                    ТипЗапуска = ТипЗапускаФормы.МассовоеИзменениеРеквизитов
                 };
                 changeForm.ShowDialog();
             }
         }
 
-        private void ИзменитьПодпунктМЗДействия_Click(object sender, EventArgs e)
+        private void МиграцияЗаписейToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            var тип = ТипыСущностейПодпунктМЗДействия.Text;
+            var тип = "";
 
             if (string.IsNullOrEmpty(тип))
                 MessageBox.Show("Укажите Тип сущности");
@@ -464,14 +474,7 @@ namespace Админка_RX
             var dd = d;
         }
 
-        private void button1_Click(object sender, EventArgs e)
-        {
-            var f = MetadataRX.ПолучитьВсеБазовыеТипы();
-        }
 
-        private void button1_Click_1(object sender, EventArgs e)
-        {
 
-        }
     }
 }

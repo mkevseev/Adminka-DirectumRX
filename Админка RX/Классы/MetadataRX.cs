@@ -764,6 +764,49 @@ namespace Админка_RX.Классы
             return typeRef.ToString();
         }
 
+
+        /// <summary>
+        /// Ищет свойства, чей тип ТОЧНО равен целевому типу (например, свойство типа User).
+        /// Работает даже на старых версиях Microsoft.OData.Edm без TargetType() и IEdmNavigationType.
+        /// </summary>
+        public static List<(string EntityTypeName, string PropertyName)> FindDirectTypeMatches(
+            IEdmModel model,
+            string targetTypeName)
+        {
+            var result = new List<(string, string)>();
+
+            // 1. Находим целевой тип (User)
+            var targetType = model.FindType(targetTypeName) as IEdmEntityType;
+            if (targetType == null)
+                return result;
+
+            foreach (var element in model.SchemaElements)
+            {
+                if (element is IEdmEntityContainer container)
+                {
+                    foreach (var entitySet in container.EntitySets())
+                    {
+                        var entityType = entitySet.EntityType();
+                        if (entityType == null) continue;
+
+                        foreach (var prop in entityType.DeclaredProperties)
+                        {
+                            // 2. Проверяем, является ли тип свойства тем самым типом, который мы ищем
+                            var propType = prop.Type as IEdmEntityType;
+
+                            if (propType != null && propType.Name == targetTypeName)
+                            {
+                                // Нашли! Это свойство имеет тип User.
+                                result.Add((entityType.Name, prop.Name));
+                            }
+                        }
+                    }
+                }
+            }
+
+            return result;
+        }
+
         #endregion
 
 

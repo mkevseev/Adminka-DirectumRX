@@ -3,6 +3,7 @@ using Simple.OData.Client;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using System.Windows.Forms;
 using Админка_RX.Классы;
 using static Админка_RX.Классы.MetadataRX;
@@ -25,8 +26,7 @@ namespace Админка_RX
         private ODataClient ODATAClient = ChangePropertyForm.ODATAClient;
         private IEdmModel EDMModel = ChangePropertyForm.EDMModel;
         private IDictionary<string, object> ЛистФильтра = new Dictionary<string, object>();
-      
-
+        public ТипЗапускаФормы ТипЗапуска;
 
 
 
@@ -45,13 +45,28 @@ namespace Админка_RX
         {
             try
             {
-                ContextMenuStrip contextMenu = new ContextMenuStrip();
-                contextMenu.Items.Add("Выбрать запись");
-                //contextMenu.Items.Add("Вставить");
-                // Привязка события для выбора варианта из контекстного меню  
-                contextMenu.ItemClicked += new ToolStripItemClickedEventHandler(ContextMenu_ItemClicked);
 
-                //Таблица.Columns[3].ContextMenuStrip = contextMenu;
+                ContextMenuStrip contextMenu = new ContextMenuStrip();
+                // создаем элементы меню
+                ToolStripMenuItem MassiveFillMenuItem = new ToolStripMenuItem("Массово заполнить из...");
+
+                if (ТипЗапуска == ТипЗапускаФормы.ИзменениеРеквизитов)
+                {
+                    contextMenu.Items.Add("Выбрать запись");
+                    //contextMenu.Items.Add("Вставить");
+                    // Привязка события для выбора варианта из контекстного меню  
+                    contextMenu.ItemClicked += new ToolStripItemClickedEventHandler(ContextMenu_ItemClicked);
+                }
+                else if (ТипЗапуска == ТипЗапускаФормы.МассовоеИзменениеРеквизитов)
+                {
+                    Выбрать.Visible = false;
+                    ToolStripMenuItem createMenuItem = new ToolStripMenuItem("Изменить");
+
+                    // добавляем элементы в меню
+                    contextMenu.Items.AddRange(new[] { MassiveFillMenuItem, createMenuItem });
+
+                    createMenuItem.Click += CreateMenuItem_Click;
+                }
 
                 bool isFiltr = !string.IsNullOrEmpty(фильтр);
 
@@ -91,7 +106,6 @@ namespace Админка_RX
                     var строкаInd = Таблица.Rows.Add();
                     foreach (var line in строка)
                     {
-
                         var name = line.Key;
                         var value = line.Value;
                         var property = ТипОбъекта.FindProperty(name);
@@ -101,8 +115,40 @@ namespace Админка_RX
                             continue;
 
                         if (!Таблица.Columns.Contains(name))
+                        {
                             СоздатьКолонку(Таблица, new DataGridViewTextBoxColumn(), name, name, DataGridViewAutoSizeColumnMode.None, true, false);
 
+                            if (ТипЗапуска == ТипЗапускаФормы.МассовоеИзменениеРеквизитов)
+                            {
+                                ToolStripMenuItem menuItem = new ToolStripMenuItem(name);
+                                MassiveFillMenuItem.DropDownItems.Add(menuItem);
+
+                                // Получим все реквизиты 
+                                if (типРеквизита == MetadataRX.ТипРеквизита.Сущность)
+                                {
+                                    var NavigProperties = ТипОбъекта.NavigationProperties().Where(s => s.Name == name);
+
+                                    var типСущ = ЭлементEdmМодели.FindNavigationTarget(NavigProperties.First()); // Тип данных
+
+                                    var propertys = MetadataRX.ПолучитьВсеРеквизитыТипа(типСущ.EntityType(), new Dictionary<string, object>());
+
+                                    foreach (var proper in propertys)
+                                    {
+                                        ToolStripMenuItem menuDropItem = new ToolStripMenuItem(proper.Key);
+                                        menuItem.DropDownItems.Add(menuDropItem);
+                                        // устанавливаем обработчики событий для меню
+                                        menuDropItem.Click += MassiveFillContextMenu_Click;
+                                    }
+
+                                }
+                                else
+                                {
+                                    // устанавливаем обработчики событий для меню
+                                    menuItem.Click += MassiveFillContextMenu_Click;
+                                }
+                            }
+
+                        }
 
                         var columIndx = Таблица.Columns[name].Index;
                         var cell = Таблица.Rows[строкаInd].Cells[columIndx];
@@ -130,6 +176,8 @@ namespace Админка_RX
                             if (!isFiltr && !Фильтр.Columns.Contains(name))
                                 СоздатьКолонку(Фильтр, new DataGridViewTextBoxColumn(), name, name, DataGridViewAutoSizeColumnMode.None, true, false);
                         }
+
+
 
                         //if (типРеквизита == MetadataRX.ТипРеквизита.Коллекция)
                         //{
@@ -164,8 +212,11 @@ namespace Админка_RX
 
         }
 
+        #region Изменение реквизитов
+
         private void Выбрать_Click(object sender, EventArgs e)
         {
+
             var selects = Таблица.SelectedCells;
             var rowsInd = new List<int>();
 
@@ -186,13 +237,158 @@ namespace Админка_RX
 
         }
 
-        private void Таблица_Scroll(object sender, ScrollEventArgs e)
+        #endregion
+
+        #region Массовое заполнение
+
+        private void CreateMenuItem_Click(object sender, EventArgs e)
         {
-            if (e.ScrollOrientation == ScrollOrientation.HorizontalScroll)
+            var selects = Таблица.SelectedCells;
+            var rowsInd = new List<int>();
+
+            foreach (DataGridViewCell cell in selects)
             {
-                Фильтр.HorizontalScrollingOffset = e.NewValue;
+                if (Таблица.Columns.Contains("Id"))
+                {
+                    var columIndx = Таблица.Columns["Id"].Index;
+                    int rowInd = cell.RowIndex;
+
+                    using (ChangePropertyForm propertyForm = new ChangePropertyForm())
+                    {
+                        propertyForm.ТипСущности.Text = Тип;
+                        propertyForm.Тип = Тип;
+                        propertyForm.ИДЗаписи.Text = Таблица.Rows[rowInd].Cells[columIndx].Value.ToString();
+                        propertyForm.Ид = Таблица.Rows[rowInd].Cells[columIndx].Value.ToString();
+                        propertyForm.ShowDialog();
+
+                    }
+                    ;
+                    // Берём первую, потом всё
+
+                    continue;
+                }
+
             }
+
+
         }
+
+        private void MassiveFillContextMenu_Click(object sender, EventArgs e)
+        {
+
+            var menu = (ToolStripMenuItem)sender;
+            var nameProperty = menu.Text;
+
+
+            var ownerItem = menu.OwnerItem;
+
+            // Если нет родительского меню, то обычный реквизит
+            if (ownerItem == null)
+            {
+                // Получим реквизит
+                var property = ТипОбъекта.FindProperty(nameProperty);
+                var типРеквизита = MetadataRX.ПолучитьТипРеквизита(property);
+
+                var type = ((IEdmPrimitiveType)property.Type.Definition).Name; // Тип
+                var d = type;
+            }
+            else
+            {
+                var namePropertyOwner = ownerItem.Text;
+
+                var selCells = Таблица.SelectedCells;
+                int colInd = -1;
+
+                foreach (DataGridViewCell cell in selCells)
+                {
+                    int rowInd = cell.RowIndex;
+                    // Определим какую калонку изменяем
+                    colInd = cell.ColumnIndex;
+
+                }
+
+                var cellName = Таблица.Columns[colInd].Name;
+
+                // Получим реквизит
+                var propertyOwner = ТипОбъекта.FindProperty(namePropertyOwner);
+                var типРеквизитаOwner = MetadataRX.ПолучитьТипРеквизита(propertyOwner);
+
+
+                // Не должно быть
+                if (типРеквизитаOwner == MetadataRX.ТипРеквизита.Обычный)
+                    return;
+                if (типРеквизитаOwner == MetadataRX.ТипРеквизита.Коллекция)
+                    return;
+
+
+
+
+                if (типРеквизитаOwner == MetadataRX.ТипРеквизита.Сущность)
+                {
+                    var NavigProperties = ТипОбъекта.NavigationProperties().Where(s => s.Name == namePropertyOwner);
+
+                    var типСущ = ЭлементEdmМодели.FindNavigationTarget(NavigProperties.First()); // Тип данных
+
+                    // Реализация действий при выборе пункта меню
+                    if (Таблица.Columns.Contains("Id") && colInd != -1)
+                    {
+                        var columIdIndx = Таблица.Columns["Id"].Index;
+
+                        foreach (DataGridViewRow row in Таблица.Rows)
+                        {
+                            var id = row.Cells[columIdIndx].Value.ToString();
+                            ИзменитьЗаписьСущностиAsync(id, namePropertyOwner, типСущ.Name, nameProperty, cellName);
+                        }
+
+
+                    }
+
+                    var ff = типСущ;
+
+                }
+
+            }
+
+        }
+
+        private void ИзменитьЗаписьСущностиAsync(string id, string namePropertyOwner, string типСущ, string nameProperty, string cellName)
+        {
+
+            Task.Run(() => ИзменитьЗаписьСущности(id, namePropertyOwner, типСущ, nameProperty, cellName));   // выполняется асинхронно
+
+        }
+
+        async void ИзменитьЗаписьСущности(string id, string namePropertyOwner, string типСущ, string nameProperty, string cellName)
+        {
+            var записи = await DirectumRX.ПолучитьAsync(ODATAClient, Тип, $"Id eq {long.Parse(id)}", ИменаНавигРеквиз.ToArray());
+
+            if (записи != null)
+            {
+                var запись = записи.First();
+                var реквизиты = запись.Where(r => r.Key == namePropertyOwner);
+                if (реквизиты.Any())
+                {
+                    var реквизит = реквизиты.First();
+
+                    if (реквизит.Value != null)
+                    {
+                        var записьЗамена = ((IDictionary<string, object>)реквизит.Value)[nameProperty];
+                        await DirectumRX.Изменить(ODATAClient, Тип, id, new Dictionary<string, object> { { cellName, записьЗамена } });
+                    }
+                }
+
+            }
+
+            //
+
+        }
+
+        #endregion
+
+        #region Общие
+
+        #region Фильтр
+
 
         private void Фильтр_Scroll(object sender, ScrollEventArgs e)
         {
@@ -254,7 +450,7 @@ namespace Админка_RX
                 {
                     MetadataRX.ТипВвода типВвода = MetadataRX.ТипВвода.Все;
                     MetadataRX.ОпределитьТипВвода(((IEdmPrimitiveType)property.Type.Definition).Name, ref типВвода);
-                    фильтр.Add($"{DirectumRX.ПолучитьСтрокуФильтра(типВвода,  name, val)}");
+                    фильтр.Add($"{DirectumRX.ПолучитьСтрокуФильтра(типВвода, name, val)}");
 
                 }
 
@@ -298,7 +494,7 @@ namespace Админка_RX
                 Фильтр.Rows.Clear();
                 Фильтр.Columns.Clear();
                 Фильтр.Refresh();
-            }               
+            }
 
             Таблица.DataSource = null;
             Таблица.Rows.Clear();
@@ -309,6 +505,27 @@ namespace Админка_RX
             // Заполняем таблицу данными
             ЗаполнитьТаблицу(фильтр);
 
+        }
+
+        #endregion
+
+        private void Таблица_Scroll(object sender, ScrollEventArgs e)
+        {
+            if (e.ScrollOrientation == ScrollOrientation.HorizontalScroll)
+            {
+                Фильтр.HorizontalScrollingOffset = e.NewValue;
+            }
+        }
+
+        private void Таблица_MouseDown(object sender, MouseEventArgs e)
+        {
+            // Выделение ячейки после нажатия ПКМ
+            if (e.Button == MouseButtons.Right)
+            {
+                var f = Таблица.HitTest(e.X, e.Y);
+
+                Таблица.CurrentCell = Таблица[f.ColumnIndex, f.RowIndex];
+            }
         }
 
         private void SelectForm_FormClosed(object sender, FormClosedEventArgs e)
@@ -330,15 +547,8 @@ namespace Админка_RX
             Выбрать_Click(sender, e);
         }
 
-        private void Таблица_MouseDown(object sender, MouseEventArgs e)
-        {
-            // Выделение ячейки после нажатия ПКМ
-            if (e.Button == MouseButtons.Right)
-            {
-                var f = Таблица.HitTest(e.X, e.Y);
+        #endregion
 
-                Таблица.CurrentCell = Таблица[f.ColumnIndex, f.RowIndex];
-            }
-        }
+
     }
 }

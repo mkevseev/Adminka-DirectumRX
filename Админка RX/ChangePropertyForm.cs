@@ -24,9 +24,9 @@ namespace Админка_RX
         public static List<IEdmNavigationProperty> НавигационныеРеквизиты = new List<IEdmNavigationProperty>();
         public List<string> ИменаНавигРеквиз = new List<string>();
         public static IDictionary<string, object> Данные = new Dictionary<string, object>();
+        public ТипЗапускаФормы ТипЗапускаФормы;
         private IEdmEntityType ТипОбъекта = null;
-        private IEdmEntitySet ЭлементEdmМодели = null;
-
+        private IEdmEntitySet ЭлементEdmМодели = null; 
 
 
         public List<string> ТипыСущностей = MainForm.ТипыСущностей;

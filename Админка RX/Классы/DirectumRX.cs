@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Data;
 using System.Linq;
 using System.Net.Http;
+using System.Runtime.InteropServices;
 using System.Security.Policy;
 using System.Text;
 using System.Threading.Tasks;
@@ -1096,6 +1097,8 @@ namespace Админка_RX.Классы
 
             return filter;
         }
+
+
 
     }
 }

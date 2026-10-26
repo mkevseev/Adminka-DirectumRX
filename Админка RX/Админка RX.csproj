@@ -29,7 +29,7 @@
     <PublisherName>Максим Евсеев</PublisherName>
     <OpenBrowserOnPublish>false</OpenBrowserOnPublish>
     <AutorunEnabled>true</AutorunEnabled>
-    <ApplicationRevision>1</ApplicationRevision>
+    <ApplicationRevision>2</ApplicationRevision>
     <ApplicationVersion>2.1.0.%2a</ApplicationVersion>
     <UseApplicationTrust>false</UseApplicationTrust>
     <CreateDesktopShortcut>true</CreateDesktopShortcut>
@@ -161,12 +161,6 @@
     <Compile Include="MainForm.Designer.cs">
       <DependentUpon>MainForm.cs</DependentUpon>
     </Compile>
-    <Compile Include="MassiveChangeForm.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="MassiveChangeForm.Designer.cs">
-      <DependentUpon>MassiveChangeForm.cs</DependentUpon>
-    </Compile>
     <Compile Include="Properties\Resources.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -208,9 +202,6 @@
     <EmbeddedResource Include="MainForm.resx">
       <DependentUpon>MainForm.cs</DependentUpon>
       <SubType>Designer</SubType>
-    </EmbeddedResource>
-    <EmbeddedResource Include="MassiveChangeForm.resx">
-      <DependentUpon>MassiveChangeForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="RecordMigrationForm.resx">
       <DependentUpon>RecordMigrationForm.cs</DependentUpon>
@@ -270,6 +261,8 @@
     <None Include="Resources\Меню.png" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="Resources\Поиск по ИД.png" />
+    <None Include="Resources\Массовое изменение реквизитов.png" />
     <Content Include="АдмRX2.ico" />
     <None Include="Resources\Стрелка вниз.png" />
     <Content Include="АдмRX.ico" />

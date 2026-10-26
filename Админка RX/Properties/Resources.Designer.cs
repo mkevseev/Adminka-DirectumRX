@@ -73,6 +73,16 @@ namespace Админка_RX.Properties {
         /// <summary>
         ///   Поиск локализованного ресурса типа System.Drawing.Bitmap.
         /// </summary>
+        internal static System.Drawing.Bitmap Массовое_изменение_реквизитов {
+            get {
+                object obj = ResourceManager.GetObject("Массовое изменение реквизитов", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Поиск локализованного ресурса типа System.Drawing.Bitmap.
+        /// </summary>
         internal static System.Drawing.Bitmap Меню {
             get {
                 object obj = ResourceManager.GetObject("Меню", resourceCulture);
@@ -118,6 +128,16 @@ namespace Админка_RX.Properties {
         internal static System.Drawing.Bitmap Обновить {
             get {
                 object obj = ResourceManager.GetObject("Обновить", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Поиск локализованного ресурса типа System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap Поиск_по_ИД {
+            get {
+                object obj = ResourceManager.GetObject("Поиск по ИД", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
