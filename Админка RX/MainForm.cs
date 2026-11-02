@@ -3,8 +3,10 @@ using Simple.OData.Client;
 using System;
 using System.Collections.Generic;
 using System.Data;
+using System.Drawing;
 using System.IO;
 using System.Linq;
+using System.Net.Http;
 using System.Security.AccessControl;
 using System.Text;
 using System.Threading;
@@ -23,22 +25,14 @@ namespace Админка_RX
     {
         readonly Properties.Settings Параметры = Properties.Settings.Default;
 
-
         Dictionary<IEdmEntityType, IEdmEntitySet> ТипИТипСущности = new Dictionary<IEdmEntityType, IEdmEntitySet>();
         Dictionary<IEdmEntityType, IEdmEntitySet> ВсеТипИТипСущности = new Dictionary<IEdmEntityType, IEdmEntitySet>();
         public static IEnumerable<XElement> ТипыКоллекции = null;
         public static List<IEdmStructuredType> БазовыеТипы = new List<IEdmStructuredType>();
-
-
-
         public static List<string> ТипыСущностей = new List<string>();
-        public static List<string> ТипыБезНаследников = new List<string>();
-
         public static DataSet МАКСИД = null;
         public static IEdmModel EDMModel = null;
         public static ODataClient ODATAClient = null;
-        //public static IDictionary<string, string> ТипИТипСущности = new Dictionary<string, string>();
-
 
 
         public MainForm()
@@ -83,17 +77,17 @@ namespace Админка_RX
 
             // Намомент загрузки отключим реквизиты
             ВсёОК.Checked = OK;
-            ПоискПоИДПунктДействия.Enabled = OK;
-            ИзменитьРеквизитыПунктДействия.Enabled = OK;
-            МассовоеИзменениеРеквизитовПунктДействия.Enabled = OK;
+            Поиск.Enabled = OK;
+            ИзменитьРеквизиты.Enabled = OK;
+            МассовоеИзменениеРеквизитов.Enabled = OK;
             СтатусЦвет.Value = 0;
 
             OK = await Task.Run(ЗагрузитьДанные);                // выполняется асинхронно
 
             ВсёОК.Checked = OK;
-            ПоискПоИДПунктДействия.Enabled = OK;
-            ИзменитьРеквизитыПунктДействия.Enabled = OK;
-            МассовоеИзменениеРеквизитовПунктДействия.Enabled = OK;
+            Поиск.Enabled = OK;
+            ИзменитьРеквизиты.Enabled = OK;
+            МассовоеИзменениеРеквизитов.Enabled = OK;
 
             if (OK)
                 СтатусЦвет.Value = 1;
@@ -202,6 +196,178 @@ namespace Админка_RX
         }
 
 
+        private void ЗагрузитьВсеИДОбязательно_Click(object sender, EventArgs e)
+        {
+            //Загрузим последнее ИД
+            ЗагрузитьПоследнееИД();
+        }
+
+        public async void ЗагрузитьПоследнееИД()
+        {
+            var bar = this.ОбработкаProgressBar;
+            bar.Minimum = 0;
+            bar.Value = 0;
+            bar.Maximum = МАКСИД.Tables.Count;
+
+
+            foreach (DataTable table in МАКСИД.Tables)
+            {
+                bar.Value += 1;
+
+                var tab = МАКСИД.Tables[table.TableName];
+
+                if (tab == null)
+                    continue;
+
+                //Thread.Sleep(100);
+
+                try
+                {
+                    var ids = await DirectumRX.ПолучитьПоследнееИД(ODATAClient, table.TableName);
+                    // Если нет Идишек
+                    if (!ids.Any())
+                        continue;
+
+                    // Всегда 1 ид а иначе очень долго
+                    tab.Rows[0][0] = ids.First().Values.First();
+                    Параметры.ЗагрузкаИд = false;
+                }
+                catch (Exception ex)
+                {
+                    var f = ex.Message;
+                }
+
+            }
+
+            Параметры.МаксИД = МАКСИД;
+            Параметры.Save();
+
+        }
+
+
+
+        #region Меню
+
+        private void КнопкаОбновить_Click(object sender, EventArgs e)
+        {
+            EDMModel = null;
+            ODATAClient = null;
+
+            ЗагрузитьДанныеAsync();
+        }
+
+        private void КнопкаНастройка_Click(object sender, EventArgs e)
+        {
+            SettingForm settingForm = new SettingForm
+            {
+                ODATAClient = ODATAClient
+            };
+            settingForm.ShowDialog();
+        }
+
+
+        private void ПоискПоИД_Click(object sender, EventArgs e)
+        {
+            var ид = ИД.Text;
+
+            if (string.IsNullOrEmpty(ид))
+                MessageBox.Show("Укажите ИД");
+            else if (Параметры.ЗагрузкаИд)
+                MessageBox.Show("Сделайте загрузку ИД");
+            else
+                ПоискПоИД(ид);
+        }
+
+        private void ИзменитьРеквизиты_Click(object sender, EventArgs e)
+        {
+            var ид = ИД.Text;
+
+            if (string.IsNullOrEmpty(ид))
+                MessageBox.Show("Укажите ИД");
+            else if (Параметры.ЗагрузкаИд)
+                MessageBox.Show("Сделайте загрузку ИД");
+            else
+                ИзменениеРеквизитов(ид);
+        }
+
+        private void МассовоеИзменениеРеквизитов_Click(object sender, EventArgs e)
+        {
+            var names = ТипИТипСущности.Select(s => s.Value.Name);
+            var тип = Диалоги.ЗапроситьВыбор(names);
+
+            if (string.IsNullOrEmpty(тип))
+                MessageBox.Show("Укажите Тип сущности");
+            else
+            {
+                SelectForm changeForm = new SelectForm
+                {
+                    Тип = тип,
+                    ТипЗапуска = ТипЗапускаФормы.МассовоеИзменениеРеквизитов
+                };
+                changeForm.ShowDialog();
+            }
+        }
+
+        private void МиграцияЗаписей_Click(object sender, EventArgs e)
+        {
+            var тип = "";
+
+            if (string.IsNullOrEmpty(тип))
+                MessageBox.Show("Укажите Тип сущности");
+            else
+            {
+                RecordMigrationForm changeForm = new RecordMigrationForm
+                {
+                    Тип = тип,
+                    Ссылка = Параметры.Ссылка,
+                    Ссылка2 = Параметры.Ссылка2
+                };
+                changeForm.ShowDialog();
+            }
+        }
+
+        private void ИсторияРаботы_Click(object sender, EventArgs e)
+        {
+            var ид = ИД.Text;
+
+            ИсторияРаботыПользователя(ид);
+            //ПолучитьВсехПользователей();
+        }
+
+
+        private void Поиск_Click(object sender, EventArgs e)
+        {
+            var names = ТипИТипСущности.Select(s => s.Value.Name);
+            var тип = Диалоги.ЗапроситьВыбор(names);
+
+            if (string.IsNullOrEmpty(тип))
+                MessageBox.Show("Укажите Тип сущности");
+            else
+            {
+                SelectForm changeForm = new SelectForm
+                {
+                    Тип = тип,
+                    ТипЗапуска = ТипЗапускаФормы.Просмотр
+                };
+                changeForm.ShowDialog();
+            }
+        }
+
+
+        private void ГдеИспользуется_Click(object sender, EventArgs e)
+        {
+            var ид = ИД.Text;
+
+            if (string.IsNullOrEmpty(ид))
+                MessageBox.Show("Укажите ИД");
+            else if (Параметры.ЗагрузкаИд)
+                MessageBox.Show("Сделайте загрузку ИД");
+            else
+                ГдеИспользуется(ид);
+
+        }
+
+        #region Функции меню
 
         private async void ПоискПоИД(string ид)
         {
@@ -303,177 +469,165 @@ namespace Админка_RX
 
         }
 
-
-        public string GetXml(DataSet dataSet)
+        private async void ИсторияРаботыПользователя(string ид)
         {
-            using (MemoryStream memStream = new MemoryStream())
-            {
-                dataSet.WriteXml(memStream);
-                return Encoding.UTF8.GetString(memStream.ToArray());
-            }
-        }
+            var names = new List<string>();
+            var name = string.Empty;
 
-        public DataSet ToDataSet(string xml)
-        {
-            var byteData = Encoding.UTF8.GetBytes(xml);
-            using (MemoryStream memStream = new MemoryStream(byteData))
-            {
-                DataSet ds = new DataSet();
-                ds.ReadXml(memStream);
-                return ds;
-            }
-        }
-
-        #region Меню
-
-        private void КнопкаОбновить_Click(object sender, EventArgs e)
-        {
-            EDMModel = null;
-            ODATAClient = null;
-
-            ЗагрузитьДанныеAsync();
-        }
-
-        private void КнопкаНастройка_Click(object sender, EventArgs e)
-        {
-            SettingForm settingForm = new SettingForm
-            {
-                ODATAClient = ODATAClient
-            };
-            settingForm.ShowDialog();
-        }
-
-
-        private void ПоискПоИДПунктДействия_Click(object sender, EventArgs e)
-        {
-            var ид = ИД.Text;
-
+            // Предоставим выбор пользователя
             if (string.IsNullOrEmpty(ид))
-                MessageBox.Show("Укажите ИД");
-            else if (Параметры.ЗагрузкаИд)
-                MessageBox.Show("Сделайте загрузку ИД");
-            else
-                ПоискПоИД(ид);
-        }
-
-        private void ИзменитьРеквизитыПунктДействия_Click(object sender, EventArgs e)
-        {
-            var ид = ИД.Text;
-
-            if (string.IsNullOrEmpty(ид))
-                MessageBox.Show("Укажите ИД");
-            else if (Параметры.ЗагрузкаИд)
-                MessageBox.Show("Сделайте загрузку ИД");
-            else
-                ИзменениеРеквизитов(ид);
-        }
-
-        private void МассовоеИзменениеРеквизитовПунктДействия_Click(object sender, EventArgs e)
-        {
-            var names = ТипИТипСущности.Select(s => s.Value.Name);
-            var f = names.Max(s => s.Length);
-            var реквизит = new ComboBox
             {
-                Width = f * 5,
-                Height = 80,
-                Top = 5,
-                Left = 5,
-            };
+                var значения = await DirectumRX.ПолучитьПакетноAsync(ODATAClient, "IUsers", new string[] { });
+                foreach (var item in значения)
+                    names.Add(string.Format("{0}(Id:{1})", item["Name"], item["Id"]));
 
-            реквизит.Items.AddRange(names.ToArray());
 
-            var тип = Диалоги.Показать(реквизит, "Выбрать");
+                ////var data = await OData.GetDataAsync(entityName: "IUsers",  top: 50);
+                //var data2 = await OData.GetDataAsync(entityName: "IUsers", top: 500);
+                //var data3 = await OData.GetAllDataAsync(entityName: "IUsers", pageSize: 50);
 
-            if (string.IsNullOrEmpty(тип))
-                MessageBox.Show("Укажите Тип сущности");
-            else
-            {
-                SelectForm changeForm = new SelectForm
+                names.Sort();
+
+                name = Диалоги.ЗапроситьВыбор(names);
+
+                if (string.IsNullOrEmpty(name))
                 {
-                    Тип = тип,
-                    ТипЗапуска = ТипЗапускаФормы.МассовоеИзменениеРеквизитов
-                };
-                changeForm.ShowDialog();
+                    MessageBox.Show("Укажите пользователя");
+                    return;
+                }
+
+                ид = name.Split(new string[] { "(Id:" }, StringSplitOptions.None)[1].TrimEnd(')');
             }
-        }
 
-        private void МиграцияЗаписейToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            var тип = "";
 
-            if (string.IsNullOrEmpty(тип))
-                MessageBox.Show("Укажите Тип сущности");
-            else
+            var лист = new Dictionary<string, string>();
+
+            лист.Add("Документ", "IDocumentHistories");
+            лист.Add("Справочник", "IDatabookHistories");
+            лист.Add("Процесс", "IWorkflowHistories");
+            лист.Add("По всем", "IDocumentHistories,IDatabookHistories,IWorkflowHistories");
+
+            var значениеРХ = await DirectumRX.ПолучитьAsync(ODATAClient, "IUsers", $"Id eq {long.Parse(ид)}");
+            if (значениеРХ != null)
             {
-                RecordMigrationForm changeForm = new RecordMigrationForm
+                // Создадим диалог и получим нажатую кнопку
+                var кнопка = Диалоги.Показать(лист.Select(l => l.Key).ToList());
+
+                if (!string.IsNullOrEmpty(кнопка))
                 {
-                    Тип = тип,
-                    Ссылка = Параметры.Ссылка,
-                    Ссылка2 = Параметры.Ссылка2
-                };
-                changeForm.ShowDialog();
+                    if (кнопка == "По всем")
+                    {
+                        foreach (var имя in лист["По всем"].Split(new char[] { ',' }))
+                        {
+                            SelectForm changeForm = new SelectForm
+                            {
+                                Тип = имя,
+                                ВариантыИсторииРабот = лист,
+                                Ид = ид,
+                                ТипЗапуска = ТипЗапускаФормы.ИсторияРаботы
+                            };
+                            changeForm.Show();
+                        }
+                    }
+                    else
+                    {
+                        SelectForm changeForm = new SelectForm
+                        {
+                            Тип = лист[кнопка],
+                            ВариантыИсторииРабот = лист,
+                            Ид = ид,
+                            ТипЗапуска = ТипЗапускаФормы.ИсторияРаботы
+                        };
+                        changeForm.Show();
+                    }
+                }
             }
-        }
+            else
+                MessageBox.Show("Пользователь не найден");
 
-        #endregion
-
-        private void ЗагрузитьВсеИДОбязательно_Click(object sender, EventArgs e)
-        {
-            //Загрузим последнее ИД
-            ЗагрузитьПоследнееИД();
         }
 
 
-
-        public async void ЗагрузитьПоследнееИД()
+        private async void ГдеИспользуется(string ид)
         {
-            var bar = this.ОбработкаProgressBar;
+            var лист = new List<string>();
+
+            string кнопка = string.Empty;
+
+            var bar = ОбработкаProgressBar;
             bar.Minimum = 0;
             bar.Value = 0;
             bar.Maximum = МАКСИД.Tables.Count;
-
 
             foreach (DataTable table in МАКСИД.Tables)
             {
                 bar.Value += 1;
 
-                var tab = МАКСИД.Tables[table.TableName];
 
-                if (tab == null)
+                if (long.Parse(table.Rows[0][0].ToString()) == -1)
                     continue;
 
-                //Thread.Sleep(100);
+                // Если ИД больше МАКСИД, то и искать не стоит
+                if (long.Parse(ид) > long.Parse(table.Rows[0][0].ToString()))
+                    continue;
 
-                try
-                {
-                    var ids = await DirectumRX.ПолучитьПоследнееИД(ODATAClient, table.TableName);
-                    // Если нет Идишек
-                    if (!ids.Any())
-                        continue;
+                var тип = table.TableName;
 
-                    // Всегда 1 ид а иначе очень долго
-                    tab.Rows[0][0] = ids.First().Values.First();
-                    Параметры.ЗагрузкаИд = false;
-                }
-                catch (Exception ex)
-                {
-                    var f = ex.Message;
-                }
+                var значениеРХ = await DirectumRX.ПолучитьAsync(ODATAClient, тип, $"Id eq {long.Parse(ид)}");
+                if (значениеРХ != null)
+                    лист.Add(тип);
+
 
             }
 
 
-            Параметры.МаксИД = МАКСИД;
-            Параметры.Save();
+            var типы = MetadataRX.УбратьЛишнихНаследников(ТипИТипСущности, БазовыеТипы, лист);
+
+
+            // Создадим диалог и получим нажатую кнопку
+            кнопка = Диалоги.Показать(типы);
+
+            if (!string.IsNullOrEmpty(кнопка))
+            {
+                var a = MetadataRX.FindPropertiesReferencingEntity(EDMModel, кнопка);
+
+                var fffff = new List<IDictionary<string, object>>();
+                var значениеРХ = await DirectumRX.ПолучитьAsync(ODATAClient, кнопка, $"Id eq {long.Parse(ид)}");
+                if (значениеРХ != null)
+                {
+
+                    var bar2 = ОбработкаProgressBar;
+                    bar2.Minimum = 0;
+                    bar2.Value = 0;
+                    bar2.Maximum = a.Count;
+
+                    foreach (var item in a)
+                    {
+                        bar2.Value += 1;
+                        var d = item.Split(new char[] { '|' }, StringSplitOptions.None);
+                        var ЭлементEdmМодели = ПолучитьЭлементEdmМодели(EDMModel, d[0]);
+                        var ТипОбъекта = ЭлементEdmМодели.EntityType();
+                        var НавигационныеРеквизиты = ТипОбъекта.NavigationProperties().ToList();
+                        var ИменаНавигРеквиз = НавигационныеРеквизиты.Select(i => i.Name).ToList();
+                        var n = d[0];
+                        var r = d[1];
+                        var f = $"{r}/Id eq {значениеРХ.First()["Id"].ToString()}";
+                        var значениея = await DirectumRX.ПолучитьAsync(ODATAClient, n, f, ИменаНавигРеквиз.ToArray());
+                        if (значениея != null)
+                            fffff.AddRange(значениея);
+                    }
+                }
+
+
+                var ff = fffff;
+
+            }
 
         }
 
-        private void ПодгрузитьВсеИД_Click(object sender, EventArgs e)
-        {
-            var d = GetXml(МАКСИД);
-            var dd = d;
-        }
+        #endregion
 
+        #endregion
 
 
     }

@@ -43,10 +43,13 @@
             this.КнопкаНастройка = new System.Windows.Forms.ToolStripButton();
             this.toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
             this.Действия = new System.Windows.Forms.ToolStripDropDownButton();
+            this.Поиск = new System.Windows.Forms.ToolStripMenuItem();
             this.ПоискПоИДПунктДействия = new System.Windows.Forms.ToolStripMenuItem();
-            this.ИзменитьРеквизитыПунктДействия = new System.Windows.Forms.ToolStripMenuItem();
-            this.МассовоеИзменениеРеквизитовПунктДействия = new System.Windows.Forms.ToolStripMenuItem();
-            this.МиграцияЗаписейToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.ИзменитьРеквизиты = new System.Windows.Forms.ToolStripMenuItem();
+            this.МассовоеИзменениеРеквизитов = new System.Windows.Forms.ToolStripMenuItem();
+            this.ИсторияРаботы = new System.Windows.Forms.ToolStripMenuItem();
+            this.МиграцияЗаписей = new System.Windows.Forms.ToolStripMenuItem();
+            this.ГдеИспользуетсяПунктДействия = new System.Windows.Forms.ToolStripMenuItem();
             this.panel1.SuspendLayout();
             this.statusStrip1.SuspendLayout();
             this.toolStrip1.SuspendLayout();
@@ -177,46 +180,73 @@
             // Действия
             // 
             this.Действия.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.ПоискПоИДПунктДействия,
-            this.ИзменитьРеквизитыПунктДействия,
-            this.МассовоеИзменениеРеквизитовПунктДействия,
-            this.МиграцияЗаписейToolStripMenuItem});
+            this.Поиск,
+            this.ИзменитьРеквизиты,
+            this.ИсторияРаботы,
+            this.МиграцияЗаписей});
             this.Действия.Image = global::Админка_RX.Properties.Resources.Меню;
             this.Действия.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.Действия.Name = "Действия";
             this.Действия.Size = new System.Drawing.Size(87, 22);
             this.Действия.Text = "Действия";
             // 
+            // Поиск
+            // 
+            this.Поиск.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.ПоискПоИДПунктДействия,
+            this.ГдеИспользуетсяПунктДействия});
+            this.Поиск.Image = global::Админка_RX.Properties.Resources.Поиск;
+            this.Поиск.Name = "Поиск";
+            this.Поиск.Size = new System.Drawing.Size(189, 22);
+            this.Поиск.Text = "Поиск";
+            this.Поиск.Click += new System.EventHandler(this.Поиск_Click);
+            // 
             // ПоискПоИДПунктДействия
             // 
             this.ПоискПоИДПунктДействия.Image = global::Админка_RX.Properties.Resources.Поиск_по_ИД;
             this.ПоискПоИДПунктДействия.Name = "ПоискПоИДПунктДействия";
-            this.ПоискПоИДПунктДействия.Size = new System.Drawing.Size(257, 22);
+            this.ПоискПоИДПунктДействия.Size = new System.Drawing.Size(180, 22);
             this.ПоискПоИДПунктДействия.Text = "Поиск по ИД";
-            this.ПоискПоИДПунктДействия.Click += new System.EventHandler(this.ПоискПоИДПунктДействия_Click);
+            this.ПоискПоИДПунктДействия.Click += new System.EventHandler(this.ПоискПоИД_Click);
             // 
-            // ИзменитьРеквизитыПунктДействия
+            // ИзменитьРеквизиты
             // 
-            this.ИзменитьРеквизитыПунктДействия.Image = global::Админка_RX.Properties.Resources.Редактировать_реквизиты;
-            this.ИзменитьРеквизитыПунктДействия.Name = "ИзменитьРеквизитыПунктДействия";
-            this.ИзменитьРеквизитыПунктДействия.Size = new System.Drawing.Size(257, 22);
-            this.ИзменитьРеквизитыПунктДействия.Text = "Изменить реквизиты";
-            this.ИзменитьРеквизитыПунктДействия.Click += new System.EventHandler(this.ИзменитьРеквизитыПунктДействия_Click);
+            this.ИзменитьРеквизиты.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.МассовоеИзменениеРеквизитов});
+            this.ИзменитьРеквизиты.Image = global::Админка_RX.Properties.Resources.Редактировать_реквизиты;
+            this.ИзменитьРеквизиты.Name = "ИзменитьРеквизиты";
+            this.ИзменитьРеквизиты.Size = new System.Drawing.Size(189, 22);
+            this.ИзменитьРеквизиты.Text = "Изменить реквизиты";
+            this.ИзменитьРеквизиты.Click += new System.EventHandler(this.ИзменитьРеквизиты_Click);
             // 
-            // МассовоеИзменениеРеквизитовПунктДействия
+            // МассовоеИзменениеРеквизитов
             // 
-            this.МассовоеИзменениеРеквизитовПунктДействия.Image = global::Админка_RX.Properties.Resources.Массовое_изменение_реквизитов;
-            this.МассовоеИзменениеРеквизитовПунктДействия.Name = "МассовоеИзменениеРеквизитовПунктДействия";
-            this.МассовоеИзменениеРеквизитовПунктДействия.Size = new System.Drawing.Size(257, 22);
-            this.МассовоеИзменениеРеквизитовПунктДействия.Text = "Массовое изменение реквизитов";
-            this.МассовоеИзменениеРеквизитовПунктДействия.Click += new System.EventHandler(this.МассовоеИзменениеРеквизитовПунктДействия_Click);
+            this.МассовоеИзменениеРеквизитов.Image = global::Админка_RX.Properties.Resources.Массовое_изменение_реквизитов;
+            this.МассовоеИзменениеРеквизитов.Name = "МассовоеИзменениеРеквизитов";
+            this.МассовоеИзменениеРеквизитов.Size = new System.Drawing.Size(257, 22);
+            this.МассовоеИзменениеРеквизитов.Text = "Массовое изменение реквизитов";
+            this.МассовоеИзменениеРеквизитов.Click += new System.EventHandler(this.МассовоеИзменениеРеквизитов_Click);
             // 
-            // МиграцияЗаписейToolStripMenuItem
+            // ИсторияРаботы
             // 
-            this.МиграцияЗаписейToolStripMenuItem.Name = "МиграцияЗаписейToolStripMenuItem";
-            this.МиграцияЗаписейToolStripMenuItem.Size = new System.Drawing.Size(257, 22);
-            this.МиграцияЗаписейToolStripMenuItem.Text = "Миграция записей";
-            this.МиграцияЗаписейToolStripMenuItem.Click += new System.EventHandler(this.МиграцияЗаписейToolStripMenuItem_Click);
+            this.ИсторияРаботы.Name = "ИсторияРаботы";
+            this.ИсторияРаботы.Size = new System.Drawing.Size(189, 22);
+            this.ИсторияРаботы.Text = "История работы";
+            this.ИсторияРаботы.Click += new System.EventHandler(this.ИсторияРаботы_Click);
+            // 
+            // МиграцияЗаписей
+            // 
+            this.МиграцияЗаписей.Name = "МиграцияЗаписей";
+            this.МиграцияЗаписей.Size = new System.Drawing.Size(189, 22);
+            this.МиграцияЗаписей.Text = "Миграция записей";
+            this.МиграцияЗаписей.Click += new System.EventHandler(this.МиграцияЗаписей_Click);
+            // 
+            // ГдеИспользуетсяПунктДействия
+            // 
+            this.ГдеИспользуетсяПунктДействия.Name = "ГдеИспользуетсяПунктДействия";
+            this.ГдеИспользуетсяПунктДействия.Size = new System.Drawing.Size(180, 22);
+            this.ГдеИспользуетсяПунктДействия.Text = "Где используется";
+            this.ГдеИспользуетсяПунктДействия.Click += new System.EventHandler(this.ГдеИспользуется_Click);
             // 
             // MainForm
             // 
@@ -255,11 +285,14 @@
         private System.Windows.Forms.ToolStripStatusLabel ОжиданиеtoolStripStatusLabel1;
         private System.Windows.Forms.ToolStripProgressBar ОбработкаProgressBar;
         private System.Windows.Forms.ToolStripDropDownButton Действия;
-        private System.Windows.Forms.ToolStripMenuItem ПоискПоИДПунктДействия;
-        private System.Windows.Forms.ToolStripMenuItem ИзменитьРеквизитыПунктДействия;
-        private System.Windows.Forms.ToolStripMenuItem МассовоеИзменениеРеквизитовПунктДействия;
+        private System.Windows.Forms.ToolStripMenuItem Поиск;
+        private System.Windows.Forms.ToolStripMenuItem ИзменитьРеквизиты;
         private System.Windows.Forms.ToolStripButton ЗагрузитьВсеИДОбязательно;
-        private System.Windows.Forms.ToolStripMenuItem МиграцияЗаписейToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem МиграцияЗаписей;
+        private System.Windows.Forms.ToolStripMenuItem МассовоеИзменениеРеквизитов;
+        private System.Windows.Forms.ToolStripMenuItem ИсторияРаботы;
+        private System.Windows.Forms.ToolStripMenuItem ПоискПоИДПунктДействия;
+        private System.Windows.Forms.ToolStripMenuItem ГдеИспользуетсяПунктДействия;
     }
 }
 

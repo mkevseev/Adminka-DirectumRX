@@ -16,6 +16,7 @@ namespace Админка_RX
 
         public string Тип = string.Empty;
         public string Ид = string.Empty;
+        public IDictionary<string, string> ВариантыИсторииРабот = new Dictionary<string, string>();
         public DataGridViewCell Cell = null;
         public static List<IEdmProperty> ВсеРеквизиты = new List<IEdmProperty>();
         public static List<IEdmNavigationProperty> НавигационныеРеквизиты = new List<IEdmNavigationProperty>();
@@ -49,6 +50,7 @@ namespace Админка_RX
                 ContextMenuStrip contextMenu = new ContextMenuStrip();
                 // создаем элементы меню
                 ToolStripMenuItem MassiveFillMenuItem = new ToolStripMenuItem("Массово заполнить из...");
+                ToolStripMenuItem createMenuItem = new ToolStripMenuItem("Изменить");
 
                 if (ТипЗапуска == ТипЗапускаФормы.ИзменениеРеквизитов)
                 {
@@ -59,14 +61,39 @@ namespace Админка_RX
                 }
                 else if (ТипЗапуска == ТипЗапускаФормы.МассовоеИзменениеРеквизитов)
                 {
-                    Выбрать.Visible = false;
-                    ToolStripMenuItem createMenuItem = new ToolStripMenuItem("Изменить");
+                    Выбрать.Visible = false;                   
 
                     // добавляем элементы в меню
                     contextMenu.Items.AddRange(new[] { MassiveFillMenuItem, createMenuItem });
 
                     createMenuItem.Click += CreateMenuItem_Click;
                 }
+                else if (ТипЗапуска == ТипЗапускаФормы.ИсторияРаботы)
+                {
+                    Выбрать.Visible = false;
+                    if (!ЛистФильтра.ContainsKey("UserId"))
+                        ЛистФильтра.Add("UserId", long.Parse(Ид));
+
+                    var startDate = DateTime.UtcNow.AddDays(-1);
+                    var endDate = DateTime.UtcNow; //new DateTime(2026, 10, 29, 0, 0, 0, DateTimeKind.Utc); // верхняя граница (не включительно)
+
+                    // Важно: ToString("o") даёт формат ISO 8601
+                    var filter = $"HistoryDate ge {startDate.ToString("o")} and HistoryDate lt {endDate.ToString("o")}";
+
+
+                    if (string.IsNullOrEmpty(фильтр))
+                        фильтр = $"UserId eq {long.Parse(Ид)} and {filter}";
+                }
+                else if (ТипЗапуска == ТипЗапускаФормы.Просмотр)
+                {
+                    Выбрать.Visible = false;
+
+                    // добавляем элементы в меню
+                    contextMenu.Items.AddRange(new[] { createMenuItem });
+
+                    createMenuItem.Click += CreateMenuItem_Click;
+                }
+
 
                 bool isFiltr = !string.IsNullOrEmpty(фильтр);
 
@@ -77,9 +104,9 @@ namespace Админка_RX
                 ИменаНавигРеквиз = НавигационныеРеквизиты.Select(i => i.Name).ToList();
 
                 if (isFiltr)
-                    Данные = await DirectumRX.ПолучитьAsync(ODATAClient, Тип, ИменаНавигРеквиз.ToArray(), 100, фильтр);
+                    Данные = await DirectumRX.ПолучитьПакетноAsync(ODATAClient, Тип, ИменаНавигРеквиз.ToArray(), фильтр);
                 else
-                    Данные = await DirectumRX.ПолучитьAsync(ODATAClient, Тип, ИменаНавигРеквиз.ToArray(), 100);
+                    Данные = await DirectumRX.ПолучитьПакетноAsync(ODATAClient, Тип, ИменаНавигРеквиз.ToArray());
 
 
                 if (Данные == null && !isFiltr)
@@ -89,7 +116,7 @@ namespace Админка_RX
                     return;
                 }
 
-                if (Данные == null)
+                if (Данные == null || Данные.Count() == 0)
                 {
                     MessageBox.Show("Нет данных");
                     return;
@@ -161,7 +188,7 @@ namespace Админка_RX
                             cell.Value = value;
 
                             // Создадим такие же колонки для фильтра
-                            if (!isFiltr && !Фильтр.Columns.Contains(name))
+                            if ((!isFiltr || ТипЗапуска == ТипЗапускаФормы.ИсторияРаботы) && !Фильтр.Columns.Contains(name))
                                 СоздатьКолонку(Фильтр, new DataGridViewTextBoxColumn(), name, name, DataGridViewAutoSizeColumnMode.None, true, false);
 
                         }
@@ -173,7 +200,7 @@ namespace Админка_RX
                                 cell.Value = val.ContainsKey("Name") ? val["Name"] : val["Id"];
 
                             // Создадим такие же колонки для фильтра
-                            if (!isFiltr && !Фильтр.Columns.Contains(name))
+                            if ((!isFiltr || ТипЗапуска == ТипЗапускаФормы.ИсторияРаботы) && !Фильтр.Columns.Contains(name))
                                 СоздатьКолонку(Фильтр, new DataGridViewTextBoxColumn(), name, name, DataGridViewAutoSizeColumnMode.None, true, false);
                         }
 
@@ -200,7 +227,7 @@ namespace Админка_RX
                 if (!isFiltr && Фильтр.Columns.Contains("ВременнаяКолонка"))
                     Фильтр.Columns.Remove("ВременнаяКолонка");
 
-                if (!isFiltr)
+                if ((!isFiltr || ТипЗапуска == ТипЗапускаФормы.ИсторияРаботы) && Фильтр.Rows.Count == 0 && Таблица.Rows.Count > 0)
                     // Добавим одну строку в фильтр
                     Фильтр.Rows.Add();
             }
@@ -216,24 +243,27 @@ namespace Админка_RX
 
         private void Выбрать_Click(object sender, EventArgs e)
         {
-
-            var selects = Таблица.SelectedCells;
-            var rowsInd = new List<int>();
-
-            foreach (DataGridViewCell cell in selects)
+            if (ТипЗапуска != ТипЗапускаФормы.ИсторияРаботы)
             {
-                if (Таблица.Columns.Contains("Id"))
+                var selects = Таблица.SelectedCells;
+                var rowsInd = new List<int>();
+
+                foreach (DataGridViewCell cell in selects)
                 {
-                    var columIndx = Таблица.Columns["Id"].Index;
-                    int rowInd = cell.RowIndex;
+                    if (Таблица.Columns.Contains("Id"))
+                    {
+                        var columIndx = Таблица.Columns["Id"].Index;
+                        int rowInd = cell.RowIndex;
 
-                    Cell.Value = Таблица.Rows[rowInd].Cells[columIndx].Value;
-                    // Берём первую, потом всё
-                    this.Close();
-                    continue;
+                        Cell.Value = Таблица.Rows[rowInd].Cells[columIndx].Value;
+                        // Берём первую, потом всё
+                        this.Close();
+                        continue;
+                    }
+
                 }
-
             }
+
 
         }
 

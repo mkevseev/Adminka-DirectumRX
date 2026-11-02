@@ -27,6 +27,7 @@ namespace Админка_RX
             Логин2.Text = Параметры.Логин2;
             Пароль2.Text = Параметры.Пароль2;
             Администратор2.Checked = Параметры.Администратор2;
+            MaxCount.Text = Параметры.MaxCount.ToString();
         }
 
         private void Ссылка_TextChanged(object sender, EventArgs e)
@@ -480,6 +481,7 @@ namespace Админка_RX
                     Left = 10,
 
                 };
+
                 ComboBox comboBox = new ComboBox
                 {
                     Top = 10,
@@ -505,6 +507,18 @@ namespace Админка_RX
 
         }
 
+        private void MaxCount_KeyPress(object sender, KeyPressEventArgs e)
+        {
+            if (!char.IsControl(e.KeyChar) && !char.IsDigit(e.KeyChar))
+            {
+                e.Handled = true;
+            }
+        }
 
+        private void MaxCount_TextChanged(object sender, EventArgs e)
+        {
+            Параметры.MaxCount = !string.IsNullOrEmpty(MaxCount.Text) ? int.Parse(MaxCount.Text) : 100;
+            Параметры.Save();
+        }
     }
 }

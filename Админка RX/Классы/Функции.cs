@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -25,7 +27,29 @@ namespace Админка_RX.Классы
         {
             ИзменениеРеквизитов,
             МассовоеИзменениеРеквизитов,
-            МиграцияЗаписей
+            МиграцияЗаписей,
+            ИсторияРаботы,
+            Просмотр
+        }
+
+        public string GetXml(DataSet dataSet)
+        {
+            using (MemoryStream memStream = new MemoryStream())
+            {
+                dataSet.WriteXml(memStream);
+                return Encoding.UTF8.GetString(memStream.ToArray());
+            }
+        }
+
+        public static DataSet ToDataSet(string xml)
+        {
+            var byteData = Encoding.UTF8.GetBytes(xml);
+            using (MemoryStream memStream = new MemoryStream(byteData))
+            {
+                DataSet ds = new DataSet();
+                ds.ReadXml(memStream);
+                return ds;
+            }
         }
     }
 }

@@ -3,6 +3,8 @@ using Simple.OData.Client;
 using System;
 using System.Collections.Generic;
 using System.Data;
+using System.Drawing;
+using System.Drawing.Printing;
 using System.Linq;
 using System.Net.Http;
 using System.Runtime.InteropServices;
@@ -27,6 +29,7 @@ namespace Админка_RX.Классы
         private static string Login = Параметры.Логин;
         // Пароль для Basic-аутентификации.
         private static string Password = Параметры.Пароль;
+        private static int MaxCount = Параметры.MaxCount;
 
 
 
@@ -216,6 +219,30 @@ namespace Админка_RX.Классы
 
         }
 
+        public static async Task<IEnumerable<IDictionary<string, object>>> ПолучитьAsync(ODataClient oDataClient, string Имя, string Фильтр, long top)
+        {
+            try
+            {
+                if (string.IsNullOrEmpty(Фильтр))
+                    return null;
+
+                //Получить все сущности.
+                var associatedApplications = await oDataClient.For(Имя)
+                .Top(top)
+                .Filter(Фильтр)
+                .FindEntriesAsync();
+
+                return associatedApplications;
+            }
+            catch
+            {
+                return null;
+            }
+
+
+
+        }
+
         public static async Task<IEnumerable<IDictionary<string, object>>> ПолучитьAsync(ODataClient oDataClient, string Имя, string Фильтр, string[] ДопРеквизиты)
         {
             try
@@ -314,6 +341,104 @@ namespace Админка_RX.Классы
                 return null;
             }
         }
+
+        public static async Task<IEnumerable<IDictionary<string, object>>> ПолучитьПакетноAsync(ODataClient oDataClient, string Имя, string[] ДопРеквизиты)
+        {
+            try
+            {
+                List<IDictionary<string, object>> results = new List<IDictionary<string, object>>();
+                int skipCount = 0;
+                int pageSize = 100;
+                bool hasMore = true;
+
+                while (hasMore)
+                {
+                    // $skip и $top — стандартный механизм пагинации в OData
+                    var page = await oDataClient.For(Имя)
+                        .Expand(ДопРеквизиты)         
+                        .Skip(skipCount)
+                        .Top(pageSize)
+                        .FindEntriesAsync();
+
+                    if (page == null || page.Count() == 0)
+                    {
+                        hasMore = false;
+                        break;
+                    }
+
+                    results.AddRange(page.ToList());
+
+                    skipCount += pageSize;
+
+                    if (skipCount >= MaxCount)
+                    {
+                        hasMore = false;
+                        break;
+                    }
+
+                    // Если страница меньше размера страницы — значит, это последняя страница
+                    hasMore = page.Count() == pageSize;
+                }
+
+                return results.AsEnumerable();
+
+            }
+            catch
+            {
+                return null;
+            }
+
+        }
+
+        public static async Task<IEnumerable<IDictionary<string, object>>> ПолучитьПакетноAsync(ODataClient oDataClient, string Имя, string[] ДопРеквизиты, string Фильтр)
+        {
+            try
+            {
+                List<IDictionary<string, object>> results = new List<IDictionary<string, object>>();
+                int skipCount = 0;
+                int pageSize = 100;
+                bool hasMore = true;
+
+                while (hasMore)
+                {
+                    // $skip и $top — стандартный механизм пагинации в OData
+                    var page = await oDataClient.For(Имя)
+                        .Filter(Фильтр)          // любой фильтр
+                        .Expand(ДопРеквизиты)
+                        .Skip(skipCount)
+                        .Top(pageSize)
+                        .FindEntriesAsync();
+
+                    if (page == null || page.Count() == 0)
+                    {
+                        hasMore = false;
+                        break;
+                    }
+
+                    results.AddRange(page.ToList());
+
+                    skipCount += pageSize;
+
+                    if (skipCount >= MaxCount)
+                    {
+                        hasMore = false;
+                        break;
+                    }
+
+                    // Если страница меньше размера страницы — значит, это последняя страница
+                    hasMore = page.Count() == pageSize;
+                }
+
+                return results.AsEnumerable();
+
+            }
+            catch
+            {
+                return null;
+            }
+
+        }
+
         #endregion
 
 
@@ -1097,8 +1222,6 @@ namespace Админка_RX.Классы
 
             return filter;
         }
-
-
 
     }
 }

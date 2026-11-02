@@ -191,6 +191,7 @@
     <Compile Include="Классы\NewDateTimePicker.cs">
       <SubType>Component</SubType>
     </Compile>
+    <Compile Include="Классы\OData.cs" />
     <Compile Include="Классы\Диалоги.cs" />
     <Compile Include="Классы\Функции.cs" />
     <EmbeddedResource Include="ChangePropertyForm.resx">
@@ -263,6 +264,7 @@
   <ItemGroup>
     <None Include="Resources\Поиск по ИД.png" />
     <None Include="Resources\Массовое изменение реквизитов.png" />
+    <None Include="Resources\Поиск.png" />
     <Content Include="АдмRX2.ico" />
     <None Include="Resources\Стрелка вниз.png" />
     <Content Include="АдмRX.ico" />

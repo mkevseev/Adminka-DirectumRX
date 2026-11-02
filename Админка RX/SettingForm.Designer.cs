@@ -48,9 +48,13 @@
             this.label5 = new System.Windows.Forms.Label();
             this.Пароль2 = new System.Windows.Forms.TextBox();
             this.label6 = new System.Windows.Forms.Label();
+            this.groupBox4 = new System.Windows.Forms.GroupBox();
+            this.MaxCount = new System.Windows.Forms.TextBox();
+            this.label7 = new System.Windows.Forms.Label();
             this.groupBox1.SuspendLayout();
             this.groupBox2.SuspendLayout();
             this.groupBox3.SuspendLayout();
+            this.groupBox4.SuspendLayout();
             this.SuspendLayout();
             // 
             // Ссылка
@@ -253,11 +257,41 @@
             this.label6.TabIndex = 4;
             this.label6.Text = "Логин:";
             // 
+            // groupBox4
+            // 
+            this.groupBox4.Controls.Add(this.MaxCount);
+            this.groupBox4.Controls.Add(this.label7);
+            this.groupBox4.Location = new System.Drawing.Point(355, 7);
+            this.groupBox4.Name = "groupBox4";
+            this.groupBox4.Size = new System.Drawing.Size(219, 268);
+            this.groupBox4.TabIndex = 11;
+            this.groupBox4.TabStop = false;
+            this.groupBox4.Text = "Доп. настройка";
+            // 
+            // MaxCount
+            // 
+            this.MaxCount.Location = new System.Drawing.Point(175, 13);
+            this.MaxCount.Name = "MaxCount";
+            this.MaxCount.Size = new System.Drawing.Size(40, 20);
+            this.MaxCount.TabIndex = 5;
+            this.MaxCount.TextChanged += new System.EventHandler(this.MaxCount_TextChanged);
+            this.MaxCount.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.MaxCount_KeyPress);
+            // 
+            // label7
+            // 
+            this.label7.AutoSize = true;
+            this.label7.Location = new System.Drawing.Point(6, 16);
+            this.label7.Name = "label7";
+            this.label7.Size = new System.Drawing.Size(171, 13);
+            this.label7.TabIndex = 6;
+            this.label7.Text = "Макс кол. загруженных данных:";
+            // 
             // SettingForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(351, 279);
+            this.ClientSize = new System.Drawing.Size(576, 279);
+            this.Controls.Add(this.groupBox4);
             this.Controls.Add(this.groupBox3);
             this.Controls.Add(this.groupBox2);
             this.Controls.Add(this.groupBox1);
@@ -269,6 +303,8 @@
             this.groupBox2.PerformLayout();
             this.groupBox3.ResumeLayout(false);
             this.groupBox3.PerformLayout();
+            this.groupBox4.ResumeLayout(false);
+            this.groupBox4.PerformLayout();
             this.ResumeLayout(false);
 
         }
@@ -295,5 +331,8 @@
         private System.Windows.Forms.Label label5;
         private System.Windows.Forms.TextBox Пароль2;
         private System.Windows.Forms.Label label6;
+        private System.Windows.Forms.GroupBox groupBox4;
+        private System.Windows.Forms.TextBox MaxCount;
+        private System.Windows.Forms.Label label7;
     }
 }

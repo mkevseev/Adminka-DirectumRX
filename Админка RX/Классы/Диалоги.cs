@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.OData.Edm;
+using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Drawing;
@@ -45,7 +46,7 @@ namespace Мониторинг.Resources.Функции
 
                 Кнопка = кнопки.Кнопка;
             }
-            
+
             return Кнопка;
         }
 
@@ -251,10 +252,10 @@ namespace Мониторинг.Resources.Функции
 
                             //maskedText.TextChanged += (sender, e) =>
                             //{
-                                //if (e.IsValidInput)
-                                //{
-                                    maskedText.TextChanged += (sender2, e2) => { Cell.Value = maskedText.Text; };
-                                //}
+                            //if (e.IsValidInput)
+                            //{
+                            maskedText.TextChanged += (sender2, e2) => { Cell.Value = maskedText.Text; };
+                            //}
 
                             //};
 
@@ -308,7 +309,7 @@ namespace Мониторинг.Resources.Функции
                                 Left = 10,
                                 Top = 30,                             // Запретить отступы
                                 Margin = new Padding(0, 0, 0, 0),
-                                Anchor =  AnchorStyles.Right | AnchorStyles.Top | AnchorStyles.Left,
+                                Anchor = AnchorStyles.Right | AnchorStyles.Top | AnchorStyles.Left,
                                 Text = oldValue?.ToString()
 
                             };
@@ -370,10 +371,6 @@ namespace Мониторинг.Resources.Функции
 
             prompt.Controls.Add(реквизит);
 
-            //реквизит.TextChanged += (sender, e) => { _Значение = реквизит.Text; };
-
-            //prompt.FormClosing += (sender, e) => { _Значение = реквизит.Text; };
-
             if (!string.IsNullOrEmpty(имяКнопки))
             {
                 Button button = new Button
@@ -381,24 +378,44 @@ namespace Мониторинг.Resources.Функции
                     Left = prompt.Width / 2 - (имяКнопки.Length * 6),
                     Top = 30,
                     Text = имяКнопки,
-
                 };
                 prompt.Controls.Add(button);
-                
-                button.Click += (sender, e) => 
-                { 
-                    _Значение = реквизит.Text;
+
+                button.Click += (sender, e) =>
+                {
                     prompt.Close();
                 };
-            }
 
-           
+                prompt.FormClosing += (sender, e) =>
+                {
+                    _Значение = реквизит.Text;
+                };
+            }
 
             prompt.ShowDialog();
             //return реквизит.Значение;
             prompt.Dispose();
 
             return _Значение;
+        }
+
+        public static string ЗапроситьВыбор(IEnumerable<string> names)
+        {
+            var тип = string.Empty;
+            var maxLength = names.Max(s => s.Length);
+            var реквизит = new ComboBox
+            {
+                Width = TextRenderer.MeasureText(names.OrderByDescending(r => r.Length).FirstOrDefault(), new Font("Arial", 9)).Width,
+                Height = 80,
+                Top = 5,
+                Left = 5,
+            };
+
+            реквизит.Items.AddRange(names.ToArray());
+
+            тип = Показать(реквизит, "Выбрать");
+
+            return тип;
         }
 
     }

@@ -656,7 +656,7 @@ namespace Админка_RX.Классы
             return лист;
         }
 
-    
+
 
         public static List<IEdmStructuredType> ПолучитьВсеБазовыеТипы(Dictionary<IEdmEntityType, IEdmEntitySet> типИТипСущности)
         {
@@ -672,7 +672,7 @@ namespace Админка_RX.Классы
                     var type = baseType;
 
                     if (!bases.Contains(type))
-                    bases.Add(type);
+                        bases.Add(type);
 
                     if (baseType == type)
                         baseType = baseType.BaseType;
@@ -765,47 +765,55 @@ namespace Админка_RX.Классы
         }
 
 
+
         /// <summary>
-        /// Ищет свойства, чей тип ТОЧНО равен целевому типу (например, свойство типа User).
-        /// Работает даже на старых версиях Microsoft.OData.Edm без TargetType() и IEdmNavigationType.
+        /// Ищет все свойства (включая навигационные), которые ссылаются на указанную сущность.
         /// </summary>
-        public static List<(string EntityTypeName, string PropertyName)> FindDirectTypeMatches(
-            IEdmModel model,
-            string targetTypeName)
+        public static List<string> FindPropertiesReferencingEntity(IEdmModel model, string тип)
         {
-            var result = new List<(string, string)>();
+            var results = new List<string>();
 
-            // 1. Находим целевой тип (User)
-            var targetType = model.FindType(targetTypeName) as IEdmEntityType;
-            if (targetType == null)
-                return result;
+            var ЭлементEdmМодели = ПолучитьЭлементEdmМодели(model, тип);
+            var ТипОбъекта = ЭлементEdmМодели.EntityType();
 
-            foreach (var element in model.SchemaElements)
+            // 2. Проходим по всем сущностям в модели
+            foreach (var entitySet in model.EntityContainer.EntitySets())
             {
-                if (element is IEdmEntityContainer container)
+                var entityType = entitySet.EntityType() as IEdmEntityType;
+                if (entityType == null) continue;
+
+                // Проходим по всем свойствам этой сущности
+                foreach (var property in entityType.DeclaredProperties)
                 {
-                    foreach (var entitySet in container.EntitySets())
+                    // Проверяем тип свойства
+                    var propertyType = property.Type as IEdmTypeReference;
+                    if (!propertyType.IsNullable) // игнорируем null, если нужно
+                        continue;
+
+                    // "IOfficialDocumentDto.DeliveredTo (навигация к Region)"
+
+                    // Сценарий А: Свойство - это сама сущность Region (навигационное свойство)
+                    if (propertyType.IsEntity() && propertyType.AsEntity().Definition == ТипОбъекта)
                     {
-                        var entityType = entitySet.EntityType();
-                        if (entityType == null) continue;
+                        results.Add($"{entitySet.Name}|{property.Name}");
+                    }
 
-                        foreach (var prop in entityType.DeclaredProperties)
+                    // Сценарий Б: Свойство - это коллекция сущностей Region
+                    if (propertyType.IsCollection() && propertyType.AsCollection().ElementType().IsEntity())
+                    {
+                        var elementType = propertyType.AsCollection().ElementType().AsEntity().Definition;
+                        if (elementType == ТипОбъекта)
                         {
-                            // 2. Проверяем, является ли тип свойства тем самым типом, который мы ищем
-                            var propType = prop.Type as IEdmEntityType;
-
-                            if (propType != null && propType.Name == targetTypeName)
-                            {
-                                // Нашли! Это свойство имеет тип User.
-                                result.Add((entityType.Name, prop.Name));
-                            }
+                            results.Add($"{entitySet.Name}|{property.Name}");
                         }
                     }
                 }
             }
 
-            return result;
+            return results;
         }
+
+
 
         #endregion
 

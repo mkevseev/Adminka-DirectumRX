@@ -135,6 +135,16 @@ namespace Админка_RX.Properties {
         /// <summary>
         ///   Поиск локализованного ресурса типа System.Drawing.Bitmap.
         /// </summary>
+        internal static System.Drawing.Bitmap Поиск {
+            get {
+                object obj = ResourceManager.GetObject("Поиск", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Поиск локализованного ресурса типа System.Drawing.Bitmap.
+        /// </summary>
         internal static System.Drawing.Bitmap Поиск_по_ИД {
             get {
                 object obj = ResourceManager.GetObject("Поиск по ИД", resourceCulture);
