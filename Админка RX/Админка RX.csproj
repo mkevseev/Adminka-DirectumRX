@@ -266,6 +266,8 @@
     <None Include="Resources\Массовое изменение реквизитов.png" />
     <None Include="Resources\Поиск.png" />
     <None Include="Resources\Сменить систему.png" />
+    <None Include="Resources\Где используется.png" />
+    <None Include="Resources\История работы.png" />
     <Content Include="АдмRX2.ico" />
     <None Include="Resources\Стрелка вниз.png" />
     <Content Include="АдмRX.ico" />

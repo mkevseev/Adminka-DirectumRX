@@ -121,6 +121,9 @@
   <data name="Настройка" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\Настройка.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
+  <data name="Где используется" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Где используется.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
   <data name="Поиск по ИД" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\Поиск по ИД.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
@@ -139,6 +142,9 @@
   <data name="Обновить" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\Обновить.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
+  <data name="Сменить систему" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Сменить систему.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
   <data name="Меню" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\Меню.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
@@ -148,7 +154,7 @@
   <data name="Редактировать реквизиты" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\Редактировать реквизиты.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
-  <data name="Сменить систему" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\Сменить систему.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  <data name="История работы" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\История работы.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
 </root>

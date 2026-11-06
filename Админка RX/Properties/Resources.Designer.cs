@@ -63,6 +63,26 @@ namespace Админка_RX.Properties {
         /// <summary>
         ///   Поиск локализованного ресурса типа System.Drawing.Bitmap.
         /// </summary>
+        internal static System.Drawing.Bitmap Где_используется {
+            get {
+                object obj = ResourceManager.GetObject("Где используется", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Поиск локализованного ресурса типа System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap История_работы {
+            get {
+                object obj = ResourceManager.GetObject("История работы", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Поиск локализованного ресурса типа System.Drawing.Bitmap.
+        /// </summary>
         internal static System.Drawing.Bitmap Календарь {
             get {
                 object obj = ResourceManager.GetObject("Календарь", resourceCulture);
