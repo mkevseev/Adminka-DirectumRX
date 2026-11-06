@@ -1,5 +1,4 @@
-﻿using Microsoft.OData.Edm;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Drawing;
@@ -7,7 +6,6 @@ using System.Linq;
 using System.Windows.Forms;
 using Админка_RX.Классы;
 using static Админка_RX.Классы.MetadataRX;
-
 
 
 namespace Мониторинг.Resources.Функции
@@ -332,6 +330,10 @@ namespace Мониторинг.Resources.Функции
             }
         }
 
+
+
+
+
         public static void Показать(string имяРеквизита, ТипВвода типВвода, object oldValue, DataGridViewCell Cell)
         {
 
@@ -358,7 +360,7 @@ namespace Мониторинг.Resources.Функции
             prompt.Dispose();
         }
 
-        public static string Показать(Control реквизит, string имяКнопки)
+        public static string ПоказатьВыбор(Control реквизит, string имяКнопки)
         {
             Form prompt = new Form
             {
@@ -413,10 +415,201 @@ namespace Мониторинг.Resources.Функции
 
             реквизит.Items.AddRange(names.ToArray());
 
-            тип = Показать(реквизит, "Выбрать");
+            тип = ПоказатьВыбор(реквизит, "Выбрать");
 
             return тип;
         }
+
+
+
+
+
+        private static string result;
+
+        public static string Показать(IEnumerable<string> entities)
+        {
+            Form form = new Form();
+            form.Text = "Выбор";
+            form.Size = new Size(700, 450);
+            form.StartPosition = FormStartPosition.CenterScreen;
+            form.BackColor = Color.FromArgb(240, 240, 245);
+            InitializeComponent(form);
+            GenerateButtons(form, entities);
+            SetDynamicMinSize(form);
+            form.Controls.Add(flowPanel);
+            form.ShowDialog();
+            return result;
+        }
+        private static FlowLayoutPanel flowPanel;
+
+        private static void GenerateButtons(Form form, IEnumerable<string> entities)
+        {
+            flowPanel.Controls.Clear();
+
+            foreach (var text in entities)
+            {
+                var btn = new Button
+                {
+                    Text = text,
+                    AutoSize = true,
+                    FlatStyle = FlatStyle.Flat,
+                    Cursor = Cursors.Hand,
+                    Margin = new Padding(8),
+                    Font = new Font("Segoe UI", 10F, FontStyle.Regular),
+                    TextAlign = ContentAlignment.MiddleCenter,
+
+                    BackColor = Color.White,
+                    ForeColor = Color.FromArgb(60, 60, 60),
+                    FlatAppearance =
+                    {
+                        BorderSize = 1,
+                        BorderColor = Color.FromArgb(200, 200, 200)
+                    }
+                };
+
+                // Защита кнопки от сплющивания (минимальный размер самой кнопки)
+                btn.MinimumSize = new Size(120, 45);
+
+                btn.MouseEnter += (s, e) =>
+                {
+                    btn.FlatAppearance.BorderColor = Color.FromArgb(100, 149, 237);
+                    btn.BackColor = Color.FromArgb(245, 250, 255);
+                };
+
+                btn.MouseLeave += (s, e) =>
+                {
+                    btn.FlatAppearance.BorderColor = Color.FromArgb(200, 200, 200);
+                    btn.BackColor = Color.White;
+                };
+
+                btn.Click += (s, e) =>
+                {
+                    result = text;
+                    form.Close();
+                };
+
+
+                flowPanel.Controls.Add(btn);
+            }
+        }
+
+        // --- ГЛАВНОЕ: Динамический расчет минимального размера окна ---
+        private static void SetDynamicMinSize(Form form)
+        {
+            // 1. Принудительно отрисовываем панель, чтобы кнопки получили реальные размеры
+            flowPanel.PerformLayout();
+
+            // 2. Ищем самую широкую кнопку (чтобы окно нельзя было сжать уже, чем она)
+            int maxBtnWidth = 0;
+            int btnHeight = 0;
+
+            foreach (Control c in flowPanel.Controls)
+            {
+                if (c.Width > maxBtnWidth)
+                    maxBtnWidth = c.Width;
+                btnHeight = c.Height; // Высота у всех примерно одинаковая
+            }
+
+            // 3. Считаем минимальную ширину окна:
+            // Ширина самой длинной кнопки + отступы панели (20 слева + 20 справа) + запас 20px
+            int minFormWidth = maxBtnWidth + 60;
+
+            // 4. Считаем минимальную высоту окна:
+            // Высота одной кнопки + отступы панели (20 сверху + 20 снизу) + запас 40px на заголовок
+            int minFormHeight = btnHeight + 80;
+
+            // 5. Устанавливаем границу
+            form.MinimumSize = new Size(minFormWidth, minFormHeight);
+            if (flowPanel.Controls.Count < 20)
+                form.Size = new Size(minFormWidth * flowPanel.Controls.Count / 2, minFormHeight * 2);
+            else if (flowPanel.Controls.Count > 20)
+                form.Size = new Size(minFormWidth * 5, minFormHeight * 5);
+            else if (flowPanel.Controls.Count == 1)
+                form.Size = form.MinimumSize;
+        }
+
+        private static void InitializeComponent(Form form)
+        {
+            form.Text = "Выбор";
+            form.Size = new Size(700, 450);
+            form.StartPosition = FormStartPosition.CenterScreen;
+            form.BackColor = Color.FromArgb(240, 240, 245);
+
+            flowPanel = new FlowLayoutPanel
+            {
+                Dock = DockStyle.Fill,
+                WrapContents = true,      // Кнопки уходят вниз при сужении
+                AutoScroll = true,       // Скролл появится, если кнопок ОЧЕНЬ много
+                Padding = new Padding(20),
+                FlowDirection = FlowDirection.LeftToRight
+            };
+
+            form.Controls.Add(flowPanel);
+        }
+
+
+        internal class Ожидание
+        {
+            public Form form = new Form();
+            public ProgressBar progressBar = new ProgressBar();
+            public bool close = false;
+            public Label label = new Label();
+
+            public Ожидание(int count)
+            {
+                Создать(count);
+            }
+
+            public Ожидание Создать(int count)
+            {
+                form.Text = "Выбор";
+                form.Size = new Size(500, 100);
+                form.StartPosition = FormStartPosition.CenterScreen;
+                form.BackColor = Color.FromArgb(240, 240, 245);
+                form.FormClosed += Form_FormClosed;
+                form.FormBorderStyle = FormBorderStyle.FixedSingle;
+
+                progressBar.Minimum = 0;
+                progressBar.Value = 0;
+                progressBar.Maximum = count;
+                progressBar.Size = new Size(500, 40);
+                progressBar.Location = new Point(50, 0);
+
+                label.Size = new Size(500, 20);
+
+                form.Controls.Add(label);
+                form.Controls.Add(progressBar);
+
+                form.Show();
+
+                return this;
+            }
+
+            private void Form_FormClosed(object sender, FormClosedEventArgs e)
+            {
+                close = true;
+            }
+
+            public Ожидание Добавить(int count)
+            {
+                progressBar.Value += count;
+                return this;
+            }
+
+            public void Закрыть()
+            {
+                form.Close();
+            }
+
+            public Ожидание Текст(string text)
+            {
+                label.Text = text;
+                return this;
+            }
+        }
+
+
+
 
     }
 }

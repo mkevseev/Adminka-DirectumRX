@@ -165,6 +165,16 @@ namespace Админка_RX.Properties {
         /// <summary>
         ///   Поиск локализованного ресурса типа System.Drawing.Bitmap.
         /// </summary>
+        internal static System.Drawing.Bitmap Сменить_систему {
+            get {
+                object obj = ResourceManager.GetObject("Сменить систему", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Поиск локализованного ресурса типа System.Drawing.Bitmap.
+        /// </summary>
         internal static System.Drawing.Bitmap Стрелка_вниз {
             get {
                 object obj = ResourceManager.GetObject("Стрелка вниз", resourceCulture);

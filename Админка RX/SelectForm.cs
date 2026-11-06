@@ -50,23 +50,26 @@ namespace Админка_RX
                 ContextMenuStrip contextMenu = new ContextMenuStrip();
                 // создаем элементы меню
                 ToolStripMenuItem MassiveFillMenuItem = new ToolStripMenuItem("Массово заполнить из...");
+                contextMenu.ItemClicked += new ToolStripItemClickedEventHandler(ContextMenu_ItemClicked);
+
                 ToolStripMenuItem createMenuItem = new ToolStripMenuItem("Изменить");
+                createMenuItem.Click += CreateMenuItem_Click;
+
+                ToolStripMenuItem whereUsedMenuItem = new ToolStripMenuItem("Где используется");
+                whereUsedMenuItem.Click += WhereUsedMenuItem_Click;
 
                 if (ТипЗапуска == ТипЗапускаФормы.ИзменениеРеквизитов)
                 {
                     contextMenu.Items.Add("Выбрать запись");
                     //contextMenu.Items.Add("Вставить");
                     // Привязка события для выбора варианта из контекстного меню  
-                    contextMenu.ItemClicked += new ToolStripItemClickedEventHandler(ContextMenu_ItemClicked);
                 }
                 else if (ТипЗапуска == ТипЗапускаФормы.МассовоеИзменениеРеквизитов)
                 {
                     Выбрать.Visible = false;                   
 
                     // добавляем элементы в меню
-                    contextMenu.Items.AddRange(new[] { MassiveFillMenuItem, createMenuItem });
-
-                    createMenuItem.Click += CreateMenuItem_Click;
+                    contextMenu.Items.AddRange(new[] { MassiveFillMenuItem, createMenuItem , whereUsedMenuItem });
                 }
                 else if (ТипЗапуска == ТипЗапускаФормы.ИсторияРаботы)
                 {
@@ -89,9 +92,7 @@ namespace Админка_RX
                     Выбрать.Visible = false;
 
                     // добавляем элементы в меню
-                    contextMenu.Items.AddRange(new[] { createMenuItem });
-
-                    createMenuItem.Click += CreateMenuItem_Click;
+                    contextMenu.Items.AddRange(new[] { createMenuItem , whereUsedMenuItem });
                 }
 
 
@@ -237,6 +238,11 @@ namespace Админка_RX
                 this.Close();
             }
 
+        }
+
+        private void WhereUsedMenuItem_Click(object sender, EventArgs e)
+        {
+            throw new NotImplementedException();
         }
 
         #region Изменение реквизитов

@@ -520,5 +520,18 @@ namespace Админка_RX
             Параметры.MaxCount = !string.IsNullOrEmpty(MaxCount.Text) ? int.Parse(MaxCount.Text) : 100;
             Параметры.Save();
         }
+
+        private void СменитьСистему_Click(object sender, EventArgs e)
+        {
+            var s1S = Ссылка.Text;
+            var s1L = Логин.Text;
+            var s1P = Пароль.Text;
+            Ссылка.Text = Ссылка2.Text;
+            Логин.Text = Логин2.Text;
+            Пароль.Text = Пароль2.Text;
+            Ссылка2.Text = s1S;
+            Логин2.Text = s1L;
+            Пароль2.Text = s1P;
+        }
     }
 }

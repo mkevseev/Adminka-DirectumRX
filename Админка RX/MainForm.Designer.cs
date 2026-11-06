@@ -45,11 +45,11 @@
             this.Действия = new System.Windows.Forms.ToolStripDropDownButton();
             this.Поиск = new System.Windows.Forms.ToolStripMenuItem();
             this.ПоискПоИДПунктДействия = new System.Windows.Forms.ToolStripMenuItem();
+            this.ГдеИспользуетсяПунктДействия = new System.Windows.Forms.ToolStripMenuItem();
             this.ИзменитьРеквизиты = new System.Windows.Forms.ToolStripMenuItem();
             this.МассовоеИзменениеРеквизитов = new System.Windows.Forms.ToolStripMenuItem();
             this.ИсторияРаботы = new System.Windows.Forms.ToolStripMenuItem();
             this.МиграцияЗаписей = new System.Windows.Forms.ToolStripMenuItem();
-            this.ГдеИспользуетсяПунктДействия = new System.Windows.Forms.ToolStripMenuItem();
             this.panel1.SuspendLayout();
             this.statusStrip1.SuspendLayout();
             this.toolStrip1.SuspendLayout();
@@ -209,6 +209,13 @@
             this.ПоискПоИДПунктДействия.Text = "Поиск по ИД";
             this.ПоискПоИДПунктДействия.Click += new System.EventHandler(this.ПоискПоИД_Click);
             // 
+            // ГдеИспользуетсяПунктДействия
+            // 
+            this.ГдеИспользуетсяПунктДействия.Name = "ГдеИспользуетсяПунктДействия";
+            this.ГдеИспользуетсяПунктДействия.Size = new System.Drawing.Size(180, 22);
+            this.ГдеИспользуетсяПунктДействия.Text = "Где используется";
+            this.ГдеИспользуетсяПунктДействия.Click += new System.EventHandler(this.ГдеИспользуется_Click);
+            // 
             // ИзменитьРеквизиты
             // 
             this.ИзменитьРеквизиты.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
@@ -241,13 +248,6 @@
             this.МиграцияЗаписей.Text = "Миграция записей";
             this.МиграцияЗаписей.Click += new System.EventHandler(this.МиграцияЗаписей_Click);
             // 
-            // ГдеИспользуетсяПунктДействия
-            // 
-            this.ГдеИспользуетсяПунктДействия.Name = "ГдеИспользуетсяПунктДействия";
-            this.ГдеИспользуетсяПунктДействия.Size = new System.Drawing.Size(180, 22);
-            this.ГдеИспользуетсяПунктДействия.Text = "Где используется";
-            this.ГдеИспользуетсяПунктДействия.Click += new System.EventHandler(this.ГдеИспользуется_Click);
-            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -255,6 +255,7 @@
             this.ClientSize = new System.Drawing.Size(238, 72);
             this.Controls.Add(this.panel1);
             this.Controls.Add(this.ВсёОК);
+            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Name = "MainForm";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;

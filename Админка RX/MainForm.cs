@@ -263,6 +263,8 @@ namespace Админка_RX
                 ODATAClient = ODATAClient
             };
             settingForm.ShowDialog();
+
+            Application.Restart();
         }
 
 
@@ -293,7 +295,7 @@ namespace Админка_RX
         private void МассовоеИзменениеРеквизитов_Click(object sender, EventArgs e)
         {
             var names = ТипИТипСущности.Select(s => s.Value.Name);
-            var тип = Диалоги.ЗапроситьВыбор(names);
+            var тип = Диалоги.Показать(names);
 
             if (string.IsNullOrEmpty(тип))
                 MessageBox.Show("Укажите Тип сущности");
@@ -338,7 +340,7 @@ namespace Админка_RX
         private void Поиск_Click(object sender, EventArgs e)
         {
             var names = ТипИТипСущности.Select(s => s.Value.Name);
-            var тип = Диалоги.ЗапроситьВыбор(names);
+            var тип = Диалоги.Показать(names);
 
             if (string.IsNullOrEmpty(тип))
                 MessageBox.Show("Укажите Тип сущности");
@@ -488,7 +490,7 @@ namespace Админка_RX
 
                 names.Sort();
 
-                name = Диалоги.ЗапроситьВыбор(names);
+                name = Диалоги.Показать(names);
 
                 if (string.IsNullOrEmpty(name))
                 {
@@ -589,45 +591,66 @@ namespace Админка_RX
 
             if (!string.IsNullOrEmpty(кнопка))
             {
-                var a = MetadataRX.FindPropertiesReferencingEntity(EDMModel, кнопка);
 
-                var fffff = new List<IDictionary<string, object>>();
-                var значениеРХ = await DirectumRX.ПолучитьAsync(ODATAClient, кнопка, $"Id eq {long.Parse(ид)}");
-                if (значениеРХ != null)
-                {
-
-                    var bar2 = ОбработкаProgressBar;
-                    bar2.Minimum = 0;
-                    bar2.Value = 0;
-                    bar2.Maximum = a.Count;
-
-                    foreach (var item in a)
-                    {
-                        bar2.Value += 1;
-                        var d = item.Split(new char[] { '|' }, StringSplitOptions.None);
-                        var ЭлементEdmМодели = ПолучитьЭлементEdmМодели(EDMModel, d[0]);
-                        var ТипОбъекта = ЭлементEdmМодели.EntityType();
-                        var НавигационныеРеквизиты = ТипОбъекта.NavigationProperties().ToList();
-                        var ИменаНавигРеквиз = НавигационныеРеквизиты.Select(i => i.Name).ToList();
-                        var n = d[0];
-                        var r = d[1];
-                        var f = $"{r}/Id eq {значениеРХ.First()["Id"].ToString()}";
-                        var значениея = await DirectumRX.ПолучитьAsync(ODATAClient, n, f, ИменаНавигРеквиз.ToArray());
-                        if (значениея != null)
-                            fffff.AddRange(значениея);
-                    }
-                }
-
-
-                var ff = fffff;
+                ГдеИспользуется(кнопка, ид);
+               
 
             }
 
         }
 
+        public async void ГдеИспользуется(string тип, string ид)
+        {
+            var allFindRef = MetadataRX.FindPropertiesReferencingEntity(EDMModel, тип);
+
+            var list = new List<(string, IDictionary<string, object>)>();
+            var значениеРХ = await DirectumRX.ПолучитьAsync(ODATAClient, тип, $"Id eq {long.Parse(ид)}");
+            if (значениеРХ != null)
+            {
+                var waiting = new Диалоги.Ожидание(allFindRef.Count());
+    
+                foreach (var item in allFindRef)
+                {
+                    waiting.Добавить(1);
+
+                    if (waiting.close)
+                        break;
+
+                    
+
+                    var str = item.Split(new char[] { '|' }, StringSplitOptions.None);
+                    var type = str[0];
+                    var rec = str[1];
+
+                    waiting.Текст(item);
+
+                    var ЭлементEdmМодели = ПолучитьЭлементEdmМодели(EDMModel, type);
+                    var ТипОбъекта = ЭлементEdmМодели.EntityType();
+                    var НавигационныеРеквизиты = ТипОбъекта.NavigationProperties().ToList();
+                    var ИменаНавигРеквиз = НавигационныеРеквизиты.Select(i => i.Name).ToList();
+
+                    var fil = $"{rec}/Id eq {значениеРХ.First()["Id"].ToString()}";
+                    var значения = await DirectumRX.ПолучитьAsync(ODATAClient, type, fil, ИменаНавигРеквиз.ToArray());
+                    if (значения != null)
+                        foreach (var значение in значения)
+                        list.Add((type, значение));
+                }
+
+                waiting.Закрыть();
+            }
+
+
+            var ff = list;
+
+            // Создадим диалог и получим нажатую кнопку
+            var кнопка = Диалоги.Показать(list.Select(s => s.Item1).Distinct());
+        }
+
         #endregion
 
         #endregion
+
+
 
 
     }

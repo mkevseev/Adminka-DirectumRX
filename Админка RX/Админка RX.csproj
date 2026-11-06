@@ -265,6 +265,7 @@
     <None Include="Resources\Поиск по ИД.png" />
     <None Include="Resources\Массовое изменение реквизитов.png" />
     <None Include="Resources\Поиск.png" />
+    <None Include="Resources\Сменить систему.png" />
     <Content Include="АдмRX2.ico" />
     <None Include="Resources\Стрелка вниз.png" />
     <Content Include="АдмRX.ico" />

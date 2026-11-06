@@ -51,10 +51,12 @@
             this.groupBox4 = new System.Windows.Forms.GroupBox();
             this.MaxCount = new System.Windows.Forms.TextBox();
             this.label7 = new System.Windows.Forms.Label();
+            this.СменитьСистему = new System.Windows.Forms.PictureBox();
             this.groupBox1.SuspendLayout();
             this.groupBox2.SuspendLayout();
             this.groupBox3.SuspendLayout();
             this.groupBox4.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.СменитьСистему)).BeginInit();
             this.SuspendLayout();
             // 
             // Ссылка
@@ -125,7 +127,7 @@
             this.groupBox1.Controls.Add(this.button1);
             this.groupBox1.Controls.Add(this.ЗагрузкаBar);
             this.groupBox1.Controls.Add(this.ЗагрузитьФайлы);
-            this.groupBox1.Location = new System.Drawing.Point(3, 203);
+            this.groupBox1.Location = new System.Drawing.Point(3, 220);
             this.groupBox1.Name = "groupBox1";
             this.groupBox1.Size = new System.Drawing.Size(345, 72);
             this.groupBox1.TabIndex = 8;
@@ -187,7 +189,7 @@
             this.groupBox3.Controls.Add(this.label5);
             this.groupBox3.Controls.Add(this.Пароль2);
             this.groupBox3.Controls.Add(this.label6);
-            this.groupBox3.Location = new System.Drawing.Point(3, 106);
+            this.groupBox3.Location = new System.Drawing.Point(3, 123);
             this.groupBox3.Name = "groupBox3";
             this.groupBox3.Size = new System.Drawing.Size(345, 91);
             this.groupBox3.TabIndex = 10;
@@ -263,7 +265,7 @@
             this.groupBox4.Controls.Add(this.label7);
             this.groupBox4.Location = new System.Drawing.Point(355, 7);
             this.groupBox4.Name = "groupBox4";
-            this.groupBox4.Size = new System.Drawing.Size(219, 268);
+            this.groupBox4.Size = new System.Drawing.Size(219, 285);
             this.groupBox4.TabIndex = 11;
             this.groupBox4.TabStop = false;
             this.groupBox4.Text = "Доп. настройка";
@@ -286,13 +288,25 @@
             this.label7.TabIndex = 6;
             this.label7.Text = "Макс кол. загруженных данных:";
             // 
+            // СменитьСистему
+            // 
+            this.СменитьСистему.Image = global::Админка_RX.Properties.Resources.Сменить_систему;
+            this.СменитьСистему.Location = new System.Drawing.Point(3, 101);
+            this.СменитьСистему.Name = "СменитьСистему";
+            this.СменитьСистему.Size = new System.Drawing.Size(346, 23);
+            this.СменитьСистему.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
+            this.СменитьСистему.TabIndex = 12;
+            this.СменитьСистему.TabStop = false;
+            this.СменитьСистему.Click += new System.EventHandler(this.СменитьСистему_Click);
+            // 
             // SettingForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(576, 279);
-            this.Controls.Add(this.groupBox4);
+            this.ClientSize = new System.Drawing.Size(576, 294);
             this.Controls.Add(this.groupBox3);
+            this.Controls.Add(this.СменитьСистему);
+            this.Controls.Add(this.groupBox4);
             this.Controls.Add(this.groupBox2);
             this.Controls.Add(this.groupBox1);
             this.Name = "SettingForm";
@@ -305,6 +319,7 @@
             this.groupBox3.PerformLayout();
             this.groupBox4.ResumeLayout(false);
             this.groupBox4.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.СменитьСистему)).EndInit();
             this.ResumeLayout(false);
 
         }
@@ -334,5 +349,6 @@
         private System.Windows.Forms.GroupBox groupBox4;
         private System.Windows.Forms.TextBox MaxCount;
         private System.Windows.Forms.Label label7;
+        private System.Windows.Forms.PictureBox СменитьСистему;
     }
 }
