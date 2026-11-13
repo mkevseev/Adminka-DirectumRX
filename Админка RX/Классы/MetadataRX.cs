@@ -1,6 +1,7 @@
 ﻿using Microsoft.OData.Edm;
 using Microsoft.OData.Edm.Csdl;
 using Microsoft.OData.Edm.Vocabularies;
+using Simple.OData.Client;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -173,7 +174,7 @@ namespace Админка_RX.Классы
                 else if (propertys.Count() == 1)
                     continue;
 
-                if (!DirectumRX.НужныйТипСущности(baseType2))
+                if (!НужныйТипСущности(baseType2))
                     continue;
 
                 var schemaType = baseType2 as IEdmSchemaType;
@@ -213,7 +214,7 @@ namespace Админка_RX.Классы
 
                 IEdmCollectionType edmCollectionType = (IEdmCollectionType)entity.Type;
                 IEdmType edmType = edmCollectionType.ElementType.Definition;
-
+                
                 IEdmEntityType edmStructuredType = edmType as IEdmEntityType;
                 if (имя == edmStructuredType.Name)
                     return entity;
@@ -410,6 +411,16 @@ namespace Админка_RX.Классы
             }
         }
 
+        public static string ПолучитьИмяТипаРеквизита(IEdmProperty property)
+        {
+            if (property.PropertyKind == EdmPropertyKind.Navigation)
+            return ((IEdmEntityType)property.Type.Definition).Name;
+            if (property.PropertyKind == EdmPropertyKind.Structural)
+                return ((IEdmPrimitiveType)property.Type.Definition).Name;
+            
+
+            return ((IEdmEntityType)property.Type.Definition).Name;
+        }
 
 
 
@@ -427,39 +438,25 @@ namespace Админка_RX.Классы
                 // Имя реквизита
                 string propertyName = property.Name;
 
-
                 IEdmType edmType2 = property.Type.Definition;
+                string elementName = ПолучитьИмяТипаРеквизита(property);
 
                 var типРеквизита = ПолучитьТипРеквизита(property);
 
                 if (типРеквизита == ТипРеквизита.Обычный)
-                {
-                    var primitive = edmType2 as IEdmPrimitiveType;
-                    string elementName = primitive.Name;
-
                     if (!лист.ContainsKey(propertyName))
                         лист.Add(propertyName, elementName);
-                }
+
 
                 if (типРеквизита == ТипРеквизита.Сущность)
-                {
-                    var primitive = edmType2 as IEdmEntityType;
-                    string elementName = primitive.Name;
-
                     if (!лист.ContainsKey(propertyName))
                         лист.Add(propertyName, elementName);
-                }
+                
 
                 if (типРеквизита == ТипРеквизита.Коллекция)
-                {
-                    var primitive = edmType2 as IEdmCollectionType;
-                    var coll = primitive.ElementType.Definition;
-                    var type = coll as IEdmStructuredType;
-                    var nameType = ((IEdmEntityType)type).Name;
-
                     if (!лист.ContainsKey(propertyName))
-                        лист.Add(propertyName, nameType);
-                }
+                        лист.Add(propertyName, elementName);
+                
 
             }
 
@@ -518,6 +515,130 @@ namespace Админка_RX.Классы
             Коллекция
         }
 
+        public static bool НужныйТипСущности(IEdmEntityType тип)
+        {
+            IEdmStructuredType baseType = тип;
+            // 10 наследников
+
+            int i = 10;
+            bool ok = true;
+
+            for (int j = 1; j != i && baseType != null; j++)
+            {
+                var type = baseType;
+                var ss = baseType as IEdmEntityType;
+                var nameFull = ss.FullName();
+                if (nameFull.Contains("Sungero.IntegrationService.Models.Generated.Workflow") || // Задачи и задания
+
+                    nameFull.Contains("IOfficialDocumentTrackingDto") ||
+                    nameFull.Contains("IElectronicDocumentVersionsDto") || // Версии документа (есть примеры как добавлять, не тут уж точно)
+                    nameFull.Contains("IGroupRecipientLinksDto")
+                    )
+                {
+                    ok = false;
+                    break;
+                }
+
+                if (baseType == type)
+                    baseType = baseType.BaseType;
+            }
+
+            return ok;
+        }
+
+
+        public static async Task<IDictionary<string, object>> Поиск(ODataClient oDataClient, IEdmModel edmModel, string Имя, string[] ДопРеквизиты, List<string> РеквизитыСравнения)
+        {
+            IDictionary<string, object> изменения = new Dictionary<string, object>();
+
+            var элементEdmМодели = MetadataRX.ПолучитьЭлементEdmМодели(edmModel, Имя);
+
+            var структурныйТип = MetadataRX.ПолучитьСтруктурированныйТип(элементEdmМодели);
+            // Получим все имена и типы реквизитов типа сущности для дальнейшего сравнения 
+            var типОбъекта = элементEdmМодели.EntityType();
+            var nameType = типОбъекта.Name;
+
+            IDictionary<string, object> всеРеквизиты = new Dictionary<string, object>();
+            var реквизиты = MetadataRX.ПолучитьВсеРеквизитыТипа(структурныйТип, всеРеквизиты);
+
+            return изменения;
+        }
+
+
+        public static string РусскоеИмяРеквизита(IEdmModel edm, string имяРеквизита, string типРеквизита, string типСущности)
+        {
+            string имя = string.Empty;
+            var Файлы = Параметры.Файлы;
+
+            var типы = MetadataRX.ПолучитьИменаНаследников(edm, типСущности);
+
+
+            foreach (var тип in типы)
+            {
+                var элементEdmМодели = MetadataRX.ПолучитьЭлементEdmМодели(edm, тип);
+
+                var структурныйТип = MetadataRX.ПолучитьСтруктурированныйТип(элементEdmМодели);
+
+                var типОбъекта = элементEdmМодели.EntityType();
+
+                var name = типОбъекта.Name;
+                if (Файлы.Tables.Contains(name))
+                {
+                    var tab = Файлы.Tables[name];
+                    // Обычный
+                    if (tab.Columns.Contains("Property_" + имяРеквизита))
+                    {
+                        var ind = tab.Columns.IndexOf("Property_" + имяРеквизита);
+                        имя = tab.Rows[0][ind].ToString();
+                    }
+
+                    // Enum 
+                    //if (tab.Columns.Contains("Enum_" + имяРеквизита))
+                    //{
+                    //    var ind = tab.Columns.IndexOf("Enum_" + имяРеквизита);
+                    //    имя =
+                    //}
+                }
+            }
+
+            return имя;
+        }
+
+
+        public static string ПолучитьИмяТипаСущности(string типСущности)
+        {
+            string имяТипаСущности = string.Empty;
+
+            if (типСущности.StartsWith("I") && типСущности.EndsWith("Dto"))
+                имяТипаСущности = типСущности.Substring(1, типСущности.Length - 4);
+
+            return имяТипаСущности;
+        }
+
+
+        public static string ПолучитьСтрокуФильтра(MetadataRX.ТипВвода типВвода, string name, object val)
+        {
+            string filter = string.Empty;
+            // Число
+            if (типВвода == MetadataRX.ТипВвода.Int32 || типВвода == MetadataRX.ТипВвода.Int64 || типВвода == MetadataRX.ТипВвода.Double)
+                filter = string.Format("{0} eq {1}", name, val);
+            // Гуид
+            if (типВвода == MetadataRX.ТипВвода.Guid)
+                filter = string.Format("{0} eq guid'{1}'", name, val);
+            //Строка
+            if (типВвода == MetadataRX.ТипВвода.String)
+                filter = string.Format("contains({0},'{1}')", name, val);
+            // Дата
+            if (типВвода == MetadataRX.ТипВвода.DateTimeOffset)
+                filter = string.Format("{0} eq datetime'{1}'", name, val);
+            // Логическое
+            if (типВвода == MetadataRX.ТипВвода.Boolean)
+                filter = string.Format("{0} eq {1}", name, val);
+
+
+            return filter;
+        }
+
         #region Новый код
 
 
@@ -563,7 +684,7 @@ namespace Админка_RX.Классы
                 // 3. Ищем EntitySet именно для этого типа
                 var entitySets = GetEntitySetsForType(model, entity);
 
-                if (!DirectumRX.НужныйТипСущности(entity))
+                if (!НужныйТипСущности(entity))
                     continue;
 
                 // Если у типа нет своего EntitySet — значит, он используется только как свойство/навигация у других.

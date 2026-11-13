@@ -5,7 +5,10 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using System.Windows.Forms.VisualStyles;
 using Админка_RX.Классы;
+using Мониторинг.Resources.Функции;
+using static Админка_RX.FilterDialog;
 using static Админка_RX.Классы.MetadataRX;
 using static Админка_RX.Классы.Функции;
 
@@ -48,6 +51,7 @@ namespace Админка_RX
             {
 
                 ContextMenuStrip contextMenu = new ContextMenuStrip();
+                ContextMenuStrip contextMenuFiltr = new ContextMenuStrip();
                 // создаем элементы меню
                 ToolStripMenuItem MassiveFillMenuItem = new ToolStripMenuItem("Массово заполнить из...");
                 contextMenu.ItemClicked += new ToolStripItemClickedEventHandler(ContextMenu_ItemClicked);
@@ -58,6 +62,10 @@ namespace Админка_RX
                 ToolStripMenuItem whereUsedMenuItem = new ToolStripMenuItem("Где используется");
                 whereUsedMenuItem.Click += WhereUsedMenuItem_Click;
 
+                ToolStripMenuItem filtrMenuItem = new ToolStripMenuItem("Задать фильтр");
+                filtrMenuItem.Click += FiltrMenuItemMenuItem_Click;
+                contextMenuFiltr.Items.AddRange(new[] { filtrMenuItem });
+
                 if (ТипЗапуска == ТипЗапускаФормы.ИзменениеРеквизитов)
                 {
                     contextMenu.Items.Add("Выбрать запись");
@@ -66,10 +74,10 @@ namespace Админка_RX
                 }
                 else if (ТипЗапуска == ТипЗапускаФормы.МассовоеИзменениеРеквизитов)
                 {
-                    Выбрать.Visible = false;                   
+                    Выбрать.Visible = false;
 
                     // добавляем элементы в меню
-                    contextMenu.Items.AddRange(new[] { MassiveFillMenuItem, createMenuItem , whereUsedMenuItem });
+                    contextMenu.Items.AddRange(new[] { MassiveFillMenuItem, createMenuItem, whereUsedMenuItem });
                 }
                 else if (ТипЗапуска == ТипЗапускаФормы.ИсторияРаботы)
                 {
@@ -92,8 +100,10 @@ namespace Админка_RX
                     Выбрать.Visible = false;
 
                     // добавляем элементы в меню
-                    contextMenu.Items.AddRange(new[] { createMenuItem , whereUsedMenuItem });
+                    contextMenu.Items.AddRange(new[] { createMenuItem, whereUsedMenuItem });
                 }
+
+
 
 
                 bool isFiltr = !string.IsNullOrEmpty(фильтр);
@@ -105,9 +115,9 @@ namespace Админка_RX
                 ИменаНавигРеквиз = НавигационныеРеквизиты.Select(i => i.Name).ToList();
 
                 if (isFiltr)
-                    Данные = await DirectumRX.ПолучитьПакетноAsync(ODATAClient, Тип, ИменаНавигРеквиз.ToArray(), фильтр);
+                    Данные = await DirectumRX.ПолучитьAsync(ODATAClient, Тип, фильтр, ИменаНавигРеквиз.ToArray());
                 else
-                    Данные = await DirectumRX.ПолучитьПакетноAsync(ODATAClient, Тип, ИменаНавигРеквиз.ToArray());
+                    Данные = await DirectumRX.ПолучитьAsync(ODATAClient, Тип, ИменаНавигРеквиз.ToArray());
 
 
                 if (Данные == null && !isFiltr)
@@ -180,10 +190,12 @@ namespace Админка_RX
 
                         var columIndx = Таблица.Columns[name].Index;
                         var cell = Таблица.Rows[строкаInd].Cells[columIndx];
+                       
 
                         // Сразу добавим меню
                         cell.ContextMenuStrip = contextMenu;
 
+                       
                         if (типРеквизита == MetadataRX.ТипРеквизита.Обычный)
                         {
                             cell.Value = value;
@@ -216,6 +228,10 @@ namespace Админка_RX
                         //    }
                         //}
 
+                        //var columIndxFiltr = Фильтр.Columns[name].Index;
+                        //var cellFiltr = Фильтр.Rows[0].Cells[columIndxFiltr];
+                        //cellFiltr.ContextMenuStrip = contextMenuFiltr;
+                        Фильтр.Columns[name].ContextMenuStrip = contextMenuFiltr;
                     }
 
                 }
@@ -240,12 +256,11 @@ namespace Админка_RX
 
         }
 
-        private void WhereUsedMenuItem_Click(object sender, EventArgs e)
-        {
-            throw new NotImplementedException();
-        }
 
-        #region Изменение реквизитов
+
+
+
+        #region Кнопка
 
         private void Выбрать_Click(object sender, EventArgs e)
         {
@@ -275,7 +290,7 @@ namespace Админка_RX
 
         #endregion
 
-        #region Массовое заполнение
+        #region Меню
 
         private void CreateMenuItem_Click(object sender, EventArgs e)
         {
@@ -325,7 +340,7 @@ namespace Админка_RX
                 var property = ТипОбъекта.FindProperty(nameProperty);
                 var типРеквизита = MetadataRX.ПолучитьТипРеквизита(property);
 
-                var type = ((IEdmPrimitiveType)property.Type.Definition).Name; // Тип
+                var type = ПолучитьИмяТипаРеквизита(property); // Тип
                 var d = type;
             }
             else
@@ -386,6 +401,110 @@ namespace Админка_RX
             }
 
         }
+
+        private void WhereUsedMenuItem_Click(object sender, EventArgs e)
+        {
+            throw new NotImplementedException();
+        }
+
+        private void FiltrMenuItemMenuItem_Click(object sender, EventArgs e)
+        {
+            var selects = Фильтр.SelectedCells;
+            var rowsInd = new List<int>();
+
+            foreach (DataGridViewCell cell in selects)
+            {
+
+                var columIndx = Фильтр.Columns["Id"].Index;
+                int rowInd = cell.RowIndex;
+                int columnInd = cell.ColumnIndex;
+                var name = Фильтр.Columns[columnInd].Name;
+
+                var property = ТипОбъекта.FindProperty(name);
+
+                var типРеквизита = ПолучитьТипРеквизита(property);
+
+                //if (типРеквизита == ТипРеквизита.Обычный)
+                //{
+                    ТипВвода типВвода = ТипВвода.Все;
+
+                    // Сменим тип ввода
+                    ОпределитьТипВвода(ПолучитьИмяТипаРеквизита(property), ref типВвода);
+
+                    var dialog = Диалоги.Создать("Выбор");
+
+                Диалоги.Выбрать("Выбор", new List<string> { "выавыаываыва", "аваыаыаывывавы выавыаываыва", "аваыаыаывывавы" }.AsEnumerable());
+
+                    //var conditions = new List<FilterCondition>();
+
+                //using (var dlg = new FilterDialog(property))
+                //    if (dlg.ShowDialog(this) == DialogResult.OK)
+                //        conditions.Add(dlg.Result);
+
+                //string filter = ODataFilterBuilder.Build(conditions);
+                //var f = filter;
+
+
+                //}
+
+                //if (типРеквизита == ТипРеквизита.Сущность)
+                //{
+                //    using (SelectForm selForm = new SelectForm())
+                //    {
+                //        selForm.ТипСущности.Text = типСущ.ToString();
+                //        selForm.Тип = типСущ.ToString();
+                //        selForm.ИДЗаписи.Text = Ид;
+                //        selForm.Ид = Ид;
+                //        selForm.Cell = Таблица.Rows[rowInd].Cells[4];
+                //        selForm.ShowDialog();
+                //    }
+
+
+                //    return;
+                //}
+
+                //if (типРеквизита == ТипРеквизита.Коллекция)
+                //{
+
+                //    using (DopChangeForm changeForm = new DopChangeForm())
+                //    {
+                //        changeForm.ТипСущности.Text = типСущ.ToString();
+                //        changeForm.Тип = типСущ.ToString();
+                //        changeForm.ОсновнойТип = Тип;
+                //        changeForm.ИДЗаписи.Text = Ид;
+                //        changeForm.Ид = Ид;
+                //        changeForm.ИмяРеквизита = имяРекв.ToString();
+                //        changeForm.Text += " " + имяРекв.ToString();
+
+                //        changeForm.ShowDialog();
+                //    }
+
+                //    return;
+                //}
+
+
+
+                //using (ChangePropertyForm propertyForm = new ChangePropertyForm())
+                //{
+                //    propertyForm.ТипСущности.Text = Тип;
+                //    propertyForm.Тип = Тип;
+                //    propertyForm.ИДЗаписи.Text = Таблица.Rows[rowInd].Cells[columIndx].Value.ToString();
+                //    propertyForm.Ид = Таблица.Rows[rowInd].Cells[columIndx].Value.ToString();
+                //    propertyForm.ShowDialog();
+
+                //}
+
+                // Берём первую, потом всё
+
+                continue;
+
+
+            }
+        }
+
+        #endregion
+
+        #region Массовое заполнение
 
         private void ИзменитьЗаписьСущностиAsync(string id, string namePropertyOwner, string типСущ, string nameProperty, string cellName)
         {
@@ -485,8 +604,8 @@ namespace Админка_RX
                 if (типРеквизита == MetadataRX.ТипРеквизита.Обычный)
                 {
                     MetadataRX.ТипВвода типВвода = MetadataRX.ТипВвода.Все;
-                    MetadataRX.ОпределитьТипВвода(((IEdmPrimitiveType)property.Type.Definition).Name, ref типВвода);
-                    фильтр.Add($"{DirectumRX.ПолучитьСтрокуФильтра(типВвода, name, val)}");
+                    MetadataRX.ОпределитьТипВвода(ПолучитьИмяТипаРеквизита(property), ref типВвода);
+                    фильтр.Add($"{MetadataRX.ПолучитьСтрокуФильтра(типВвода, name, val)}");
 
                 }
 
@@ -561,6 +680,17 @@ namespace Админка_RX
                 var f = Таблица.HitTest(e.X, e.Y);
 
                 Таблица.CurrentCell = Таблица[f.ColumnIndex, f.RowIndex];
+            }
+        }
+
+        private void Фильтр_MouseDown(object sender, MouseEventArgs e)
+        {
+            // Выделение ячейки после нажатия ПКМ
+            if (e.Button == MouseButtons.Right)
+            {
+                var f = Фильтр.HitTest(e.X, e.Y);
+
+                Фильтр.CurrentCell = Фильтр[f.ColumnIndex, f.RowIndex];
             }
         }
 

@@ -147,7 +147,7 @@ namespace Админка_RX
 
 
                         string filePath = string.Empty;
-                        string[] filesMTD = Directory.GetFiles(fbd.SelectedPath, DirectumRX.ПолучитьИмяТипаСущности(tableName) + ".mtd", SearchOption.AllDirectories);
+                        string[] filesMTD = Directory.GetFiles(fbd.SelectedPath, MetadataRX.ПолучитьИмяТипаСущности(tableName) + ".mtd", SearchOption.AllDirectories);
 
                         if (filesMTD.Count() != 0)
                         {
@@ -209,7 +209,7 @@ namespace Админка_RX
 
                         }
 
-                        string[] filesXML = Directory.GetFiles(fbd.SelectedPath, DirectumRX.ПолучитьИмяТипаСущности(tableName) + "System.ru.resx", SearchOption.AllDirectories);
+                        string[] filesXML = Directory.GetFiles(fbd.SelectedPath, MetadataRX.ПолучитьИмяТипаСущности(tableName) + "System.ru.resx", SearchOption.AllDirectories);
 
                         if (filesXML.Count() != 0)
                         {

@@ -110,9 +110,9 @@ namespace Админка_RX
                     if (типРеквизита == ТипРеквизита.Обычный)
                     {
                         Таблица.Rows[строка].Cells[0].Value = реквизит.Value;   // Тип реквизита
-                        Таблица.Rows[строка].Cells[1].Value = ((IEdmPrimitiveType)property.Type.Definition).Name; // Тип
+                        Таблица.Rows[строка].Cells[1].Value = ПолучитьИмяТипаРеквизита(property); // Тип
                         Таблица.Rows[строка].Cells[2].Value = реквизит.Key;   // Имя реквизита
-                        Таблица.Rows[строка].Cells[3].Value = DirectumRX.РусскоеИмяРеквизита(EDMModel, name, реквизит.Value.ToString(), Тип);   // Русское имя реквизита
+                        Таблица.Rows[строка].Cells[3].Value = MetadataRX.РусскоеИмяРеквизита(EDMModel, name, реквизит.Value.ToString(), Тип);   // Русское имя реквизита
                     }
 
                     if (типРеквизита == ТипРеквизита.Сущность)
@@ -126,7 +126,7 @@ namespace Админка_RX
                             Таблица.Rows[строка].Cells[0].Value = реквизит.Value;   // Тип реквизита
                             Таблица.Rows[строка].Cells[1].Value = типСущ.Name; // Тип
                             Таблица.Rows[строка].Cells[2].Value = реквизит.Key;   // Имя реквизита
-                            Таблица.Rows[строка].Cells[3].Value = DirectumRX.РусскоеИмяРеквизита(EDMModel, name, реквизит.Value.ToString(), Тип);   // Русское имя реквизита
+                            Таблица.Rows[строка].Cells[3].Value = MetadataRX.РусскоеИмяРеквизита(EDMModel, name, реквизит.Value.ToString(), Тип);   // Русское имя реквизита
 
                         }
                     }
@@ -142,7 +142,7 @@ namespace Админка_RX
                             Таблица.Rows[строка].Cells[0].Value = реквизит.Value;   // Тип реквизита
                             Таблица.Rows[строка].Cells[1].Value = типСущ.Name; // Тип
                             Таблица.Rows[строка].Cells[2].Value = реквизит.Key;   // Имя реквизита
-                            Таблица.Rows[строка].Cells[3].Value = DirectumRX.РусскоеИмяРеквизита(EDMModel, name, реквизит.Value.ToString(), Тип);   // Русское имя реквизита
+                            Таблица.Rows[строка].Cells[3].Value = MetadataRX.РусскоеИмяРеквизита(EDMModel, name, реквизит.Value.ToString(), Тип);   // Русское имя реквизита
 
                         }
                     }

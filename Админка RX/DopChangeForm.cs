@@ -22,6 +22,9 @@ namespace Админка_RX
         public string ОсновноеИмяРеквизита = string.Empty;
         public string Ид = string.Empty;
         public string ИмяРеквизита = string.Empty;
+        public static List<IEdmProperty> ВсеРеквизиты = new List<IEdmProperty>();
+        public static List<IEdmNavigationProperty> НавигационныеРеквизиты = new List<IEdmNavigationProperty>();
+        public List<string> ИменаНавигРеквиз = new List<string>();
         public static IDictionary<string, object> Реквизиты = new Dictionary<string, object>();
         public ODataClient ODATAClient = ChangePropertyForm.ODATAClient;
         public IEdmModel EDMModel = ChangePropertyForm.EDMModel;
@@ -49,24 +52,28 @@ namespace Админка_RX
                 // Привязка события для выбора варианта из контекстного меню  
                 contextMenu.ItemClicked += new ToolStripItemClickedEventHandler(ContextMenu_ItemClicked);
 
-                List<string> допРеквизиты = new List<string>();
-                IDictionary<string, object> всеРеквизиты = new Dictionary<string, object>();
+                //List<string> допРеквизиты = new List<string>();
+                //IDictionary<string, object> всеРеквизиты = new Dictionary<string, object>();
 
                 ЭлементEdmМодели = ПолучитьЭлементEdmМодели(EDMModel, Тип);
-
-                var структурныйТип = ПолучитьСтруктурированныйТип(ЭлементEdmМодели);
-                // Получим все имена и типы реквизитов типа сущности для дальнейшего сравнения 
                 ТипОбъекта = ЭлементEdmМодели.EntityType();
-                var nameType = ТипОбъекта.Name;
+                ВсеРеквизиты = ТипОбъекта.Properties().ToList();
+                НавигационныеРеквизиты = ТипОбъекта.NavigationProperties().ToList();
+                ИменаНавигРеквиз = НавигационныеРеквизиты.Select(i => i.Name).ToList();
 
-                Реквизиты = ПолучитьВсеРеквизитыТипа(структурныйТип, всеРеквизиты);
+
+                //var структурныйТип = ПолучитьСтруктурированныйТип(ЭлементEdmМодели);
+                //// Получим все имена и типы реквизитов типа сущности для дальнейшего сравнения 
+                //ТипОбъекта = ЭлементEdmМодели.EntityType();
+                //var nameType = ТипОбъекта.Name;
+
+                //Реквизиты = ПолучитьВсеРеквизитыТипа(структурныйТип, всеРеквизиты);
 
                 // Сначала создадим обязательно колонки
-                foreach (var реквизит in Реквизиты)
+                foreach (var реквизит in ВсеРеквизиты)
                 {
-                    var name = реквизит.Key;
-
-                    var property = ТипОбъекта.FindProperty(name);
+                    var name = реквизит.Name;
+                    var property = ВсеРеквизиты.Where(r => r.Name == name).First();
                     var типРеквизита = ПолучитьТипРеквизита(property);
 
                     if (типРеквизита == ТипРеквизита.Обычный)
@@ -82,25 +89,22 @@ namespace Админка_RX
 
                     if (типРеквизита == ТипРеквизита.Сущность)
                     {
-                        var NavigProperties = ТипОбъекта.NavigationProperties().Where(s => s.Name == name);
-                        if (NavigProperties.Any())
+                        var типСущ = ЭлементEdmМодели.FindNavigationTarget(property as IEdmNavigationProperty); // Тип данных
+
+                        //// Удалим из коллекции ссылку на главную сущьность
+                        if (типСущ.Name == ОсновнойТип)
+                            ОсновноеИмяРеквизита = name;
+
+                        // Создадим колонку
+                        if (!Таблица.Columns.Contains(name))
                         {
-                            var типСущ = ЭлементEdmМодели.FindNavigationTarget(NavigProperties.First()); // Тип данных
-
-                            //// Удалим из коллекции ссылку на главную сущьность
-                            if (типСущ.Name == ОсновнойТип)
-                                ОсновноеИмяРеквизита = name;
-
-                            // Создадим колонку
-                            if (!Таблица.Columns.Contains(name))
-                            {
-                                if (типСущ.Name != ОсновнойТип)
-                                    СоздатьКолонку(Таблица, new DataGridViewTextBoxColumn(), name, name, DataGridViewAutoSizeColumnMode.AllCells, true, false);
-                                else
-                                    СоздатьКолонку(Таблица, new DataGridViewTextBoxColumn(), name, name, DataGridViewAutoSizeColumnMode.AllCells, false, false);
-                            }
-
+                            if (типСущ.Name != ОсновнойТип)
+                                СоздатьКолонку(Таблица, new DataGridViewTextBoxColumn(), name, name, DataGridViewAutoSizeColumnMode.AllCells, true, false);
+                            else
+                                СоздатьКолонку(Таблица, new DataGridViewTextBoxColumn(), name, name, DataGridViewAutoSizeColumnMode.AllCells, false, false);
                         }
+
+
                     }
 
                     Таблица.Columns[name].ContextMenuStrip = contextMenu;
@@ -202,9 +206,9 @@ namespace Админка_RX
                     ТипВвода типВвода = ТипВвода.Все;
 
                     // Сменим тип ввода
-                    ОпределитьТипВвода(((IEdmPrimitiveType)property.Type.Definition).Name, ref типВвода);
+                    ОпределитьТипВвода(ПолучитьИмяТипаРеквизита(property), ref типВвода);
 
-                    Диалоги.Показать(имяРекв.ToString(), типВвода, значение, Таблица.Rows[rowInd].Cells[colInd]);
+                    Диалоги.Выбрать("Выбор", типВвода, значение, Таблица.Rows[rowInd].Cells[colInd]);
                 }
 
                 if (типРеквизита == ТипРеквизита.Сущность)
@@ -258,9 +262,9 @@ namespace Админка_RX
                 // Пропустим последнюю строку
                 if (!ПустаяСтрока(row.Index))
                 {
-                    foreach (var реквизит in Реквизиты)
+                    foreach (var реквизит in ВсеРеквизиты)
                     {
-                        var name = реквизит.Key;
+                        var name = реквизит.Name;
 
                         var property = ТипОбъекта.FindProperty(name);
 
@@ -375,5 +379,6 @@ namespace Админка_RX
                 Таблица.CurrentCell = Таблица[f.ColumnIndex, f.RowIndex];
             }
         }
+
     }
 }

@@ -231,7 +231,6 @@ namespace Админка_RX
             bar.Value = 0;
             bar.Maximum = МАКСИД.Tables.Count;
 
-
             foreach (DataTable table in МАКСИД.Tables)
             {
                 bar.Value += 1;
@@ -243,11 +242,15 @@ namespace Админка_RX
 
                 //Thread.Sleep(100);
 
+                if (tab.Rows.Count > 0)
+                    // Очистим значение
+                    tab.Rows[0][0] = -1;
+
                 try
                 {
                     var ids = await DirectumRX.ПолучитьПоследнееИД(ODATAClient, table.TableName);
                     // Если нет Идишек
-                    if (!ids.Any())
+                    if (ids == null || !ids.Any())
                         continue;
 
                     // Всегда 1 ид а иначе очень долго
@@ -317,7 +320,7 @@ namespace Админка_RX
         private void МассовоеИзменениеРеквизитов_Click(object sender, EventArgs e)
         {
             var names = ТипИТипСущности.Select(s => s.Value.Name);
-            var тип = Диалоги.Показать(names);
+            var тип = Диалоги.Выбрать("Выбор", names);
 
             if (string.IsNullOrEmpty(тип))
                 MessageBox.Show("Укажите Тип сущности");
@@ -362,7 +365,7 @@ namespace Админка_RX
         private void Поиск_Click(object sender, EventArgs e)
         {
             var names = ТипИТипСущности.Select(s => s.Value.Name);
-            var тип = Диалоги.Показать(names);
+            var тип = Диалоги.Выбрать("Выбор", names);
 
             if (string.IsNullOrEmpty(тип))
                 MessageBox.Show("Укажите Тип сущности");
@@ -430,7 +433,7 @@ namespace Админка_RX
 
 
             // Создадим диалог и получим нажатую кнопку
-            кнопка = Диалоги.Показать(типы);
+            кнопка = Диалоги.Выбрать("Выбор", типы);
 
 
 
@@ -452,8 +455,7 @@ namespace Админка_RX
             {
                 bar.Value += 1;
 
-
-                if (long.Parse(table.Rows[0][0].ToString()) == -1)
+                if (long.Parse(table.Rows[0][0].ToString()) == -1 || table.Rows[0][0] == null)
                     continue;
 
                 // Если ИД больше МАКСИД, то и искать не стоит
@@ -463,9 +465,8 @@ namespace Админка_RX
                 var тип = table.TableName;
 
                 var значениеРХ = await DirectumRX.ПолучитьAsync(ODATAClient, тип, $"Id eq {long.Parse(ид)}");
-                if (значениеРХ != null)
+                if (значениеРХ != null && значениеРХ.Any())
                     лист.Add(тип);
-
 
             }
 
@@ -474,7 +475,7 @@ namespace Админка_RX
 
 
             // Создадим диалог и получим нажатую кнопку
-            кнопка = Диалоги.Показать(типы);
+            кнопка = Диалоги.Выбрать("Выбор", типы.AsEnumerable());
 
             if (!string.IsNullOrEmpty(кнопка))
             {
@@ -501,7 +502,7 @@ namespace Админка_RX
             // Предоставим выбор пользователя
             if (string.IsNullOrEmpty(ид))
             {
-                var значения = await DirectumRX.ПолучитьПакетноAsync(ODATAClient, "IUsers", new string[] { });
+                var значения = await DirectumRX.ПолучитьAsync(ODATAClient, "IUsers", new string[] { });
                 foreach (var item in значения)
                     names.Add(string.Format("{0}(Id:{1})", item["Name"], item["Id"]));
 
@@ -512,7 +513,10 @@ namespace Админка_RX
 
                 names.Sort();
 
-                name = Диалоги.Показать(names);
+                var box = new ComboBox();
+                box.Items.AddRange(names.ToArray());
+
+                name = Диалоги.Выбрать(box, "Выбрать");
 
                 if (string.IsNullOrEmpty(name))
                 {
@@ -535,7 +539,7 @@ namespace Админка_RX
             if (значениеРХ != null)
             {
                 // Создадим диалог и получим нажатую кнопку
-                var кнопка = Диалоги.Показать(лист.Select(l => l.Key).ToList());
+                var кнопка = Диалоги.Выбрать("Выбор", лист.Select(l => l.Key).ToList());
 
                 if (!string.IsNullOrEmpty(кнопка))
                 {
@@ -609,28 +613,28 @@ namespace Админка_RX
 
 
             // Создадим диалог и получим нажатую кнопку
-            кнопка = Диалоги.Показать(типы);
+            кнопка = Диалоги.Выбрать("Выбор", типы.AsEnumerable());
 
             if (!string.IsNullOrEmpty(кнопка))
-            {
-
                 ГдеИспользуется(кнопка, ид);
-               
 
-            }
 
         }
 
+        private const string _ALLREPLACE = "!ЗАМЕНИТЬ ВЕЗДЕ!";
         public async void ГдеИспользуется(string тип, string ид)
         {
             var allFindRef = MetadataRX.FindPropertiesReferencingEntity(EDMModel, тип);
 
-            var list = new List<(string, IDictionary<string, object>)>();
+            var list = new List<(string, IDictionary<string, object>)>
+            {
+                (_ALLREPLACE, null)
+            };
             var значениеРХ = await DirectumRX.ПолучитьAsync(ODATAClient, тип, $"Id eq {long.Parse(ид)}");
             if (значениеРХ != null)
             {
                 var waiting = new Диалоги.Ожидание(allFindRef.Count());
-    
+
                 foreach (var item in allFindRef)
                 {
                     waiting.Добавить(1);
@@ -638,7 +642,7 @@ namespace Админка_RX
                     if (waiting.close)
                         break;
 
-                    
+
 
                     var str = item.Split(new char[] { '|' }, StringSplitOptions.None);
                     var type = str[0];
@@ -655,22 +659,31 @@ namespace Админка_RX
                     var значения = await DirectumRX.ПолучитьAsync(ODATAClient, type, fil, ИменаНавигРеквиз.ToArray());
                     if (значения != null)
                         foreach (var значение in значения)
-                        list.Add((type, значение));
+                            list.Add((type, значение));
                 }
 
                 waiting.Закрыть();
             }
 
+            // Создадим диалог и получим нажатую кнопку выбора замены
+            var кнопка = Диалоги.Выбрать("Выбор", list.Select(s => s.Item1).Distinct());
 
-            var ff = list;
 
-            // Создадим диалог и получим нажатую кнопку
-            var кнопка = Диалоги.Показать(list.Select(s => s.Item1).Distinct());
+            // Определим сущность на которую будем заменять
+
+            if (кнопка == _ALLREPLACE)
+            {
+                foreach (var line in list)
+                {
+
+                }
+            }
         }
 
         #endregion
 
         #endregion
+
 
 
 

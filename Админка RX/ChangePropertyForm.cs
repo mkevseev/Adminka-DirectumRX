@@ -26,11 +26,11 @@ namespace Админка_RX
         public static IDictionary<string, object> Данные = new Dictionary<string, object>();
         public ТипЗапускаФормы ТипЗапускаФормы;
         private IEdmEntityType ТипОбъекта = null;
-        private IEdmEntitySet ЭлементEdmМодели = null; 
+        private IEdmEntitySet ЭлементEdmМодели = null;
 
 
         public List<string> ТипыСущностей = MainForm.ТипыСущностей;
-        
+
         private bool newOpen = true;
 
         public ChangePropertyForm()
@@ -43,13 +43,13 @@ namespace Админка_RX
         {
             ЗаполнитьТаблицу();
 
-            ContextMenuStrip contextMenu = new ContextMenuStrip();
-            contextMenu.Items.Add("Изменить значение");
-            //contextMenu.Items.Add("Вставить");
-            // Привязка события для выбора варианта из контекстного меню  
-            contextMenu.ItemClicked += new ToolStripItemClickedEventHandler(ContextMenu_ItemClicked);
+            //ContextMenuStrip contextMenu = new ContextMenuStrip();
+            //contextMenu.Items.Add("Изменить значение");
+            ////contextMenu.Items.Add("Вставить");
+            //// Привязка события для выбора варианта из контекстного меню  
+            //contextMenu.ItemClicked += new ToolStripItemClickedEventHandler(ContextMenu_ItemClicked);
 
-            Таблица.Columns[4].ContextMenuStrip = contextMenu;
+            //Таблица.Columns[4].ContextMenuStrip = contextMenu;
 
         }
 
@@ -57,6 +57,14 @@ namespace Админка_RX
         {
             try
             {
+                ContextMenuStrip contextMenu = new ContextMenuStrip();
+                contextMenu.Items.Add("Изменить значение ячейки");
+                //contextMenu.Items.Add("Вставить");
+                // Привязка события для выбора варианта из контекстного меню  
+                contextMenu.ItemClicked += new ToolStripItemClickedEventHandler(ContextMenu_ItemClicked);
+
+
+
                 ЭлементEdmМодели = ПолучитьЭлементEdmМодели(EDMModel, Тип);
                 ТипОбъекта = ЭлементEdmМодели.EntityType();
                 ВсеРеквизиты = ТипОбъекта.Properties().ToList();
@@ -93,15 +101,9 @@ namespace Админка_RX
                         if (property.IsKey())
                             continue;
 
-                        var имяТипа = ((IEdmPrimitiveType)property.Type.Definition).Name;
+                        var имяТипа = ПолучитьИмяТипаРеквизита(property);
 
-                        var строка = Таблица.Rows.Add();
-
-                        Таблица.Rows[строка].Cells[0].Value = имяТипа;   // Тип реквизита
-                        Таблица.Rows[строка].Cells[1].Value = имяТипа; // Тип
-                        Таблица.Rows[строка].Cells[2].Value = property.Name;   // Имя реквизита
-                        Таблица.Rows[строка].Cells[3].Value = DirectumRX.РусскоеИмяРеквизита(EDMModel, name, имяТипа.ToString(), Тип);   // Русское имя реквизита
-                        Таблица.Rows[строка].Cells[4].Value = value; // Тут всегда обычные реквизиты
+                        Функции.ДобавитьСтроку(Таблица, имяТипа, имяТипа, name, value, Тип);
 
                     }
 
@@ -110,18 +112,16 @@ namespace Админка_RX
                         var navProperty = (IEdmNavigationProperty)property;
                         var имяТипа = navProperty.ToEntityType().Name;
                         var типСущ = ЭлементEdmМодели.FindNavigationTarget(navProperty); // Тип данных
+                        var значение = типРеквизита == ТипРеквизита.Сущность ? ((IDictionary<string, object>)value)?["Id"] : "[Просмотр при изменении значений]"; // Значение
 
-                        var строка = Таблица.Rows.Add();
-
-                        Таблица.Rows[строка].Cells[0].Value = имяТипа;   // Тип реквизита
-                        Таблица.Rows[строка].Cells[1].Value = типСущ.Name; // Тип
-                        Таблица.Rows[строка].Cells[2].Value = property.Name;   // Имя реквизита
-                        Таблица.Rows[строка].Cells[3].Value = DirectumRX.РусскоеИмяРеквизита(EDMModel, name, имяТипа.ToString(), Тип);   // Русское имя реквизита
-                        Таблица.Rows[строка].Cells[4].Value = типРеквизита == ТипРеквизита.Сущность ? ((IDictionary<string, object>)value)?["Id"] : "[Просмотр при изменении значений]"; // Значение
+                        Функции.ДобавитьСтроку(Таблица, имяТипа, типСущ.Name, name, значение, Тип);
 
                     }
 
                 }
+
+                Таблица.Columns[4].ContextMenuStrip = contextMenu;
+
 
             }
             catch (Exception ex)
@@ -183,7 +183,7 @@ namespace Админка_RX
                     // Сменим тип ввода
                     ОпределитьТипВвода(типСущ.ToString(), ref типВвода);
 
-                    Диалоги.Показать(имяРекв.ToString(), типВвода, значение, Таблица.Rows[rowInd].Cells[4]);
+                    Диалоги.Выбрать("Выбор", типВвода, значение, Таблица.Rows[rowInd].Cells[4]);
 
 
                 }
@@ -206,6 +206,7 @@ namespace Админка_RX
 
                 if (типРеквизита == ТипРеквизита.Коллекция)
                 {
+
                     using (DopChangeForm changeForm = new DopChangeForm())
                     {
                         changeForm.ТипСущности.Text = типСущ.ToString();
@@ -218,7 +219,6 @@ namespace Админка_RX
 
                         changeForm.ShowDialog();
                     }
-
 
                     return;
                 }
@@ -252,11 +252,12 @@ namespace Админка_RX
 
         private async void Изменить_Click(object sender, EventArgs e)
         {
-            var изменения = await DirectumRX.Проверить(ODATAClient, EDMModel, ТипыСущностей, Тип, Ид, ИменаНавигРеквиз.ToArray(), Данные);
+            var изменения = await Проверить(ODATAClient, EDMModel, ТипыСущностей, Тип, Ид, ИменаНавигРеквиз.ToArray(), Данные);
 
             try
             {
-                DirectumRX.ИзменитьПакетно(ODATAClient, EDMModel, Тип, Ид, ИменаНавигРеквиз.ToArray(), изменения);
+                
+                DirectumRX.ИзменитьПакетно(ODATAClient, /*EDMModel,*/ Тип, Ид, ИменаНавигРеквиз.ToArray(), Данные);
                 this.Close();
             }
             catch (Exception ex)
@@ -362,5 +363,298 @@ namespace Админка_RX
 
 
         }
+
+
+
+        #region Проверка
+
+        public async Task<IDictionary<string, object>> Проверить(ODataClient oDataClient, IEdmModel edmModel, List<string> типыСущностей, string Имя, string ИД, string[] ДопРеквизиты, IDictionary<string, object> Изменения)
+        {
+            if (string.IsNullOrEmpty(ИД))
+                return null;
+
+            IDictionary<string, object> изменения = new Dictionary<string, object>();
+
+            //var элементEdmМодели = MetadataRX.ПолучитьЭлементEdmМодели(edmModel, Имя);
+
+            //var структурныйТип = MetadataRX.ПолучитьСтруктурированныйТип(элементEdmМодели);
+            //// Получим все имена и типы реквизитов типа сущности для дальнейшего сравнения 
+            //var типОбъекта = элементEdmМодели.EntityType();
+            //var nameType = типОбъекта.Name;
+
+            //IDictionary<string, object> всеРеквизиты = new Dictionary<string, object>();
+            //var реквизиты = MetadataRX.ПолучитьВсеРеквизитыТипа(структурныйТип, всеРеквизиты);
+
+            // Перепроверим все реквизиты на сходство.
+            // Изменяем только если не равны значения
+            // Получим сущьность
+            var данные = await DirectumRX.ПолучитьAsync(oDataClient, Имя, ДопРеквизиты, ИД);
+            var запись = данные.First();
+            if (запись.Any())
+            {
+
+                foreach (var item in Изменения)
+                {
+                    try
+                    {
+
+                        var name = item.Key;
+
+
+
+                        var property = ТипОбъекта.FindProperty(name);
+                        var старыеДанныеРеквизита = запись.Where(r => r.Key == name).First();
+
+                        var типРеквизита = MetadataRX.ПолучитьТипРеквизита(property);
+
+                        if (типРеквизита == MetadataRX.ТипРеквизита.Обычный)
+                        {
+                            var val = item.Value;
+                            var oldVal = старыеДанныеРеквизита.Value;
+
+                            // Всегда был ноль, значит равны, по другому не хочет 
+                            if (oldVal == null && val == null)
+                                continue;
+                            // Старое значение null, а новое нет, тогда запишем на изменение
+                            if (oldVal == null && val != null)
+                            {
+                                // Запишем на изменение
+                                изменения.Add(item.Key, val);
+
+                            }
+                            // Старое значение null, а новое нет, тогда запишем на изменение
+                            else if (oldVal != null && val == null)
+                            {
+                                // Запишем на изменение
+                                изменения.Add(item.Key, val);
+
+                            }
+                            else if (oldVal.ToString() != val.ToString())
+                            {
+                                // Есди оба были не пустые, то запишем при расхождению
+                                // Запишем на изменение
+                                изменения.Add(item.Key, val);
+
+                            }
+
+                        }
+
+                        if (типРеквизита == MetadataRX.ТипРеквизита.Сущность)
+                        {
+
+                            var val = item.Value;
+                            var oldVal = старыеДанныеРеквизита.Value;
+
+                            // Всегда был ноль, значит равны, по другому не хочет 
+                            if (oldVal == null && val == null)
+                                continue;
+                            // Старое значение null, а новое нет, тогда запишем на изменение
+                            if (oldVal == null && val != null)
+                            {
+                                // Запишем на изменение
+                                изменения.Add(item.Key, val);
+
+                            }
+                            // Старое значение null, а новое нет, тогда запишем на изменение
+                            else if (oldVal != null && val == null)
+                            {
+                                // Запишем на изменение
+                                изменения.Add(item.Key, val);
+
+                            }
+                            else
+                            {
+                                // Есди оба были не пустые, то запишем при расхождению
+                                var id = ((IDictionary<string, object>)val)["Id"];
+                                var idOld = ((IDictionary<string, object>)oldVal)["Id"];
+                                if (!idOld.Equals(id))
+                                {
+                                    // Запишем на изменение
+                                    изменения.Add(item.Key, val);
+                                }
+                            }
+
+                        }
+
+                        if (типРеквизита == MetadataRX.ТипРеквизита.Коллекция)
+                        {
+                            var типСущ = ЭлементEdmМодели.FindNavigationTarget(property as IEdmNavigationProperty); // Тип данных
+
+                            var элементEdmМоделиКоллекции = MetadataRX.ПолучитьЭлементEdmМодели(edmModel, типСущ.Name);
+
+                            var структурныйТипКоллекции = MetadataRX.ПолучитьСтруктурированныйТип(элементEdmМоделиКоллекции);
+                            // Получим все имена и типы реквизитов типа сущности для дальнейшего сравнения 
+                            var типОбъектаКоллекции = элементEdmМоделиКоллекции.EntityType();
+                            var nameTypeКоллекции = типОбъектаКоллекции.Name;
+
+                            IDictionary<string, object> всеРеквизитыКоллекции = new Dictionary<string, object>();
+                            var реквизитыКоллекции = MetadataRX.ПолучитьВсеРеквизитыТипа(структурныйТипКоллекции, всеРеквизитыКоллекции);
+
+
+                            var arrs = (IDictionary<string, object>[])item.Value;
+                            var arrsOld = (IDictionary<string, object>[])старыеДанныеРеквизита.Value;
+                            if (arrs != null)
+                            {
+                                var newArrs = new List<IDictionary<string, object>>();
+                                foreach (var arr in arrs)
+                                {
+                                    long idstr = 0;
+
+                                    IDictionary<string, object> newArr = new Dictionary<string, object>();
+                                    // Или ИД или -1 у новой строки коллекции обработка -1 в изменениях
+                                    idstr = long.Parse(arr["Id"].ToString());
+
+                                    bool writeId = false;
+
+                                    // Не новое значение. Новое всегда записываем на изменнение
+                                    if (idstr != -1)
+                                    {
+                                        foreach (var it in arr)
+                                        {
+                                            bool change = false;
+                                            var реквизитКоллекции = реквизитыКоллекции.Where(r => r.Key == it.Key).First();
+
+                                            var NavigPropertiesКоллекции = типОбъектаКоллекции.NavigationProperties().Where(s => s.Name == it.Key);
+
+                                            if (NavigPropertiesКоллекции.Any())
+                                            {
+                                                var val = it.Value;
+
+
+                                                var whe = arrsOld.Where(i => i["Id"].Equals(idstr)); // && !((IDictionary<string, object>)i[it.Key])["Id"].Equals(id)
+
+
+                                                if (whe.Any())
+                                                {
+                                                    var oldVal = whe.Select(i => i[it.Key]).First();
+
+                                                    // Всегда был ноль, значит равны, по другому не хочет 
+                                                    if (oldVal == null && val == null)
+                                                        continue;
+                                                    // Старое значение null, а новое нет, тогда запишем на изменение
+                                                    if (oldVal == null && val != null)
+                                                    {
+                                                        // Запишем на изменение
+                                                        newArr.Add(it.Key, val);
+                                                        change = true;
+
+                                                    }
+                                                    // Старое значение null, а новое нет, тогда запишем на изменение
+                                                    else if (oldVal != null && val == null)
+                                                    {
+                                                        // Запишем на изменение
+                                                        newArr.Add(it.Key, val);
+                                                        change = true;
+
+                                                    }
+                                                    else
+                                                    {
+                                                        // Есди оба были не пустые, то запишем при расхождению
+                                                        var id = ((IDictionary<string, object>)it.Value)["Id"];
+                                                        var idOld = ((IDictionary<string, object>)oldVal)["Id"];
+                                                        if (!idOld.Equals(id))
+                                                        {
+                                                            // Запишем на изменение
+                                                            newArr.Add(it.Key, val);
+                                                            change = true;
+                                                        }
+                                                    }
+
+
+                                                }
+                                            }
+                                            else
+                                            {
+                                                // Обычный реквизит
+
+                                                var val = it.Value;
+
+                                                var whe = arrsOld.Where(i => i["Id"].Equals(idstr));
+
+                                                if (whe.Any())
+                                                {
+                                                    var oldVal = whe.Select(i => i[it.Key]).First();
+
+                                                    // Всегда был ноль, значит равны, по другому не хочет 
+                                                    if (oldVal == null && val == null)
+                                                        continue;
+                                                    // Старое значение null, а новое нет, тогда запишем на изменение
+                                                    if (oldVal == null && val != null)
+                                                    {
+                                                        // Запишем на изменение
+                                                        newArr.Add(it.Key, val);
+                                                        change = true;
+
+                                                    }
+                                                    // Старое значение null, а новое нет, тогда запишем на изменение
+                                                    else if (oldVal != null && val == null)
+                                                    {
+                                                        // Запишем на изменение
+                                                        newArr.Add(it.Key, val);
+                                                        change = true;
+
+                                                    }
+                                                    // Есди оба были не пустые, то запишем при расхождении
+                                                    else if (!oldVal.Equals(val))
+                                                    {
+                                                        // Запишем на изменение
+                                                        newArr.Add(it.Key, val);
+                                                        change = true;
+
+                                                    }
+
+                                                }
+
+                                            }
+
+                                            // Запишем ИД строки коллекции в которой было изменение если не записывали
+                                            if (change && !writeId)
+                                            {
+                                                newArr.Add("Id", idstr);
+                                                writeId = true;
+                                            }
+
+                                        }
+                                    }
+                                    else
+                                    {
+                                        foreach (var it in arr)
+                                        {
+                                            if (it.Key != "MemoIT")
+                                                // Тут новая строка коллекции
+                                                newArr.Add(it.Key, it.Value);
+                                        }
+
+                                    }
+
+                                    // Сложим если были изменения
+                                    if (newArr.Any())
+                                        newArrs.Add(newArr);
+                                }
+
+                                // Запишем изменения если были
+                                if (newArrs.Any())
+                                    изменения.Add(item.Key, newArrs.ToArray());
+                            }
+
+
+                        }
+
+                    }
+                    catch (Exception ex)
+                    {
+                        var d = ex.Message;
+                    }
+
+                }
+
+            }
+
+            return изменения;
+
+        }
+
+        #endregion
+
     }
 }

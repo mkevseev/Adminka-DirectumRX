@@ -112,6 +112,7 @@
             this.Фильтр.TabIndex = 22;
             this.Фильтр.CellValueChanged += new System.Windows.Forms.DataGridViewCellEventHandler(this.Фильтр_CellValueChanged);
             this.Фильтр.Scroll += new System.Windows.Forms.ScrollEventHandler(this.Фильтр_Scroll);
+            this.Фильтр.MouseDown += new System.Windows.Forms.MouseEventHandler(this.Фильтр_MouseDown);
             // 
             // groupBox1
             // 
